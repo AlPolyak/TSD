@@ -1,1 +1,11 @@
+from pysimplebase import SimpleBase,DBSession
+import uuid
 
+# Функция запускается при старте программы ищет и устанавливает ID
+def init_on_start(hashMap,_files=None,_data=None):
+  db = SimpleBase("tsd_db")
+  id = db['tsd_db'].find({"id"})
+
+
+user_id = uuid.uuid4()
+print(user_id)
