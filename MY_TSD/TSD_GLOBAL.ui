@@ -3,7 +3,19 @@ import uuid
 
 # Функция запускается при старте программы ищет и устанавливает ID
 def init_on_start(hashMap,_files=None,_data=None):
-#  db = SimpleBase("tsd_db")
-#  id = db['tsd_db'].find({"id"})
-  id = uuid.uuid4()
-  hashMap("toast",id)
+    db = SimpleBase("dbtsd")
+    result = db['dbtsd'].find({"idtsd":{"$not":""}})
+    if not result:
+        _idtsd=str(uuid.uuid4())
+        db['dbtsd'].insert({"idtsd":_idtsd},upsert=True)
+        hashMap.put("_idtsd",_idtsd)
+    else:
+        hashMap.put("_idtsd",result[0]["idtsd"])
+    result = db['dbtsd'].find({"nametsd":{"$not":""}})
+    if not result:
+        _nametsd="ТСД 1"
+        db['dbtsd'].insert({"nametsd":_nametsd},upsert=True)
+        hashMap.put("_nametsd",_nametsd)
+    else:
+        hashMap.put("_nametsd",result[0]["nametsd"])    
+    return hashMap
