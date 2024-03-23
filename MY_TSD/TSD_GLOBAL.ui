@@ -10,11 +10,12 @@ def init_on_start(hashMap,_files=None,_data=None):
         hashMap.put("_idtsd",_idtsd)
     else:
         hashMap.put("_idtsd",result)
-    result = db['dbtsd'].find({"nametsd":{"$not":""}})
+    result = db['dbtsd'].get("nametsd")
     if not result:
         _nametsd="ТСД 1"
         db['dbtsd'].insert({"nametsd":_nametsd},upsert=True)
         hashMap.put("_nametsd",_nametsd)
     else:
-        hashMap.put("_nametsd",result[0]["nametsd"])    
+        hashMap.put("_nametsd",result)    
     return hashMap
+
