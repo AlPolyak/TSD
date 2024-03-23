@@ -1,8 +1,7 @@
-from pysimplebase import SimpleBase,DBSession
-import uuid
-
 # Функция запускается при старте программы ищет и устанавливает ID
 def init_on_start(hashMap,_files=None,_data=None):
+    from pysimplebase import SimpleBase,DBSession
+    import uuid
     db = SimpleBase("dbtsd")
     result = db['dbtsd'].find({"idtsd":{"$not":""}})
     if not result:
