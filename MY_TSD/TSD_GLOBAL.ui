@@ -3,13 +3,13 @@ def init_on_start(hashMap,_files=None,_data=None):
     from pysimplebase import SimpleBase,DBSession
     import uuid
     db = SimpleBase("dbtsd")
-    result = db['dbtsd'].find({"idtsd":{"$not":""}})
+    result = db['dbtsd'].get("idtsd")
     if not result:
         _idtsd=str(uuid.uuid4())
         db['dbtsd'].insert({"idtsd":_idtsd},upsert=True)
         hashMap.put("_idtsd",_idtsd)
     else:
-        hashMap.put("_idtsd",result[0]["idtsd"])
+        hashMap.put("_idtsd",result)
     result = db['dbtsd'].find({"nametsd":{"$not":""}})
     if not result:
         _nametsd="ТСД 1"
