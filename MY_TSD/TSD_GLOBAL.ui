@@ -4,6 +4,7 @@ def init_on_start(hashMap,_files=None,_data=None):
     from pysimplebase import SimpleBase
     import uuid
     db = SimpleBase("dbtsd",path=suClass.get_simplebase_dir())
+    db["dbtsd"].get("")
     result = db['dbtsd'].get("idtsd")
     if not result:
         _idtsd=str(uuid.uuid4())
