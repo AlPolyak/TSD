@@ -1,7 +1,7 @@
 #https://api.github.com/repos/AlPolyak/TSD/contents/MY_TSD/TSD_GLOBAL.ui
 # Функция запускается при старте программы ищет и устанавливает ID
 def init_on_start(hashMap,_files=None,_data=None):
-    from pysimplebase import SimpleBase,DBSession
+    from pysimplebase import SimpleBase
     import uuid
     db = SimpleBase("dbtsd")
     result = db['dbtsd'].get("idtsd")
