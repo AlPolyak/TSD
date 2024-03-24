@@ -17,8 +17,7 @@ def init_on_start(hashMap,_files=None,_data=None):
         db['dbtsd'].insert({"nametsd":_nametsd},upsert=True)
         hashMap.put("_nametsd",_nametsd)
     else:
-        hashMap.put("_nametsd",result)    
-    hashMap.put("toast","onlaunch")
+        hashMap.put("_nametsd",result)
     return hashMap
 
 # Функция запускается при вводе имени тсд
@@ -28,6 +27,5 @@ def set_name_tsd(hashMap,_files=None,_data=None):
     ntsd=hashMap.get("ntsd")
     db['dbtsd'].insert({"nametsd":ntsd},upsert=True)
     hashMap.put("_nametsd",ntsd)
-    hashMap.put("toast","set "+ntsd)
     return hashMap
 
