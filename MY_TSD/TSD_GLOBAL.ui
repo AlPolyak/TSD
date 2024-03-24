@@ -26,9 +26,10 @@ def init_on_start(hashMap,_files=None,_data=None):
 
 # Функция запускается при вводе имени тсд
 def set_name_tsd(hashMap,_files=None,_data=None):
-    db = SimpleBase("dbtsd")
+    noClass = jclass("ru.travelfood.simple_ui.NoSQL")
+    db = noClass("dbtsd")
     ntsd=hashMap.get("ntsd")
-    db['dbtsd'].insert({"nametsd":ntsd},upsert=True)
+    db.put("nametsd",ntsd,True)
     hashMap.put("_nametsd",ntsd)
     return hashMap
 
