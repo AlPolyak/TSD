@@ -13,10 +13,21 @@ def init_on_start(hashMap,_files=None,_data=None):
         hashMap.put("_idtsd",result)
     result = db['dbtsd'].get("nametsd")
     if not result:
-        _nametsd="ТСД 1"
+        _nametsd="ТСД 2"
         db['dbtsd'].insert({"nametsd":_nametsd},upsert=True)
         hashMap.put("_nametsd",_nametsd)
     else:
         hashMap.put("_nametsd",result)    
+    hashMap.put("toast","onlaunch")
+    return hashMap
+
+# Функция запускается при вводе имени тсд
+def set_name_tsd(hashMap,_files=None,_data=None):
+    from pysimplebase import SimpleBase,DBSession
+    db = SimpleBase("dbtsd")
+    ntsd=hashMap.get("ntsd")
+    db['dbtsd'].insert({"nametsd":ntsd},upsert=True)
+    hashMap.put("_nametsd",ntsd)
+    hashMap.put("toast","set "+ntsd)
     return hashMap
 
