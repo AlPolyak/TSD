@@ -3,7 +3,7 @@
 def init_on_start(hashMap,_files=None,_data=None):
     from pysimplebase import SimpleBase
     import uuid
-    db = SimpleBase("dbtsd")
+    db = SimpleBase("dbtsd",path=suClass.get_simplebase_dir())
     result = db['dbtsd'].get("idtsd")
     if not result:
         _idtsd=str(uuid.uuid4())
@@ -23,7 +23,7 @@ def init_on_start(hashMap,_files=None,_data=None):
 # Функция запускается при вводе имени тсд
 def set_name_tsd(hashMap,_files=None,_data=None):
     from pysimplebase import SimpleBase
-    db = SimpleBase("dbtsd")
+    db = SimpleBase("dbtsd",path=suClass.get_simplebase_dir())
     ntsd=hashMap.get("ntsd")
     db['dbtsd'].insert({"nametsd":ntsd},upsert=True)
     hashMap.put("_nametsd",ntsd)
