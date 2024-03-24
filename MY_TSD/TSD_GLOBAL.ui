@@ -22,7 +22,7 @@ def init_on_start(hashMap,_files=None,_data=None):
 
 # Функция запускается при вводе имени тсд
 def set_name_tsd(hashMap,_files=None,_data=None):
-    from pysimplebase import SimpleBase,DBSession
+    from pysimplebase import SimpleBase
     db = SimpleBase("dbtsd")
     ntsd=hashMap.get("ntsd")
     db['dbtsd'].insert({"nametsd":ntsd},upsert=True)
