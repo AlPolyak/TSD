@@ -1,21 +1,24 @@
+import json
+from ru.travelfood.simple_ui import NoSQL as noClass
+from java import jclass
+import uuid
+
 #https://api.github.com/repos/AlPolyak/TSD/contents/MY_TSD/TSD_GLOBAL.ui
 # Функция запускается при старте программы ищет и устанавливает ID
 def init_on_start(hashMap,_files=None,_data=None):
-    from pysimplebase import SimpleBase,DBSession
-    import uuid
-    db = SimpleBase("dbtsd",path=suClass.get_simplebase_dir())
-    db["dbtsd"].get("")
-    result = db['dbtsd'].get("idtsd")
+    noClass = jclass("ru.travelfood.simple_ui.NoSQL")
+    db = noClass("dbtsd")
+    result = db.get("idtsd")
     if not result:
         _idtsd=str(uuid.uuid4())
-        db['dbtsd'].insert({"idtsd":_idtsd},upsert=True)
+        db.put("idtsd",_idtsd,True)
         hashMap.put("_idtsd",_idtsd)
     else:
         hashMap.put("_idtsd",result)
-    result = db['dbtsd'].get("nametsd")
+    result = db.get("nametsd")
     if not result:
         _nametsd="ТСД 1"
-        db['dbtsd'].insert({"nametsd":_nametsd},upsert=True)
+        db.put("nametsd",_nametsd,True)
         hashMap.put("_nametsd",_nametsd)
     else:
         hashMap.put("_nametsd",result)
@@ -23,8 +26,7 @@ def init_on_start(hashMap,_files=None,_data=None):
 
 # Функция запускается при вводе имени тсд
 def set_name_tsd(hashMap,_files=None,_data=None):
-    from pysimplebase import SimpleBase,DBSession
-    db = SimpleBase("dbtsd",path=suClass.get_simplebase_dir())
+    db = SimpleBase("dbtsd")
     ntsd=hashMap.get("ntsd")
     db['dbtsd'].insert({"nametsd":ntsd},upsert=True)
     hashMap.put("_nametsd",ntsd)
