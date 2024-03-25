@@ -33,3 +33,15 @@ def set_name_tsd(hashMap,_files=None,_data=None):
     hashMap.put("_nametsd",ntsd)
     return hashMap
 
+# Функция выбор операции
+gef type_of_operation(hashMap,_files=None,_data=None):
+    noClass = jclass("ru.travelfood.simple_ui.NoSQL")
+    db = noClass("dbtsd")
+    listener=hashMap.get("listener")
+    if listener="btn_get" or listener="btn_put" or listener="btn_inv":
+        db.put("typeofoperation",listener)
+        hashMsp.put("_typeofoperation",listener)
+    elif listener="btn_ret":
+        hashMsp.put("BackScreen","")
+    
+
