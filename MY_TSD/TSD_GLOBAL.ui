@@ -38,14 +38,14 @@ def type_of_operation(hashMap,_files=None,_data=None):
     noClass = jclass("ru.travelfood.simple_ui.NoSQL")
     db = noClass("dbtsd")
     listener=hashMap.get("listener")
-    try:
-        if ((listener="btn_get") or (listener="btn_put") or (listener="btn_inv")):
-            db.put("typeofoperation",listener)
-            hashMap.put("_typeofoperation",listener)
-        elif listener="btn_ret":
-            hashMap.put("BackScreen","")
-    except Exception as err:
-        hashMap.put("toast",err)
+#    try:
+    if listener in ["btn_get","btn_put,"btn_inv"]:
+        db.put("typeofoperation",listener)
+        hashMap.put("_typeofoperation",listener)
+    elif listener="btn_ret":
+        hashMap.put("BackScreen","")
+ #   except Exception as err:
+ #       hashMap.put("toast",err)
     hashMap.put("toast",listener)
     return hashMap
 
