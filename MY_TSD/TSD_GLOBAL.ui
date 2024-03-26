@@ -40,10 +40,10 @@ def type_of_operation(hashMap,_files=None,_data=None):
     listener=hashMap.get("listener")
 #    if ((listener="btn_get") or (listener="btn_put") or (listener="btn_inv")):
 #        db.put("typeofoperation",listener)
-#        hashMsp.put("_typeofoperation",listener)
+#        hashMap.put("_typeofoperation",listener)
 #    elif listener="btn_ret":
-#        hashMsp.put("BackScreen","")
-    hashMsp.put("toast",listener)
+#        hashMap.put("BackScreen","")
+    hashMap.put("toast",listener)
     return hashMap
 
     
