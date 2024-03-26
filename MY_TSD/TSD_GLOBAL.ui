@@ -44,10 +44,7 @@ def type_of_operation(hashMap,_files=None,_data=None):
 #        hashMap.put("_typeofoperation",listener)
 #    elif listener=="btn_ret":
 #        hashMap.put("BackScreen","")
- #   except Exception as err:
- #       hashMap.put("toast",err)
+#   except Exception as err:
+#       hashMap.put("toast",err)
      hashMap.put("toast",listener)
      return hashMap
-
-    
-
