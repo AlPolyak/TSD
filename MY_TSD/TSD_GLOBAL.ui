@@ -46,5 +46,5 @@ def type_of_operation(hashMap,_files=None,_data=None):
     elif listener=="btn_ret":
         hashMap.put("BackScreen","")
     hashMap.put("toast",listener)
-    return hashMaр
+    return hashMap
 
