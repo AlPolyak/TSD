@@ -44,6 +44,8 @@ def type_of_operation(hashMap,_files=None,_data=None):
         db.put("typeofoperation",listener,True)
         hashMap.put("_typeofoperation",listener)
     elif listener=="btn_ret":
+        db.put("typeofoperation","",True)
+        hashMap.put("_typeofoperation","")
         hashMap.put("BackScreen","")
     hashMap.put("toast",listener)
     return hashMap
