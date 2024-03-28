@@ -1,7 +1,7 @@
 from pysimplebase import SimpleBase
 import json
 
-from ru.travelfood.simple_ui import NoSQL as noClass
+#from ru.travelfood.simple_ui import NoSQL as noClass
 from java import jclass
 import uuid
 
