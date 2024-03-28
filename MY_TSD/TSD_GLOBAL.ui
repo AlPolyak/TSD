@@ -41,7 +41,7 @@ def type_of_operation(hashMap,_files=None,_data=None):
     db = noClass("dbtsd")
     listener=hashMap.get("listener")
     if listener in ["btn_get","btn_put","btn_inv"]:
-        db.put("typeofoperation",listener)
+        db.put("typeofoperation",listener,True)
         hashMap.put("_typeofoperation",listener)
     elif listener=="btn_ret":
         hashMap.put("BackScreen","")
