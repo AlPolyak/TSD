@@ -38,16 +38,19 @@ def set_name_tsd(hashMap,_files=None,_data=None):
         ntsd=hashMap.get("ntsd")
         db.put("nametsd",ntsd,True)
         hashMap.put("_nametsd",ntsd)
-    elif listener == "_IP":
+    elif listener == "IP_field":
         IP=hashMap.get(listener)
         db.put("IP",IP,True)
-    elif listener == "_login1c":
+        hashMap.put("_IP",IP)
+    elif listener == "login1c__field":
         login1c=hashMap.get(listener)
         db.put("login1c",login1c,True)
-    elif listener == "_password1c":
+        hashMap.put("_login1c",login1c)
+   elif listener == "password1c__field":
         password1c=hashMap.get(listener)
         db.put("password1c",password1c,True)
-    elif listener == "btn_back_set": 
+        hashMap.put("_password1c",password1c)
+   elif listener == "btn_back_set": 
         hashMap.put("BackScreen","")
     return hashMap
 
