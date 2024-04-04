@@ -24,6 +24,9 @@ def init_on_start(hashMap,_files=None,_data=None):
         hashMap.put("_nametsd",_nametsd)
     else:
         hashMap.put("_nametsd",result)
+    hashMap.put("_IP",db.get("IP"))
+    hashMap.put("_login1c",db.get("login1c"))
+    hashMap.put("_password1c",db.get("password1c"))
     return hashMap
 
 # Функция запускается при вводе имени тсд
@@ -31,14 +34,21 @@ def set_name_tsd(hashMap,_files=None,_data=None):
     noClass = jclass("ru.travelfood.simple_ui.NoSQL")
     db = noClass("dbtsd")
     listener=hashMap.get("listener")
-    hashMap.put("toast",listener)
-#    if listener in ["btn_get","btn_put","btn_inv"]:
-#        db.put("typeofoperation",listener,True)
-#        hashMap.put("_typeofoperation",listener)
-#        hashMap.put("ShowScreen","Выбор документа");
-#    elif listener=="btn_ret":    ntsd=hashMap.get("ntsd")
-    db.put("nametsd",ntsd,True)
-    hashMap.put("_nametsd",ntsd)
+    if listener = "ntsd":
+        ntsd=hashMap.get("ntsd")
+        db.put("nametsd",ntsd,True)
+        hashMap.put("_nametsd",ntsd)
+    elif listener=="_IP":
+        IP=hashMap.get(listener)
+        db.put("IP",IP,True)
+    elif listener=="_login1c":
+        login1c=hashMap.get(listener)
+        db.put("login1c",login1c,True)
+    elif listener=="_password1c":
+        password1c=hashMap.get(listener)
+        db.put("password1c",password1c,True)
+    elif listener=="btn_back_set": 
+        hashMap.put("BackScreen","")
     return hashMap
 
 # Функция выбор операции
