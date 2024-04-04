@@ -30,7 +30,13 @@ def init_on_start(hashMap,_files=None,_data=None):
 def set_name_tsd(hashMap,_files=None,_data=None):
     noClass = jclass("ru.travelfood.simple_ui.NoSQL")
     db = noClass("dbtsd")
-    ntsd=hashMap.get("ntsd")
+    listener=hashMap.get("listener")
+    hashMap.put("toast",listener)
+#    if listener in ["btn_get","btn_put","btn_inv"]:
+#        db.put("typeofoperation",listener,True)
+#        hashMap.put("_typeofoperation",listener)
+#        hashMap.put("ShowScreen","Выбор документа");
+#    elif listener=="btn_ret":    ntsd=hashMap.get("ntsd")
     db.put("nametsd",ntsd,True)
     hashMap.put("_nametsd",ntsd)
     return hashMap
