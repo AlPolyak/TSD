@@ -58,7 +58,7 @@ def set_name_tsd(hashMap,_files=None,_data=None):
     return hashMap
 
 # Функция подключение к http сервису 1С
-def type_of_operation(hashMap,_files=None,_data=None):
+def connect(hashMap,_files=None,_data=None):
     noClass = jclass("ru.travelfood.simple_ui.NoSQL")
     db = noClass("dbtsd")
     IP = db.get("ID")
