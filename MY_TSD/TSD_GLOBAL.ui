@@ -85,7 +85,12 @@ def connect(hashMap,_files=None,_data=None):
             hashMap.put("toast",ret.text +' '+ er)    
 #        for key, value in newhashMap.items():
 #           hashMap.update({key, value})
-        hashMap.put("_status_connect","Подключено")
+        ErrorMessage=hashMap.get('ErrorMessage')
+        if ErrorMessage == '':
+            hashMap.put("_status_connect","Подключено")
+        else:
+            hashMap.put("toast",ErrorMessage)
+            hashMap.put("_status_connect","Отключено")
     elif ret.status_code == 401:
         hashMap.put("toast","Не корректный логин или пароль")
         hashMap.put("_status_connect","Отключено")
