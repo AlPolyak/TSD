@@ -67,21 +67,13 @@ def connect(hashMap,_files=None,_data=None):
         return hashMap
     url = 'http://'+IP+'/UNF/hs/simpleuiTSD/set_input_direct/Подключение'
     url = url.encode('UTF-8')
-    conv={}
-    try:
-        for key, value in hashMap.items():
-            conv[key]=value.encode('UTF-8')
-    except Exception as ex:
-        hashMap.put("toast","Err:"+ex)
-        return hashMap
-    data = {'hashmap': conv}
     login1c = db.get("login1c")
     if login1c==None:
         hashMap.put("toast","Не задан Login http сервиса")
         return hashMap
     password1c = str(db.get("password1c"))
     auth = HTTPBasicAuth(login1c.encode('UTF-8'), password1c.encode('UTF-8'))
-    ret=post(url, json=data, auth=auth, headers={'content-type': 'application/json; charset=utf-8'}, timeout=100)
+    ret=post(url, json=hashMap, auth=auth, headers={'content-type': 'application/json; charset=utf-8'}, timeout=100)
     ret.encoding = 'UTF-8'
     if ret.status_code == 200:
         try:
