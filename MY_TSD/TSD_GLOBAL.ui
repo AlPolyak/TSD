@@ -82,10 +82,10 @@ def connect(hashMap,_files=None,_data=None):
     elif ret.status_code == 401:
         hashMap.put("toast","Не корректный логин или пароль")
         hashMap.put("_status_connect","Отключено")
-    else   
+    else : 
         hashMap.put("toast","Ошибка подключения к http сервису 1С: "+ret.status_code)
         hashMap.put("_status_connect","Отключено")
-     return hashMap
+    return hashMap
 
 # Функция выбор операции
 def type_of_operation(hashMap,_files=None,_data=None):
