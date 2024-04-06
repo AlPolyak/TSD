@@ -66,14 +66,14 @@ def connect(hashMap,_files=None,_data=None):
         hashMap.put("toast","Не задан IP http сервиса")
         return hashMap
     url = 'http://'+IP+'/UNF/hs/simpleuiTSD/set_input_direct/connect'
-    data = {'hashmap': hashMap}
+    data = json.dumps({'hashmap': hashMap})
     login1c = db.get("login1c")
     if login1c==None:
         hashMap.put("toast","Не задан Login http сервиса")
         return hashMap
     password1c = str(db.get("password1c"))
     auth = HTTPBasicAuth(login1c.encode('UTF-8'), password1c.encode('UTF-8'))
-    ret=requests.post(url, data=json.dumps(data).encode('UTF-8'), auth=auth, timeout=100)
+    ret=requests.post(url, data=data, auth=auth, timeout=100)
     if ret.status_code == 200:
         newhashMap=ret.json()
         for key, value in newhashMap.items():
