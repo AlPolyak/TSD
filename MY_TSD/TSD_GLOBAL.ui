@@ -71,8 +71,8 @@ def connect(hashMap,_files=None,_data=None):
     try:
         data=json.dumps(data).encode('UTF-8')
         hashMap.put("toast",data)
-    except as er:
-        hashMap.put("toast",'dumps'+er)    
+    except Exception as er:
+        hashMap.put("toast",'dumps'+ er)    
     login1c = db.get("login1c")
     if login1c==None:
         hashMap.put("toast","Не задан Login http сервиса")
