@@ -80,8 +80,12 @@ def connect(hashMap,_files=None,_data=None):
     password1c = str(db.get("password1c"))
     auth = HTTPBasicAuth(login1c.encode('UTF-8'), password1c.encode('UTF-8'))
     ret=requests.post(url, data=data, auth=auth, headers={'content-type': 'application/json'}, timeout=100)
+    ret.encoding = 'UTF-8'
     if ret.status_code == 200:
-        newhashMap=ret.json()
+        try:
+            newhashMap=ret.json()
+        except Exception as er:
+            hashMap.put("toast",'ret.json()'+ er)    
         for key, value in newhashMap.items():
             hashMap.update({key, value})
         hashMap.put("_status_connect","Подключено")
