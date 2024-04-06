@@ -30,6 +30,7 @@ def init_on_start(hashMap,_files=None,_data=None):
     hashMap.put("_IP",str(db.get("IP")))
     hashMap.put("_login1c",str(db.get("login1c")))
     hashMap.put("_password1c",str(db.get("password1c")))
+    hashMap.put("_status_connect","Отключено")
     return hashMap
 
 # Функция запускается при вводе имени тсд
@@ -80,7 +81,6 @@ def connect(hashMap,_files=None,_data=None):
     if ret.status_code == 200:
         try:
             newhashMap=ret.json()
-            hashMap.put("toast",ret.text)    
             for el in newhashMap:
                 if el['key']=='hashmap':
                     for el2 in el['value']:
@@ -88,6 +88,7 @@ def connect(hashMap,_files=None,_data=None):
             ErrorMessage=hashMap.get('ErrorMessage')
             if ErrorMessage == '':
                 hashMap.put("_status_connect","Подключено")
+                hashMap.put("toast",ret.text)    
             else:
                 hashMap.put("toast",ErrorMessage)
                 hashMap.put("_status_connect","Отключено")
