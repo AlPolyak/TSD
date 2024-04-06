@@ -67,7 +67,11 @@ def connect(hashMap,_files=None,_data=None):
         return hashMap
     url = 'http://'+IP+'/UNF/hs/simpleuiTSD/set_input_direct/Подключение'
     url = url.encode('UTF-8')
-    data = {'hashmap': hashMap}
+    conv={}
+    for key, value in hashMap.items():
+        value=value.encode('UTF-8')
+        conv.update({key, value})
+    data = {'hashmap': conv}
     login1c = db.get("login1c")
     if login1c==None:
         hashMap.put("toast","Не задан Login http сервиса")
