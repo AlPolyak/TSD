@@ -73,7 +73,8 @@ def connect(hashMap,_files=None,_data=None):
         return hashMap
     password1c = str(db.get("password1c"))
     auth = HTTPBasicAuth(login1c.encode('UTF-8'), password1c.encode('UTF-8'))
-    conv={'hashmap':[{'_idtsd':hashMap.get('_idtsd')},{'_nametsd':hashMap.get('_nametsd')}]}
+#    conv={'hashmap':[{'_idtsd':hashMap.get('_idtsd')},{'_nametsd':hashMap.get('_nametsd')}]}
+    conv={'hashmap':[{'key':'_idtsd','value':hashMap.get('_idtsd')},{'key':'_nametsd','value':hashMap.get('_nametsd')}]}
     ret=post(url, json=conv, auth=auth, headers={'content-type': 'application/json; charset=utf-8'}, timeout=100)
     ret.encoding = 'UTF-8'
     if ret.status_code == 200:
