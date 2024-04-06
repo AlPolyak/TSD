@@ -73,7 +73,7 @@ def connect(hashMap,_files=None,_data=None):
         return hashMap
     password1c = str(db.get("password1c"))
     auth = HTTPBasicAuth(login1c.encode('UTF-8'), password1c)
-    ret=requests.post(url, data=data, auth=auth, timeout=100)
+    ret=requests.post(url, data=json.dumps(data), auth=auth, timeout=100)
     if ret.status_code == 200:
         newhashMap=ret.json()
         for key, value in newhashMap.items():
