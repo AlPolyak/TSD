@@ -1,0 +1,523 @@
+{
+    "ClientConfiguration": {
+        "ConfigurationName": "ТСД 1С",
+        "ConfigurationDescription": "PAB",
+        "ConfigurationVersion": "0.0.1",
+        "Processes": [
+            {
+                "type": "Process",
+                "ProcessName": "ТСД",
+                "Operations": [
+                    {
+                        "type": "Operation",
+                        "Name": "Подключение",
+                        "Elements": [
+                            {
+                                "type": "LinearLayout",
+                                "orientation": "vertical",
+                                "height": "match_parent",
+                                "width": "match_parent",
+                                "Elements": [
+                                    {
+                                        "type": "LinearLayout",
+                                        "orientation": "horizontal",
+                                        "gravity_vertical": "top",
+                                        "height": "wrap_content",
+                                        "width": "match_parent",
+                                        "Elements": [
+                                            {
+                                                "type": "TextView",
+                                                "orientation": "vertical",
+                                                "height": "wrap_content",
+                                                "width": "wrap_content",
+                                                "gravity_horizontal": "left",
+                                                "Value": "ID:",
+                                                "Variable": "cap_id",
+                                                "type_s": "Надпись",
+                                                "weight": "0"
+                                            },
+                                            {
+                                                "type": "TextView",
+                                                "orientation": "vertical",
+                                                "height": "wrap_content",
+                                                "width": "wrap_content",
+                                                "Value": "@_idtsd",
+                                                "type_s": "Надпись",
+                                                "weight": "0"
+                                            }
+                                        ],
+                                        "type_s": "Контейнер",
+                                        "weight": "0",
+                                        "Variable": "gr_id"
+                                    },
+                                    {
+                                        "type": "LinearLayout",
+                                        "orientation": "horizontal",
+                                        "height": "wrap_content",
+                                        "width": "match_parent",
+                                        "Elements": [
+                                            {
+                                                "type": "TextView",
+                                                "orientation": "vertical",
+                                                "height": "wrap_content",
+                                                "width": "wrap_content",
+                                                "gravity_horizontal": "left",
+                                                "Value": "Имя ТСД:",
+                                                "type_s": "Надпись",
+                                                "weight": "0"
+                                            },
+                                            {
+                                                "type": "TextView",
+                                                "orientation": "vertical",
+                                                "height": "wrap_content",
+                                                "width": "wrap_content",
+                                                "Value": "@_nametsd",
+                                                "type_s": "Надпись",
+                                                "weight": "0"
+                                            }
+                                        ],
+                                        "type_s": "Контейнер",
+                                        "weight": "0",
+                                        "Variable": "gr_name"
+                                    },
+                                    {
+                                        "type": "Button",
+                                        "orientation": "vertical",
+                                        "height": "wrap_content",
+                                        "width": "match_parent",
+                                        "Value": "Настройка",
+                                        "Variable": "btn_set",
+                                        "type_s": "Кнопка",
+                                        "weight": "0"
+                                    },
+                                    {
+                                        "type": "Button",
+                                        "orientation": "vertical",
+                                        "height": "wrap_content",
+                                        "width": "match_parent",
+                                        "Value": "Подключение",
+                                        "Variable": "btn_connect",
+                                        "type_s": "Кнопка",
+                                        "weight": "0"
+                                    }
+                                ],
+                                "type_s": "Контейнер",
+                                "weight": "0"
+                            }
+                        ],
+                        "Handlers": [
+                            {
+                                "event": "onInput",
+                                "action": "run",
+                                "listener": "barcode",
+                                "type": "online",
+                                "method": "ПриемкаПоЗаказу_ЭкранНачало_Ввод",
+                                "postExecute": "",
+                                "alias": ""
+                            },
+                            {
+                                "event": "onInput",
+                                "action": "runprogress",
+                                "listener": "btn_connect",
+                                "type": "online",
+                                "method": "Подключение",
+                                "postExecute": "",
+                                "alias": ""
+                            },
+                            {
+                                "event": "onInput",
+                                "action": "run",
+                                "listener": "btn_set",
+                                "type": "pythonscript",
+                                "method": "aGFzaE1hcC5wdXQoIlNob3dTY3JlZW4iLCLQndCw0YHRgtGA0L7QudC60LgiKTs=",
+                                "postExecute": "",
+                                "alias": ""
+                            },
+                            {
+                                "event": "",
+                                "action": "",
+                                "listener": "",
+                                "type": "",
+                                "method": "",
+                                "postExecute": "",
+                                "alias": ""
+                            }
+                        ]
+                    },
+                    {
+                        "type": "Operation",
+                        "Name": "Выбор операции",
+                        "Elements": [
+                            {
+                                "type": "LinearLayout",
+                                "orientation": "vertical",
+                                "height": "match_parent",
+                                "width": "match_parent",
+                                "Elements": [
+                                    {
+                                        "type": "Button",
+                                        "orientation": "vertical",
+                                        "height": "wrap_content",
+                                        "width": "match_parent",
+                                        "Value": "Приемка",
+                                        "Variable": "btn_get",
+                                        "type_s": "Кнопка",
+                                        "style_name": "Кнопка действия",
+                                        "TextSize": "24",
+                                        "TextBold": true,
+                                        "weight": 0
+                                    },
+                                    {
+                                        "type": "Button",
+                                        "orientation": "vertical",
+                                        "height": "wrap_content",
+                                        "width": "match_parent",
+                                        "Value": "Отгрузка",
+                                        "Variable": "btn_put",
+                                        "type_s": "Кнопка",
+                                        "style_name": "Кнопка действия",
+                                        "TextSize": "24",
+                                        "TextBold": true,
+                                        "weight": 0
+                                    },
+                                    {
+                                        "type": "Button",
+                                        "orientation": "vertical",
+                                        "height": "wrap_content",
+                                        "width": "match_parent",
+                                        "Value": "Инвентаризация",
+                                        "Variable": "btn_inv",
+                                        "type_s": "Кнопка",
+                                        "style_name": "Кнопка действия",
+                                        "TextSize": "24",
+                                        "TextBold": true,
+                                        "weight": 0
+                                    },
+                                    {
+                                        "type": "Button",
+                                        "orientation": "vertical",
+                                        "height": "wrap_content",
+                                        "width": "match_parent",
+                                        "Value": "Назад",
+                                        "Variable": "btn_ret",
+                                        "type_s": "Кнопка",
+                                        "weight": "0"
+                                    }
+                                ],
+                                "type_s": "Контейнер",
+                                "weight": "0"
+                            }
+                        ],
+                        "Handlers": [
+                            {
+                                "event": "onInput",
+                                "action": "run",
+                                "listener": "",
+                                "type": "python",
+                                "method": "type_of_operation",
+                                "postExecute": "",
+                                "alias": ""
+                            }
+                        ]
+                    },
+                    {
+                        "type": "Operation",
+                        "Name": "Выбор документа",
+                        "Elements": [
+                            {
+                                "type": "LinearLayout",
+                                "orientation": "vertical",
+                                "height": "match_parent",
+                                "width": "match_parent",
+                                "Elements": [
+                                    {
+                                        "type": "CardsLayout",
+                                        "orientation": "vertical",
+                                        "height": "match_parent",
+                                        "width": "match_parent",
+                                        "Value": "@cards",
+                                        "Variable": "cards",
+                                        "type_s": "Список карточек",
+                                        "weight": "0"
+                                    },
+                                    {
+                                        "type": "Button",
+                                        "orientation": "vertical",
+                                        "height": "wrap_content",
+                                        "width": "match_parent",
+                                        "Value": "Назад",
+                                        "Variable": "btn_ret",
+                                        "type_s": "Кнопка",
+                                        "weight": "0"
+                                    },
+                                    {
+                                        "type": "TableLayout",
+                                        "orientation": "vertical",
+                                        "height": "match_parent",
+                                        "width": "match_parent",
+                                        "Value": "@cards",
+                                        "Variable": "cards",
+                                        "type_s": "Таблица",
+                                        "weight": "0"
+                                    }
+                                ],
+                                "type_s": "Контейнер",
+                                "weight": "0"
+                            }
+                        ],
+                        "Handlers": [
+                            {
+                                "event": "onStart",
+                                "action": "runasync",
+                                "listener": "",
+                                "type": "online",
+                                "method": "ПолучитьСписок",
+                                "postExecute": "[{\"action\": \"run\", \"type\": \"set\", \"method\": \"RefreshScreen\"}]",
+                                "alias": ""
+                            },
+                            {
+                                "event": "onInput",
+                                "action": "run",
+                                "listener": "btn_ret",
+                                "type": "set",
+                                "method": "BackScreen",
+                                "postExecute": "",
+                                "alias": ""
+                            },
+                            {
+                                "event": "onInput",
+                                "action": "run",
+                                "listener": "CardsClick",
+                                "type": "online",
+                                "method": "ВыбранДокумент",
+                                "postExecute": "",
+                                "alias": ""
+                            }
+                        ]
+                    },
+                    {
+                        "type": "Operation",
+                        "Name": "Создать документ",
+                        "Elements": []
+                    },
+                    {
+                        "type": "Operation",
+                        "Name": "Сканирование",
+                        "Elements": [
+                            {
+                                "type": "LinearLayout",
+                                "orientation": "vertical",
+                                "height": "match_parent",
+                                "width": "match_parent",
+                                "Elements": [
+                                    {
+                                        "type": "CardsLayout",
+                                        "orientation": "vertical",
+                                        "height": "match_parent",
+                                        "width": "match_parent",
+                                        "Value": "@cardsofproduct",
+                                        "Variable": "cardsofproduct",
+                                        "type_s": "Список карточек",
+                                        "weight": "0"
+                                    },
+                                    {
+                                        "type": "TextView",
+                                        "orientation": "vertical",
+                                        "height": "match_parent",
+                                        "width": "match_parent",
+                                        "gravity_horizontal": "center",
+                                        "Value": "Сканируйте штрих-код",
+                                        "TextSize": "24",
+                                        "TextBold": true,
+                                        "type_s": "Надпись",
+                                        "weight": "0"
+                                    },
+                                    {
+                                        "type": "Button",
+                                        "orientation": "vertical",
+                                        "height": "wrap_content",
+                                        "width": "match_parent",
+                                        "Value": "Назад",
+                                        "Variable": "btn_ret",
+                                        "type_s": "Кнопка",
+                                        "weight": "0"
+                                    }
+                                ],
+                                "type_s": "Контейнер",
+                                "weight": "0"
+                            }
+                        ],
+                        "Handlers": [
+                            {
+                                "event": "onInput",
+                                "action": "run",
+                                "listener": "btn_ret",
+                                "type": "set",
+                                "method": "BackScreen",
+                                "postExecute": "",
+                                "alias": ""
+                            },
+                            {
+                                "event": "onInput",
+                                "action": "run",
+                                "listener": "barcode",
+                                "type": "python",
+                                "method": "GetProduct",
+                                "postExecute": "",
+                                "alias": ""
+                            }
+                        ]
+                    },
+                    {
+                        "type": "Operation",
+                        "Name": "Ввод количества",
+                        "Elements": []
+                    },
+                    {
+                        "type": "Operation",
+                        "Name": "Выбор номенклатуры",
+                        "Elements": []
+                    },
+                    {
+                        "type": "Operation",
+                        "Name": "Настройки",
+                        "Elements": [
+                            {
+                                "type": "LinearLayout",
+                                "orientation": "vertical",
+                                "height": "match_parent",
+                                "width": "match_parent",
+                                "Elements": [
+                                    {
+                                        "type": "ModernEditText",
+                                        "orientation": "vertical",
+                                        "height": "wrap_content",
+                                        "width": "match_parent",
+                                        "Value": "{\"hint\": \"Имя ТСД\", \"default_text\": \"@ntsd\",\"events\":\"true\"}",
+                                        "Variable": "ntsd",
+                                        "type_s": "Современное поле ввода",
+                                        "weight": "0"
+                                    },
+                                    {
+                                        "type": "ModernEditText",
+                                        "orientation": "vertical",
+                                        "height": "wrap_content",
+                                        "width": "match_parent",
+                                        "Value": "{\"hint\": \"IP\", \"default_text\": \"@_IP\",\"events\":\"true\"}",
+                                        "Variable": "IP_field",
+                                        "type_s": "Современное поле ввода",
+                                        "weight": "0"
+                                    },
+                                    {
+                                        "type": "ModernEditText",
+                                        "orientation": "vertical",
+                                        "height": "wrap_content",
+                                        "width": "match_parent",
+                                        "Value": "{\"hint\": \"Имя пользователя\", \"default_text\": \"@_login1c\",\"events\":\"true\"}",
+                                        "Variable": "login1c_field",
+                                        "type_s": "Современное поле ввода",
+                                        "weight": "0"
+                                    },
+                                    {
+                                        "type": "ModernEditText",
+                                        "orientation": "vertical",
+                                        "height": "wrap_content",
+                                        "width": "match_parent",
+                                        "Value": "{\"hint\": \"Пароль\", \"default_text\": \"@_password1c\",\"events\":\"true\"}",
+                                        "Variable": "password1c_field",
+                                        "type_s": "Современное поле ввода",
+                                        "weight": "0"
+                                    },
+                                    {
+                                        "type": "Button",
+                                        "orientation": "vertical",
+                                        "height": "wrap_content",
+                                        "width": "match_parent",
+                                        "Value": "Назад",
+                                        "Variable": "btn_back_set",
+                                        "type_s": "Кнопка",
+                                        "weight": "0"
+                                    }
+                                ],
+                                "type_s": "Контейнер",
+                                "weight": "0"
+                            }
+                        ],
+                        "Handlers": [
+                            {
+                                "event": "onInput",
+                                "action": "run",
+                                "listener": "",
+                                "type": "python",
+                                "method": "set_name_tsd",
+                                "postExecute": "",
+                                "alias": ""
+                            },
+                            {
+                                "event": "",
+                                "action": "run",
+                                "listener": "",
+                                "type": "pythonscript",
+                                "method": "aGFzaE1hcC5wdXQoIm50c2QiLGhhc2hNYXAuZ2V0KCJfbmFtZXRzZCIpKQpoYXNoTWFwLnB1dCgiSVBfZmllbGQiLGhhc2hNYXAuZ2V0KCJfSVAiKSkKaGFzaE1hcC5wdXQoImxvZ2luMWNfZmllbGQiLGhhc2hNYXAuZ2V0KCJfbG9naW4xYyIpKQpoYXNoTWFwLnB1dCgicGFzc3dvcmQxY19maWVsZCIsaGFzaE1hcC5nZXQoIl9wYXNzd29yZDFjIikp",
+                                "postExecute": "",
+                                "alias": ""
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "ConfigurationSettings": {
+            "uid": "b82a3ed56865490f93fa046f5824a8f9",
+            "dictionaries": "",
+            "vendor": "PAB",
+            "vendor_url": "",
+            "vendor_password": "",
+            "handler_split_mode": false,
+            "handler_url": "",
+            "handler_password": ""
+        },
+        "host_uid": "ed8fcf50553447c89809e60fa12a3225",
+        "ConfigurationTags": "Py,off-line",
+        "ConfigurationFileName": "TSD.ui",
+        "agent": false,
+        "ForegroundService": false,
+        "StopForegroundServiceOnExit": false,
+        "BroadcastIntent": "",
+        "BroadcastVariable": "",
+        "FaceRecognitionURL": "",
+        "OnKeyboardMain": false,
+        "LaunchProcess": "",
+        "LaunchVar": "",
+        "MenuWebTemplate": "",
+        "Launch": "",
+        "HTMLHead": "",
+        "HTMLdocument_ready": "",
+        "PyGeneral": "IyDQpNGD0L3QutGG0LjRjyDQt9Cw0L/Rg9GB0LrQsNC10YLRgdGPINC/0YDQuCDRgdGC0LDRgNGC0LUg0L/RgNC+0LPRgNCw0LzQvNGLINC40YnQtdGCINC4INGD0YHRgtCw0L3QsNCy0LvQuNCy0LDQtdGCIElECmRlZiBpbml0X29uX3N0YXJ0KGhhc2hNYXAsX2ZpbGVzPU5vbmUsX2RhdGE9Tm9uZSk6CiAgICBmcm9tIHB5c2ltcGxlYmFzZSBpbXBvcnQgU2ltcGxlQmFzZSxEQlNlc3Npb24KICAgIGltcG9ydCB1dWlkCiAgICBkYiA9IFNpbXBsZUJhc2UoImRidHNkIikKICAgIHJlc3VsdCA9IGRiWydkYnRzZCddLmdldCgiaWR0c2QiKQogICAgaWYgbm90IHJlc3VsdDoKICAgICAgICBfaWR0c2Q9c3RyKHV1aWQudXVpZDQoKSkKICAgICAgICBkYlsnZGJ0c2QnXS5pbnNlcnQoeyJpZHRzZCI6X2lkdHNkfSx1cHNlcnQ9VHJ1ZSkKICAgICAgICBoYXNoTWFwLnB1dCgiX2lkdHNkIixfaWR0c2QpCiAgICBlbHNlOgogICAgICAgIGhhc2hNYXAucHV0KCJfaWR0c2QiLHJlc3VsdCkKICAgIHJlc3VsdCA9IGRiWydkYnRzZCddLmdldCgibmFtZXRzZCIpCiAgICBpZiBub3QgcmVzdWx0OgogICAgICAgIF9uYW1ldHNkPSLQotCh0JQgMiIKICAgICAgICBkYlsnZGJ0c2QnXS5pbnNlcnQoeyJuYW1ldHNkIjpfbmFtZXRzZH0sdXBzZXJ0PVRydWUpCiAgICAgICAgaGFzaE1hcC5wdXQoIl9uYW1ldHNkIixfbmFtZXRzZCkKICAgIGVsc2U6CiAgICAgICAgaGFzaE1hcC5wdXQoIl9uYW1ldHNkIixyZXN1bHQpICAgIAogICAgcmV0dXJuIGhhc2hNYXA=",
+        "uid": "b4501b3d528948dabe9e99af28e0cebe",
+        "GitHubHandlers": "https://api.github.com/repos/AlPolyak/TSD/contents/MY_TSD/TSD_GLOBAL.ui",
+        "GitHubToken": "",
+        "PyHandlers": "ZnJvbSBweXNpbXBsZWJhc2UgaW1wb3J0IFNpbXBsZUJhc2UKaW1wb3J0IGpzb24KCiNmcm9tIHJ1LnRyYXZlbGZvb2Quc2ltcGxlX3VpIGltcG9ydCBOb1NRTCBhcyBub0NsYXNzCmZyb20gamF2YSBpbXBvcnQgamNsYXNzCmltcG9ydCB1dWlkCgojaHR0cHM6Ly9hcGkuZ2l0aHViLmNvbS9yZXBvcy9BbFBvbHlhay9UU0QvY29udGVudHMvTVlfVFNEL1RTRF9HTE9CQUwudWkKIyDQpNGD0L3QutGG0LjRjyDQt9Cw0L/Rg9GB0LrQsNC10YLRgdGPINC/0YDQuCDRgdGC0LDRgNGC0LUg0L/RgNC+0LPRgNCw0LzQvNGLINC40YnQtdGCINC4INGD0YHRgtCw0L3QsNCy0LvQuNCy0LDQtdGCIElECmRlZiBpbml0X29uX3N0YXJ0KGhhc2hNYXAsX2ZpbGVzPU5vbmUsX2RhdGE9Tm9uZSk6CiAgICBub0NsYXNzID0gamNsYXNzKCJydS50cmF2ZWxmb29kLnNpbXBsZV91aS5Ob1NRTCIpCiAgICBkYiA9IG5vQ2xhc3MoImRidHNkIikKICAgIHJlc3VsdCA9IGRiLmdldCgiaWR0c2QiKQogICAgaWYgbm90IHJlc3VsdDoKICAgICAgICBfaWR0c2Q9c3RyKHV1aWQudXVpZDQoKSkKICAgICAgICBkYi5wdXQoImlkdHNkIixfaWR0c2QsVHJ1ZSkKICAgICAgICBoYXNoTWFwLnB1dCgiX2lkdHNkIixfaWR0c2QpCiAgICBlbHNlOgogICAgICAgIGhhc2hNYXAucHV0KCJfaWR0c2QiLHJlc3VsdCkKICAgIHJlc3VsdCA9IGRiLmdldCgibmFtZXRzZCIpCiAgICBpZiBub3QgcmVzdWx0OgogICAgICAgIF9uYW1ldHNkPSLQotCh0JQgMSIKICAgICAgICBkYi5wdXQoIm5hbWV0c2QiLF9uYW1ldHNkLFRydWUpCiAgICAgICAgaGFzaE1hcC5wdXQoIl9uYW1ldHNkIixfbmFtZXRzZCkKICAgIGVsc2U6CiAgICAgICAgaGFzaE1hcC5wdXQoIl9uYW1ldHNkIixyZXN1bHQpCiAgICBoYXNoTWFwLnB1dCgiX0lQIixzdHIoZGIuZ2V0KCJJUCIpKSkKICAgIGhhc2hNYXAucHV0KCJfbG9naW4xYyIsc3RyKGRiLmdldCgibG9naW4xYyIpKSkKICAgIGhhc2hNYXAucHV0KCJfcGFzc3dvcmQxYyIsc3RyKGRiLmdldCgicGFzc3dvcmQxYyIpKSkKICAgIHJldHVybiBoYXNoTWFwCgojINCk0YPQvdC60YbQuNGPINC30LDQv9GD0YHQutCw0LXRgtGB0Y8g0L/RgNC4INCy0LLQvtC00LUg0LjQvNC10L3QuCDRgtGB0LQKZGVmIHNldF9uYW1lX3RzZChoYXNoTWFwLF9maWxlcz1Ob25lLF9kYXRhPU5vbmUpOgogICAgbm9DbGFzcyA9IGpjbGFzcygicnUudHJhdmVsZm9vZC5zaW1wbGVfdWkuTm9TUUwiKQogICAgZGIgPSBub0NsYXNzKCJkYnRzZCIpCiAgICBsaXN0ZW5lcj1oYXNoTWFwLmdldCgibGlzdGVuZXIiKQogICAgaWYgbGlzdGVuZXIgPT0gIm50c2QiOgogICAgICAgIG50c2Q9aGFzaE1hcC5nZXQoIm50c2QiKQogICAgICAgIGRiLnB1dCgibmFtZXRzZCIsbnRzZCxUcnVlKQogICAgICAgIGhhc2hNYXAucHV0KCJfbmFtZXRzZCIsbnRzZCkKICAgIGVsaWYgbGlzdGVuZXIgPT0gIklQX2ZpZWxkIjoKICAgICAgICBJUD1oYXNoTWFwLmdldChsaXN0ZW5lcikKICAgICAgICBkYi5wdXQoIklQIixJUCxUcnVlKQogICAgICAgIGhhc2hNYXAucHV0KCJfSVAiLElQKQogICAgZWxpZiBsaXN0ZW5lciA9PSAibG9naW4xY19maWVsZCI6CiAgICAgICAgbG9naW4xYz1oYXNoTWFwLmdldChsaXN0ZW5lcikKICAgICAgICBkYi5wdXQoImxvZ2luMWMiLGxvZ2luMWMsVHJ1ZSkKICAgICAgICBoYXNoTWFwLnB1dCgiX2xvZ2luMWMiLGxvZ2luMWMpCiAgICBlbGlmIGxpc3RlbmVyID09ICJwYXNzd29yZDFjX2ZpZWxkIjoKICAgICAgICBwYXNzd29yZDFjPWhhc2hNYXAuZ2V0KGxpc3RlbmVyKQogICAgICAgIGRiLnB1dCgicGFzc3dvcmQxYyIscGFzc3dvcmQxYyxUcnVlKQogICAgICAgIGhhc2hNYXAucHV0KCJfcGFzc3dvcmQxYyIscGFzc3dvcmQxYykKICAgIGVsaWYgbGlzdGVuZXIgPT0gImJ0bl9iYWNrX3NldCI6IAogICAgICAgIGhhc2hNYXAucHV0KCJCYWNrU2NyZWVuIiwiIikKICAgIHJldHVybiBoYXNoTWFwCgojINCk0YPQvdC60YbQuNGPINCy0YvQsdC+0YAg0L7Qv9C10YDQsNGG0LjQuApkZWYgdHlwZV9vZl9vcGVyYXRpb24oaGFzaE1hcCxfZmlsZXM9Tm9uZSxfZGF0YT1Ob25lKToKICAgIG5vQ2xhc3MgPSBqY2xhc3MoInJ1LnRyYXZlbGZvb2Quc2ltcGxlX3VpLk5vU1FMIikKICAgIGRiID0gbm9DbGFzcygiZGJ0c2QiKQogICAgbGlzdGVuZXI9aGFzaE1hcC5nZXQoImxpc3RlbmVyIikKICAgIGlmIGxpc3RlbmVyIGluIFsiYnRuX2dldCIsImJ0bl9wdXQiLCJidG5faW52Il06CiAgICAgICAgZGIucHV0KCJ0eXBlb2ZvcGVyYXRpb24iLGxpc3RlbmVyLFRydWUpCiAgICAgICAgaGFzaE1hcC5wdXQoIl90eXBlb2ZvcGVyYXRpb24iLGxpc3RlbmVyKQojICAgICAgICBoYXNoTWFwLnB1dCgibm9SZWZyZXNoIiwiIik7CiAgICAgICAgaGFzaE1hcC5wdXQoIlNob3dTY3JlZW4iLCLQktGL0LHQvtGAINC00L7QutGD0LzQtdC90YLQsCIpCiAgICBlbGlmIGxpc3RlbmVyPT0iYnRuX3JldCI6CiAgICAgICAgZGIucHV0KCJ0eXBlb2ZvcGVyYXRpb24iLCIiLFRydWUpCiAgICAgICAgaGFzaE1hcC5wdXQoIl90eXBlb2ZvcGVyYXRpb24iLCIiKQogICAgICAgIGhhc2hNYXAucHV0KCJCYWNrU2NyZWVuIiwiIikKICAgIHJldHVybiBoYXNoTWFwCgoj0KTRg9C90LrRhtC40Y8g0L/QvtC70YPRh9C10L3QuNGPINC90L7QvNC10L3QutC70LDRgtGD0YDRiyDQv9C+INCo0Jog0LjQtyDQvdCw0LrQu9Cw0LTQvdC+0LkKZGVmIEdldFByb2R1Y3QoaGFzaE1hcCxfZmlsZXM9Tm9uZSxfZGF0YT1Ob25lKToKICAgIG5vQ2xhc3MgPSBqY2xhc3MoInJ1LnRyYXZlbGZvb2Quc2ltcGxlX3VpLk5vU1FMIikKICAgIGRiID0gbm9DbGFzcygiZGJ0c2QiKQogICAgbGlzdGVuZXI9aGFzaE1hcC5nZXQoImxpc3RlbmVyIikKICAgIGlmIGxpc3RlbmVyIGluIFsiYnRuX2dldCIsImJ0bl9wdXQiLCJidG5faW52Il06CiAgICAgICAgZGIucHV0KCJ0eXBlb2ZvcGVyYXRpb24iLGxpc3RlbmVyLFRydWUpCiAgICAgICAgaGFzaE1hcC5wdXQoIl90eXBlb2ZvcGVyYXRpb24iLGxpc3RlbmVyKQogICAgICAgIGhhc2hNYXAucHV0KCJTaG93U2NyZWVuIiwi0JLRi9Cx0L7RgCDQtNC+0LrRg9C80LXQvdGC0LAiKQogICAgZWxpZiBsaXN0ZW5lcj09ImJ0bl9yZXQiOgogICAgICAgIGRiLnB1dCgidHlwZW9mb3BlcmF0aW9uIiwiIixUcnVlKQogICAgICAgIGhhc2hNYXAucHV0KCJfdHlwZW9mb3BlcmF0aW9uIiwiIikKICAgICAgICBoYXNoTWFwLnB1dCgiQmFja1NjcmVlbiIsIiIpCiAgICByZXR1cm4gaGFzaE1hcAoK",
+        "PelicanInit": "",
+        "RunPython": true,
+        "CommonHandlers": [
+            {
+                "event": "onLaunch",
+                "action": "run",
+                "listener": "",
+                "type": "python",
+                "method": "init_on_start",
+                "postExecute": "",
+                "alias": ""
+            }
+        ],
+        "Layouts": [],
+        "StyleTemplates": [
+            {
+                "name": "Кнопка действия",
+                "TextSize": "24",
+                "TextBold": true
+            }
+        ]
+    }
+}
