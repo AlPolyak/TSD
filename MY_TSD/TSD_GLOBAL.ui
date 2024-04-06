@@ -68,8 +68,12 @@ def connect(hashMap,_files=None,_data=None):
     url = 'http://'+IP+'/UNF/hs/simpleuiTSD/set_input_direct/Подключение'
     url = url.encode('UTF-8')
     conv={}
-    for key, value in hashMap.items():
-        conv[key]=value.encode('UTF-8')
+    try:
+        for key, value in hashMap.items():
+            conv[key]=value.encode('UTF-8')
+    except Exception as ex:
+        hashMap.put("toast","Err:"+ex)
+        return hashMap
     data = {'hashmap': conv}
     login1c = db.get("login1c")
     if login1c==None:
