@@ -81,16 +81,16 @@ def connect(hashMap,_files=None,_data=None):
         try:
             newhashMap=ret.json()
             hashMap.put("toast",ret.text)    
+    #        for key, value in newhashMap.items():
+    #           hashMap.update({key, value})
+            ErrorMessage=hashMap.get('ErrorMessage')
+            if ErrorMessage == '':
+                hashMap.put("_status_connect","Подключено")
+            else:
+                hashMap.put("toast",ErrorMessage)
+                hashMap.put("_status_connect","Отключено")
         except Exception as er:
             hashMap.put("toast",ret.text +' '+ er)    
-#        for key, value in newhashMap.items():
-#           hashMap.update({key, value})
-        ErrorMessage=hashMap.get('ErrorMessage')
-        if ErrorMessage == '':
-            hashMap.put("_status_connect","Подключено")
-        else:
-            hashMap.put("toast",ErrorMessage)
-            hashMap.put("_status_connect","Отключено")
     elif ret.status_code == 401:
         hashMap.put("toast","Не корректный логин или пароль")
         hashMap.put("_status_connect","Отключено")
