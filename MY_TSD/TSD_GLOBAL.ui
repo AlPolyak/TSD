@@ -4,6 +4,9 @@ import json
 #from ru.travelfood.simple_ui import NoSQL as noClass
 from java import jclass
 import uuid
+import requests
+from requests import post
+from requests.auth import HTTPBasicAuth
 
 #https://api.github.com/repos/AlPolyak/TSD/contents/MY_TSD/TSD_GLOBAL.ui
 # Функция запускается при старте программы ищет и устанавливает ID
@@ -53,6 +56,36 @@ def set_name_tsd(hashMap,_files=None,_data=None):
     elif listener == "btn_back_set": 
         hashMap.put("BackScreen","")
     return hashMap
+
+# Функция подключение к http сервису 1С
+def type_of_operation(hashMap,_files=None,_data=None):
+    noClass = jclass("ru.travelfood.simple_ui.NoSQL")
+    db = noClass("dbtsd")
+    IP = db.get("ID")
+    if not IP:
+        hashMap.put("toast","Не задан IP http сервиса")
+        return hashMap
+    url = 'http://'+IP+'/UNF/hs/simpleuiTSD/set_input_direct/connect'
+    data = {'hashmap': hashMap}
+    login1c = db.get("login1c")
+    if not login1c:
+        hashMap.put("toast","Не задан Login http сервиса")
+        return hashMap
+    password1c = str(db.get("password1c"))
+    auth = HTTPBasicAuth(login1c.encode('UTF-8'), password1c)
+    ret=requests.post(url, data=data, auth=auth, timeout=100)
+    if ret.status_code == 200:
+        newhashMap=ret.json()
+        for key, value in newhashMap.items():
+            hashMap.update({key, value})
+        hashMap.put("_status_connect","Подключено")
+    elif ret.status_code == 401:
+        hashMap.put("toast","Не корректный логин или пароль")
+        hashMap.put("_status_connect","Отключено")
+    else   
+        hashMap.put("toast","Ошибка подключения к http сервису 1С: "+ret.status_code)
+        hashMap.put("_status_connect","Отключено")
+     return hashMap
 
 # Функция выбор операции
 def type_of_operation(hashMap,_files=None,_data=None):
