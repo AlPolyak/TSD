@@ -71,7 +71,7 @@ def connect(hashMap,_files=None,_data=None):
     try:
         massivstuctur=[{'key1':'sting1','key2':'string2'}]
         data={'test':massivstuctur}
-        data=json.dumps(data).encode('UTF-8')
+#        data=json.dumps(data).encode('UTF-8')
         hashMap.put("toast",data)
     except Exception as er:
         hashMap.put("toast",'dumps'+ er)    
