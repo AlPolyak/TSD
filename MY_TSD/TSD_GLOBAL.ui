@@ -80,7 +80,7 @@ def connect(hashMap,_files=None,_data=None):
     ret.encoding = 'UTF-8'
     if ret.status_code == 200:
         try:
-            newhashMap=ret.json()
+            newhashMap= json.loads(ret.text)
             for el in newhashMap:
                 if el['key']=='hashmap':
                     for el2 in el['value']:
