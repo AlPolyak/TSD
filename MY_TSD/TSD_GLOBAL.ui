@@ -61,7 +61,7 @@ def set_name_tsd(hashMap,_files=None,_data=None):
 def connect(hashMap,_files=None,_data=None):
     noClass = jclass("ru.travelfood.simple_ui.NoSQL")
     db = noClass("dbtsd")
-    IP = db.get("ID")
+    IP = db.get("IP")
     if IP==None:
         hashMap.put("toast","Не задан IP http сервиса")
         return hashMap
