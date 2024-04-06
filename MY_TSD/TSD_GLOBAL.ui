@@ -69,7 +69,7 @@ def connect(hashMap,_files=None,_data=None):
     data = {'hashmap': hashMap}
     hashMap.put("toast",data) 
     try:
-        data=json.dumps(data).encode('UTF-8')
+#        data=json.dumps(data).encode('UTF-8')
         hashMap.put("toast",data)
     except Exception as er:
         hashMap.put("toast",'dumps'+ er)    
