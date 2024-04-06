@@ -66,10 +66,12 @@ def connect(hashMap,_files=None,_data=None):
         hashMap.put("toast","Не задан IP http сервиса")
         return hashMap
     url = 'http://'+IP+'/UNF/hs/simpleuiTSD/set_input_direct/connect'
-    data = {'hashmap': hashMap}
+#    data = {'hashmap': hashMap}
     hashMap.put("toast",data) 
     try:
-#        data=json.dumps(data).encode('UTF-8')
+        massivstuctur=[{'key1':'sting1','key2':'string2'}]
+        data={'test':massivstuctur}
+        data=json.dumps(data).encode('UTF-8')
         hashMap.put("toast",data)
     except Exception as er:
         hashMap.put("toast",'dumps'+ er)    
