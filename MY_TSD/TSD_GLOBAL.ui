@@ -102,9 +102,9 @@ def connect(hashMap,_files=None,_data=None):
     hashMap.put("_status_connect",_status_connect)
     v = iuClass.getView("capt_connect")
     if _status_connect=="Online":
-        v.setTextColor(-65536)
+        v.setTextColor(0x33228822)
     else:
-        v.setTextColor(-35536)
+        v.setTextColor(0x33882222)
     return hashMap
 
 # Функция выбор операции
