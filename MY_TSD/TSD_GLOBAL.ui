@@ -95,7 +95,7 @@ def connect(hashMap,_files=None,_data=None):
         hashMap.put("toast","Не корректный логин или пароль")
     else : 
         hashMap.put("toast","Ошибка подключения к http сервису 1С: "+ret.status_code)
-    hashMap.put("_status_connect",_status_connect)
+    hashMap.put("_status_connect",_status_connect+" "+ret.status_code)
     if _status_connect == "Online" :
         hashMap.put("SetGreen","capt_connect")
     else :
