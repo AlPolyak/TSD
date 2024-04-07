@@ -60,7 +60,7 @@ def set_name_tsd(hashMap,_files=None,_data=None):
 
 # Функция подключение к http сервису 1С
 def connect(hashMap,_files=None,_data=None):
-#    from ru.travelfood.simple_ui import ImportUtils as iuClass
+    from ru.travelfood.simple_ui import ImportUtils as iuClass
 
     noClass = jclass("ru.travelfood.simple_ui.NoSQL")
     db = noClass("dbtsd")
