@@ -104,9 +104,9 @@ def connect(hashMap,_files=None,_data=None):
     try:
         v = iuClass.getView("capt_connect")
         if _status_connect == "Online" :
-            v.setTextColor(-65536)
+#            v.setTextColor(-65536)
         else :
-            v.setTextColor(-35536) 
+#           v.setTextColor(-35536) 
     except Exception as er :
         hashMap.put("toast","getView" +' '+ er)
     return hashMap
