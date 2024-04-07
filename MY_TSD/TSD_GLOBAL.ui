@@ -75,9 +75,12 @@ def connect(hashMap,_files=None,_data=None):
     password1c = str(db.get("password1c"))
     auth = HTTPBasicAuth(login1c.encode('UTF-8'), password1c.encode('UTF-8'))
     conv={'hashmap':[{'key':'_idtsd','value':hashMap.get('_idtsd')},{'key':'_nametsd','value':hashMap.get('_nametsd')}]}
-    ret=post(url, json=conv, auth=auth, headers={'content-type': 'application/json; charset=utf-8'}, timeout=30)
-    ret.encoding = 'UTF-8'
     _status_connect = "Offline"
+    try:
+        ret=post(url, json=conv, auth=auth, headers={'content-type': 'application/json; charset=utf-8'}, timeout=30)
+        ret.encoding = 'UTF-8'
+    except Exception as er :
+        hashMap.put("toast","Ошибка подключения к http сервису 1С: " + str(er))    
     if ret.status_code == 200 :
         try:
             fullresp = json.loads(ret.text)
@@ -90,7 +93,7 @@ def connect(hashMap,_files=None,_data=None):
             else:
                 hashMap.put("toast",ErrorMessage)
         except Exception as er :
-            hashMap.put("toast",ret.text +' '+ er)    
+            hashMap.put("toast",ret.text +' '+ str(er))    
     elif ret.status_code == 401 :
         hashMap.put("toast","Не корректный логин или пароль")
     else : 
