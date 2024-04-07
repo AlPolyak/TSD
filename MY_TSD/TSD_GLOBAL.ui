@@ -101,14 +101,14 @@ def connect(hashMap,_files=None,_data=None):
     else : 
         hashMap.put("toast","Ошибка подключения к http сервису 1С: "+str(ret.status_code))
     hashMap.put("_status_connect",_status_connect)
-    try:
-        v = iuClass.getView("capt_connect")
+#    try:
+#        v = iuClass.getView("capt_connect")
 #        if _status_connect == "Online" :
 #            v.setTextColor(-65536)
 #        else :
 #           v.setTextColor(-35536) 
-    except Exception as er :
-        hashMap.put("toast","getView" +' '+ er)
+#    except Exception as er :
+#        hashMap.put("toast","getView" +' '+ er)
     return hashMap
 
 # Функция выбор операции
