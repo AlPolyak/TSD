@@ -63,13 +63,13 @@ def connect(hashMap,_files=None,_data=None):
     noClass = jclass("ru.travelfood.simple_ui.NoSQL")
     db = noClass("dbtsd")
     IP = db.get("IP")
-    if IP==None:
+    if IP == None :
         hashMap.put("toast","Не задан IP http сервиса")
         return hashMap
     url = 'http://'+IP+'/UNF/hs/simpleuiTSD/set_input_direct/Подключение'
     url = url.encode('UTF-8')
     login1c = db.get("login1c")
-    if login1c==None:
+    if login1c == None :
         hashMap.put("toast","Не задан Login http сервиса")
         return hashMap
     password1c = str(db.get("password1c"))
@@ -77,28 +77,28 @@ def connect(hashMap,_files=None,_data=None):
     conv={'hashmap':[{'key':'_idtsd','value':hashMap.get('_idtsd')},{'key':'_nametsd','value':hashMap.get('_nametsd')}]}
     ret=post(url, json=conv, auth=auth, headers={'content-type': 'application/json; charset=utf-8'}, timeout=100)
     ret.encoding = 'UTF-8'
-    _status_connect="Offline"
-    if ret.status_code == 200:
+    _status_connect = "Offline"
+    if ret.status_code == 200 :
         try:
             fullresp = json.loads(ret.text)
             newhashMap=fullresp['hashmap']
-            for el2 in newhashMap:
+            for el2 in newhashMap :
                 hashMap.put(el2['key'],el2['value'])
             ErrorMessage=hashMap.get('ErrorMessage')
-            if ErrorMessage == '':
-                _status_connect="Onlinne"  
+            if ErrorMessage == '' :
+                _status_connect = "Online"  
             else:
                 hashMap.put("toast",ErrorMessage)
-        except Exception as er:
+        except Exception as er :
             hashMap.put("toast",ret.text +' '+ er)    
-    elif ret.status_code == 401:
+    elif ret.status_code == 401 :
         hashMap.put("toast","Не корректный логин или пароль")
     else : 
         hashMap.put("toast","Ошибка подключения к http сервису 1С: "+ret.status_code)
     hashMap.put("_status_connect",_status_connect)
-    if _status_connect=="Onlinne" :
+    if _status_connect == "Online" :
         hashMap.put("SetGreen","capt_connect")
-    else
+    else :
         hashMap.put("SetRed","capt_connect")
     return hashMap
 
