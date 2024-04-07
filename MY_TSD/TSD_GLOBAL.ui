@@ -84,7 +84,7 @@ def connect(hashMap,_files=None,_data=None):
             newhashMap=fullresp['hashmap']
             for el2 in newhashMap :
                 hashMap.put(el2['key'],el2['value'])
-            ErrorMessage=hashMap.get('ErrorMessage')
+            ErrorMessage=fullresp['ErrorMessage']
             if ErrorMessage == '' :
                 _status_connect = "Online"  
             else:
