@@ -60,11 +60,6 @@ def set_name_tsd(hashMap,_files=None,_data=None):
 
 # Функция подключение к http сервису 1С
 def connect(hashMap,_files=None,_data=None):
-#    from ru.travelfood.simple_ui import ImportUtils as iuClass
-#    try:
-#        iuClass = jclass("ru.travelfood.simple_ui.ImportUtils")
-#    except Exception as er :
-#         hashMap.put("toast","iuClass" +' '+ er)
     noClass = jclass("ru.travelfood.simple_ui.NoSQL")
     db = noClass("dbtsd")
     IP = db.get("IP")
@@ -101,14 +96,7 @@ def connect(hashMap,_files=None,_data=None):
     else : 
         hashMap.put("toast","Ошибка подключения к http сервису 1С: "+str(ret.status_code))
     hashMap.put("_status_connect",_status_connect)
-#    try:
-#        v = iuClass.getView("capt_connect")
-#        if _status_connect == "Online" :
-#            v.setTextColor(-65536)
-#        else :
-#           v.setTextColor(-35536) 
-#    except Exception as er :
-#        hashMap.put("toast","getView" +' '+ er)
+
     return hashMap
 
 # Функция выбор операции
