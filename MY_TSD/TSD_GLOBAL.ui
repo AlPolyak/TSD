@@ -30,7 +30,7 @@ def init_on_start(hashMap,_files=None,_data=None):
     hashMap.put("_IP",str(db.get("IP")))
     hashMap.put("_login1c",str(db.get("login1c")))
     hashMap.put("_password1c",str(db.get("password1c")))
-    hashMap.put("_status_connect","Отключено")
+    hashMap.put("_status_connect","Offline")
     return hashMap
 
 # Функция запускается при вводе имени тсд
