@@ -123,6 +123,11 @@ def type_of_operation(hashMap,_files=None,_data=None):
         hashMap.put("BackScreen","")
     return hashMap
 
+#Функция при сканировании
+def Scanning(hashMap,_files=None,_data=None):
+    hashMap("toast",hashMap.get("barcode")
+    return hashMap
+
 #Функция получения номенклатуры по ШК из накладной
 def GetProduct(hashMap,_files=None,_data=None):
     noClass = jclass("ru.travelfood.simple_ui.NoSQL")
