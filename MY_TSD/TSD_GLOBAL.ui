@@ -13,7 +13,7 @@ from requests.auth import HTTPBasicAuth
 def init_on_start(hashMap,_files=None,_data=None):
     noClass = jclass("ru.travelfood.simple_ui.NoSQL")
     db = noClass("dbtsd")
-    db.initialize()
+#    db.initialize()
     result = db.get("idtsd")
     if not result:
         _idtsd=str(uuid.uuid4())
