@@ -129,8 +129,8 @@ def type_of_operation(hashMap,_files=None,_data=None):
 def Scanning(hashMap,_files=None,_data=None):
     hashMap.put("toast",hashMap.get("barcode"))
     hashMap.put("RefreshScreen","")
-#    _ТСД_Настройки=hashMap.get("_ТСД_Настройки")
-#    hashMap.put("toast",str(_ТСД_Настройки["ПоДокументу"]))
+    _ТСД_Настройки=hashMap.get("_ТСД_Настройки")
+    hashMap.put("toast",str(_ТСД_Настройки["ПоДокументу"]))
     return hashMap
 
 #Функция получения номенклатуры по ШК из накладной
