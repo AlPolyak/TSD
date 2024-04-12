@@ -127,12 +127,16 @@ def type_of_operation(hashMap,_files=None,_data=None):
 #Функция при сканировании
 #В зависимости от режима ПоДокументу ищем в документе или в базе 
 def Scanning(hashMap,_files=None,_data=None):
-#    hashMap.put("toast",hashMap.get("barcode"))
     _ТСД_Настройки=json.loads(hashMap.get("_ТСД_Настройки"))
     if _ТСД_Настройки["ПоДокументу"]=="true":
-        hashMap.put("toast","По Документу")
-    else:
-        hashMap.put("toast","Без Документа")
+    # надо попытаться найти шк в табличной части _tabproducts
+        _tabproducts=json.loads(hashMap.get("_tabproducts"))
+    # (Массив структур) *key;*Наименование;*Характеристика;*ЕдиницаИзмерения;
+    # *Количество;*Факт;*Цена;*Сумма;*СуммаФакт;*Штрихкоды(Массив);*Ключи(Структура);
+    
+    # а потом в базе 
+    
+       
     hashMap.put("RefreshScreen","")
     return hashMap
 
