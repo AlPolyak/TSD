@@ -127,10 +127,10 @@ def type_of_operation(hashMap,_files=None,_data=None):
 #Функция при сканировании
 #В зависимости от режима ПоДокументу ищем в документе или в базе 
 def Scanning(hashMap,_files=None,_data=None):
-    hashMap.put("toast",hashMap.get("barcode"))
-    hashMap.put("RefreshScreen","")
+#    hashMap.put("toast",hashMap.get("barcode"))
     _ТСД_Настройки=hashMap.get("_ТСД_Настройки")
     hashMap.put("toast",str(_ТСД_Настройки["ПоДокументу"]))
+    hashMap.put("RefreshScreen","")
     return hashMap
 
 #Функция получения номенклатуры по ШК из накладной
