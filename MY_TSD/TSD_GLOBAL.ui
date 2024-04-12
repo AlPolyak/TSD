@@ -129,7 +129,7 @@ def type_of_operation(hashMap,_files=None,_data=None):
 def Scanning(hashMap,_files=None,_data=None):
 #    hashMap.put("toast",hashMap.get("barcode"))
     _ТСД_Настройки=hashMap.get("_ТСД_Настройки")
-    if _ТСД_Настройки["ПоДокументу"]="true":
+    if _ТСД_Настройки["ПоДокументу"]=="true":
         hashMap.put("toast","По Документу")
     else:
         hashMap.put("toast","Без Документа")
