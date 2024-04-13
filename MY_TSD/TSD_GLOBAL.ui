@@ -77,7 +77,7 @@ def connect(hashMap,_files=None,_data=None):
     auth = HTTPBasicAuth(login1c.encode('UTF-8'), password1c.encode('UTF-8'))
 #    conv=json.dumps(hashmap)
     conv={'hashmap':[{'key':'_idtsd','value':hashMap.get('_idtsd')},{'key':'_nametsd','value':hashMap.get('_nametsd')}]}
-    _status_connect = 'Offline'
+    _status_connect = "Offline"
     try:
         ret=post(url, json=conv, auth=auth, headers={'content-type': 'application/json; charset=utf-8'}, timeout=60)
         ret.encoding = 'UTF-8'
@@ -91,7 +91,7 @@ def connect(hashMap,_files=None,_data=None):
                 hashMap.put(el2['key'],el2['value'])
             ErrorMessage=fullresp['ErrorMessage']
             if ErrorMessage == '' :
-                _status_connect = 'Online'  
+                _status_connect = "Online"  
             else:
                 hashMap.put("toast",ErrorMessage)
         except Exception as er :
@@ -100,11 +100,11 @@ def connect(hashMap,_files=None,_data=None):
         hashMap.put("toast","Не корректный логин или пароль")
     else : 
         hashMap.put("toast","Ошибка подключения к http сервису 1С: "+str(ret.status_code))
-    if _status_connect=='Online':
-        color='<font color = "green">'
+    if _status_connect=="Online":
+        color="<font color = ""green"">"
     else:
-        color='<font color = "red">'
-    hashMap.put("_status_connect",color+_status_connect+'</font>')
+        color="<font color = ""red"">"
+    hashMap.put("_status_connect",color+_status_connect+"</font>")
     hashMap.put("RefreshScreen","")
     return hashMap
 
