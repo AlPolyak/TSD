@@ -101,7 +101,7 @@ def connect(hashMap,_files=None,_data=None):
     else : 
         hashMap.put("toast","Ошибка подключения к http сервису 1С: "+str(ret.status_code))
     if _status_connect=="Online":
-        color="<font color = ""Green"">"
+        color="<font color = "#006400">"
     else:
         color="<font color = ""red"">"
     hashMap.put("_status_connect",color+_status_connect+"</font>")
@@ -132,11 +132,12 @@ def Scanning(hashMap,_files=None,_data=None):
     if _ТСД_Настройки["ПоДокументу"]=="true":
         # надо попытаться найти шк в табличной части _tabproducts
         _tabproducts=json.loads(hashMap.get("_tabproducts"))
-        hashMap.put("toast",json.damps(_tabproducts))
+        hashMap.put("toast",len(_tabproducts))
         # (Массив структур) *key;*Наименование;*Характеристика;*ЕдиницаИзмерения;
         # *Количество;*Факт;*Цена;*Сумма;*СуммаФакт;*Штрихкоды(Массив);*Ключи(Структура);
         for prod in _tabproducts:
-            if barcode in prod[Штрихкоды]:
+            namecol=prod[Штрихкоды]
+            if barcode in prod[namecol]:
                 hashMap.put("_curprod",json.dumps(prod))
                 return hashMap
             else:
