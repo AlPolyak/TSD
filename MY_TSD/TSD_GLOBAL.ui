@@ -76,6 +76,7 @@ def connect(hashMap,_files=None,_data=None):
         return hashMap
     password1c = str(db.get("password1c"))
     auth = HTTPBasicAuth(login1c.encode('UTF-8'), password1c.encode('UTF-8'))
+#    conv=json.dumps(hashmap)
     conv={'hashmap':[{'key':'_idtsd','value':hashMap.get('_idtsd')},{'key':'_nametsd','value':hashMap.get('_nametsd')}]}
     _status_connect = "Offline"
     try:
@@ -127,16 +128,19 @@ def type_of_operation(hashMap,_files=None,_data=None):
 #Функция при сканировании
 #В зависимости от режима ПоДокументу ищем в документе или в базе 
 def Scanning(hashMap,_files=None,_data=None):
+    barcode=hashMap.get("barcode")
     _ТСД_Настройки=json.loads(hashMap.get("_ТСД_Настройки"))
     if _ТСД_Настройки["ПоДокументу"]=="true":
-    # надо попытаться найти шк в табличной части _tabproducts
+        # надо попытаться найти шк в табличной части _tabproducts
         _tabproducts=json.loads(hashMap.get("_tabproducts"))
-    # (Массив структур) *key;*Наименование;*Характеристика;*ЕдиницаИзмерения;
-    # *Количество;*Факт;*Цена;*Сумма;*СуммаФакт;*Штрихкоды(Массив);*Ключи(Структура);
-    
-    # а потом в базе 
-    
-       
+        # (Массив структур) *key;*Наименование;*Характеристика;*ЕдиницаИзмерения;
+        # *Количество;*Факт;*Цена;*Сумма;*СуммаФакт;*Штрихкоды(Массив);*Ключи(Структура);
+        for prod in _tabproducts:
+            if barcode in prod[Штрихкоды]:
+                hashMap.put("_curprod",json.json.dumps(prod))
+                return hashMap
+    # не нашли, ищем в базе 
+    callfunc1C(hashMap,_files=None,_data=None):   
     hashMap.put("RefreshScreen","")
     return hashMap
 
@@ -154,4 +158,53 @@ def GetProduct(hashMap,_files=None,_data=None):
         hashMap.put("_typeofoperation","")
         hashMap.put("BackScreen","")
     return hashMap
+
+# Функция вызов функции http сервиса 1С
+def callfunc1C(hashMap,_files=None,_data=None):
+ #   iuClass = jclass("ru.travelfood.simple_ui.ImportUtils")
+    func1C=hashMap.get("func1C")
+    if func1C=="":
+        return hashMap
+    noClass = jclass("ru.travelfood.simple_ui.NoSQL")
+    db = noClass("dbtsd")
+    IP = db.get("IP")
+    if IP == None :
+        hashMap.put("toast","Не задан IP http сервиса")
+        return hashMap
+    url = 'http://'+IP+'/UNF/hs/simpleuiTSD/set_input_direct/'+func1C
+    url = url.encode('UTF-8')
+    login1c = db.get("login1c")
+    if login1c == None :
+        hashMap.put("toast","Не задан Login http сервиса")
+        return hashMap
+    password1c = str(db.get("password1c"))
+    auth = HTTPBasicAuth(login1c.encode('UTF-8'), password1c.encode('UTF-8'))
+    conv=json.dumps(hashmap)
+#    conv={'hashmap':[{'key':'_idtsd','value':hashMap.get('_idtsd')},{'key':'_nametsd','value':hashMap.get('_nametsd')}]}
+    _status_connect = "Offline"
+    try:
+        ret=post(url, json=conv, auth=auth, headers={'content-type': 'application/json; charset=utf-8'}, timeout=60)
+        ret.encoding = 'UTF-8'
+    except Exception as er :
+        hashMap.put("toast","Ошибка подключения к http сервису 1С: " + str(er))    
+    if ret.status_code == 200 :
+        try:
+            fullresp = json.loads(ret.text)
+            newhashMap=fullresp['hashmap']
+            for el2 in newhashMap :
+                hashMap.put(el2['key'],el2['value'])
+            ErrorMessage=fullresp['ErrorMessage']
+            if ErrorMessage == '' :
+                _status_connect = "Online"  
+            else:
+                hashMap.put("toast",ErrorMessage)
+        except Exception as er :
+            hashMap.put("toast",ret.text +' '+ str(er))    
+    elif ret.status_code == 401 :
+        hashMap.put("toast","Не корректный логин или пароль")
+    else : 
+        hashMap.put("toast","Ошибка подключения к http сервису 1С: "+str(ret.status_code))
+    hashMap.put("_status_connect",_status_connect)
+    return hashMap
+
 
