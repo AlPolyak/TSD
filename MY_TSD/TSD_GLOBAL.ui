@@ -131,12 +131,11 @@ def Scanning(hashMap,_files=None,_data=None):
     _ТСД_Настройки=json.loads(hashMap.get("_ТСД_Настройки"))
     if _ТСД_Настройки["ПоДокументу"]=="true":
         # надо попытаться найти шк в табличной части _tabproducts
-        _tabproducts=json.loads(hashMap.get("_tabproducts"))
-# 
+        _tabproducts=json.loads(hashMap.get("_tabproducts")) 
         # (Массив структур) *key;*Наименование;*Характеристика;*ЕдиницаИзмерения;
         # *Количество;*Факт;*Цена;*Сумма;*СуммаФакт;*Штрихкоды(Массив);*Ключи(Структура);
         for prod in _tabproducts:
-            namecol=prod[Штрихкоды]
+            namecol=prod["Штрихкоды"]
             hashMap=screenmessage(hashMap,namecol)
             hashMap.put("toast",namecol)
             if barcode in prod[namecol]:
