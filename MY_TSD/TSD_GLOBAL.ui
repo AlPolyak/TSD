@@ -132,7 +132,7 @@ def Scanning(hashMap,_files=None,_data=None):
     if _ТСД_Настройки["ПоДокументу"]=="true":
         # надо попытаться найти шк в табличной части _tabproducts
 #        _tabproducts=json.loads(hashMap.get("_tabproducts"))
-        hashMap.put("toast",hashMap.get("_tabproducts"))
+        hashMap=screenmessage(hashMap,hashMap.get("_tabproducts"))
         # (Массив структур) *key;*Наименование;*Характеристика;*ЕдиницаИзмерения;
         # *Количество;*Факт;*Цена;*Сумма;*СуммаФакт;*Штрихкоды(Массив);*Ключи(Структура);
 #        for prod in _tabproducts:
@@ -216,4 +216,10 @@ def callfunc1C(hashMap,_files=None,_data=None):
     hashMap.put("RefreshScreen","")
     return hashMap
 
-
+def screenmessage(hashMap,mess,cap_mess=None):
+    hashMap.put("_message",mess)
+    if cap_mess==None:
+        cap_mess=""    
+    hashMap.put("_cap_message",cap_mess)
+    hashMap.put("ShowScreen","Сообщение")
+    return hashMap
