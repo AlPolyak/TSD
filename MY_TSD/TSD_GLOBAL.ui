@@ -132,7 +132,7 @@ def Scanning(hashMap,_files=None,_data=None):
     if _ТСД_Настройки["ПоДокументу"]=="true":
         # надо попытаться найти шк в табличной части _tabproducts
         _tabproducts=json.loads(hashMap.get("_tabproducts"))
-        hashMap=screenmessage(hashMap,json.dumps(_tabproducts[0].encoding('utf8')))
+        hashMap=screenmessage(hashMap,json.dumps(_tabproducts[0],ensure_ascii=False))
         # (Массив структур) *key;*Наименование;*Характеристика;*ЕдиницаИзмерения;
         # *Количество;*Факт;*Цена;*Сумма;*СуммаФакт;*Штрихкоды(Массив);*Ключи(Структура);
 #        for prod in _tabproducts:
