@@ -137,14 +137,15 @@ def Scanning(hashMap,_files=None,_data=None):
         # *Количество;*Факт;*Цена;*Сумма;*СуммаФакт;*Штрихкоды(Массив);*Ключи(Структура);
         for prod in _tabproducts:
             namecol=prod[Штрихкоды]
-            if barcode in prod[namecol]:
-                hashMap.put("_curprod",json.dumps(prod))
-                return hashMap
-            else:
-                hashMap.put("toast","Номенклатура со ШК:"+barcode+" в документе не найдена")
+            hashMap.put("toast",len(_tabproducts))
+#            if barcode in prod[namecol]:
+#                hashMap.put("_curprod",json.dumps(prod))
+#                return hashMap
+#            else:
+#                hashMap.put("toast","Номенклатура со ШК:"+barcode+" в документе не найдена")
     # не нашли, ищем в базе 
-    hashMap.put("func1C","ПоискНоменклатуры")
-    callfunc1C(hashMap,_files=None,_data=None)   
+#    hashMap.put("func1C","ПоискНоменклатуры")
+#    callfunc1C(hashMap,_files=None,_data=None)   
     hashMap.put("RefreshScreen","")
     return hashMap
 
