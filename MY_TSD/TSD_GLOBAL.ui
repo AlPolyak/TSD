@@ -144,9 +144,9 @@ def Scanning(hashMap,_files=None,_data=None):
             else:
                 hashMap.put("toast","Номенклатура со ШК:"+barcode+" в документе не найдена")
     # не нашли, ищем в базе 
-#    hashMap.put("func1C","ПоискНоменклатуры")
-#    callfunc1C(hashMap)   
-#    hashMap.put("RefreshScreen","")
+    hashMap.put("func1C","ПоискНоменклатуры")
+    callfunc1C(hashMap)   
+    hashMap.put("RefreshScreen","")
     return hashMap
 
 #Функция получения номенклатуры по ШК из накладной
