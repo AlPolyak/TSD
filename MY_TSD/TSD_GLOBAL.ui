@@ -61,7 +61,6 @@ def set_name_tsd(hashMap,_files=None,_data=None):
 
 # Функция подключение к http сервису 1С
 def connect(hashMap,_files=None,_data=None):
- #   iuClass = jclass("ru.travelfood.simple_ui.ImportUtils")
     noClass = jclass("ru.travelfood.simple_ui.NoSQL")
     db = noClass("dbtsd")
     IP = db.get("IP")
@@ -78,7 +77,7 @@ def connect(hashMap,_files=None,_data=None):
     auth = HTTPBasicAuth(login1c.encode('UTF-8'), password1c.encode('UTF-8'))
 #    conv=json.dumps(hashmap)
     conv={'hashmap':[{'key':'_idtsd','value':hashMap.get('_idtsd')},{'key':'_nametsd','value':hashMap.get('_nametsd')}]}
-    _status_connect = "Offline"
+    _status_connect = 'Offline'
     try:
         ret=post(url, json=conv, auth=auth, headers={'content-type': 'application/json; charset=utf-8'}, timeout=60)
         ret.encoding = 'UTF-8'
@@ -92,7 +91,7 @@ def connect(hashMap,_files=None,_data=None):
                 hashMap.put(el2['key'],el2['value'])
             ErrorMessage=fullresp['ErrorMessage']
             if ErrorMessage == '' :
-                _status_connect = "Online"  
+                _status_connect = 'Online'  
             else:
                 hashMap.put("toast",ErrorMessage)
         except Exception as er :
@@ -101,12 +100,11 @@ def connect(hashMap,_files=None,_data=None):
         hashMap.put("toast","Не корректный логин или пароль")
     else : 
         hashMap.put("toast","Ошибка подключения к http сервису 1С: "+str(ret.status_code))
-    hashMap.put("_status_connect",_status_connect)
-#    v = iuClass.getView("capt_connect")
-#    if _status_connect=="Online":
-#        v.setTextColor(0x00796B)
-#    else:
-#        v.setTextColor(0xD32F2F)
+    if _status_connect=='Online':
+        color='<font color = "green">'
+    else:
+        color='<font color = "red">'
+    hashMap.put("_status_connect",color+_status_connect+'</font>')
     return hashMap
 
 # Функция выбор операции
@@ -139,6 +137,8 @@ def Scanning(hashMap,_files=None,_data=None):
             if barcode in prod[Штрихкоды]:
                 hashMap.put("_curprod",json.dumps(prod))
                 return hashMap
+            else:
+                hashMap.put("toast","Номенклатура со ШК:"+barcode+" в документе не найдена")
     # не нашли, ищем в базе 
     hashMap.put("func1C","ПоискНоменклатуры")
     callfunc1C(hashMap,_files=None,_data=None)   
