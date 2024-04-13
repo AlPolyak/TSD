@@ -137,10 +137,11 @@ def Scanning(hashMap,_files=None,_data=None):
         # *Количество;*Факт;*Цена;*Сумма;*СуммаФакт;*Штрихкоды(Массив);*Ключи(Структура);
         for prod in _tabproducts:
             if barcode in prod[Штрихкоды]:
-                hashMap.put("_curprod",json.json.dumps(prod))
+                hashMap.put("_curprod",json.dumps(prod))
                 return hashMap
     # не нашли, ищем в базе 
-    callfunc1C(hashMap,_files=None,_data=None):   
+    hashMap.put("func1C","ПоискНоменклатуры")
+    callfunc1C(hashMap,_files=None,_data=None)   
     hashMap.put("RefreshScreen","")
     return hashMap
 
@@ -161,7 +162,6 @@ def GetProduct(hashMap,_files=None,_data=None):
 
 # Функция вызов функции http сервиса 1С
 def callfunc1C(hashMap,_files=None,_data=None):
- #   iuClass = jclass("ru.travelfood.simple_ui.ImportUtils")
     func1C=hashMap.get("func1C")
     if func1C=="":
         return hashMap
@@ -179,7 +179,7 @@ def callfunc1C(hashMap,_files=None,_data=None):
         return hashMap
     password1c = str(db.get("password1c"))
     auth = HTTPBasicAuth(login1c.encode('UTF-8'), password1c.encode('UTF-8'))
-    conv=json.dumps(hashmap)
+    conv=json.dumps(hashMap)
 #    conv={'hashmap':[{'key':'_idtsd','value':hashMap.get('_idtsd')},{'key':'_nametsd','value':hashMap.get('_nametsd')}]}
     _status_connect = "Offline"
     try:
