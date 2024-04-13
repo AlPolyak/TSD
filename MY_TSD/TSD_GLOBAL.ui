@@ -101,7 +101,7 @@ def connect(hashMap,_files=None,_data=None):
     else : 
         hashMap.put("toast","Ошибка подключения к http сервису 1С: "+str(ret.status_code))
     if _status_connect=="Online":
-        color="<font color = "#006400">"
+        color="<font color = ""#006400"">"
     else:
         color="<font color = ""red"">"
     hashMap.put("_status_connect",color+_status_connect+"</font>")
