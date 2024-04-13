@@ -135,9 +135,9 @@ def Scanning(hashMap,_files=None,_data=None):
         hashMap.put("toast",len(_tabproducts))
         # (Массив структур) *key;*Наименование;*Характеристика;*ЕдиницаИзмерения;
         # *Количество;*Факт;*Цена;*Сумма;*СуммаФакт;*Штрихкоды(Массив);*Ключи(Структура);
-        for prod in _tabproducts:
-            namecol=prod[Штрихкоды]
-            hashMap.put("toast",namecol)
+#        for prod in _tabproducts:
+#            namecol=prod[Штрихкоды]
+#            hashMap.put("toast",namecol)
 #            if barcode in prod[namecol]:
 #                hashMap.put("_curprod",json.dumps(prod))
 #                return hashMap
