@@ -177,15 +177,15 @@ def callfunc1C(hashMap,_files=None,_data=None):
         return hashMap
     url = "http://"+IP+"/UNF/hs/simpleuiTSD/set_input_direct/"+func1C
     url = url.encode('UTF-8')
-    screenmessage(hashMap,url)
+    hashMap=screenmessage(hashMap,url)
     login1c = db.get("login1c")
     if login1c == None :
         hashMap.put("toast","Не задан Login http сервиса")
         return hashMap
     password1c = str(db.get("password1c"))
     auth = HTTPBasicAuth(login1c.encode('UTF-8'), password1c.encode('UTF-8'))
-    conv=json.dumps(hashMap,ensure_ascii=False)
-#    conv={'hashmap':[{'key':'_idtsd','value':hashMap.get('_idtsd')},{'key':'_nametsd','value':hashMap.get('_nametsd')}]}
+#    conv=json.dumps(hashMap,ensure_ascii=False)
+    conv={'hashMap':[{'key':'_idtsd','value':hashMap.get('_idtsd')},{'key':'_nametsd','value':hashMap.get('_nametsd')}]}
     _status_connect = "Offline"
     try:
         ret=post(url, text=conv, auth=auth, headers={'content-type': 'application/json; charset=utf-8'}, timeout=60)
