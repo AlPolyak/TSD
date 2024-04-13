@@ -167,8 +167,8 @@ def GetProduct(hashMap,_files=None,_data=None):
 # Функция вызов функции http сервиса 1С
 def callfunc1C(hashMap,_files=None,_data=None):
     func1C=hashMap.get("func1C")    
-    if func1C=="":
-        return hashMap
+#    if func1C=="":
+#        return hashMap
     noClass = jclass("ru.travelfood.simple_ui.NoSQL")
     db = noClass("dbtsd")
     IP = db.get("IP")
@@ -188,7 +188,7 @@ def callfunc1C(hashMap,_files=None,_data=None):
     conv={'hashMap':[{'key':'_idtsd','value':hashMap.get('_idtsd')},{'key':'_nametsd','value':hashMap.get('_nametsd')}]}
     _status_connect = "Offline"
     try:
-        ret=post(url, text=conv, auth=auth, headers={'content-type': 'application/json; charset=utf-8'}, timeout=60)
+        ret=post(url, json=conv, auth=auth, headers={'content-type': 'application/json; charset=utf-8'}, timeout=60)
         ret.encoding = 'UTF-8'
     except Exception as er :
         hashMap.put("toast","Ошибка подключения к http сервису 1С: " + str(er))    
