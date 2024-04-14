@@ -145,7 +145,9 @@ def Scanning(hashMap,_files=None,_data=None):
                 hashMap.put("toast","Номенклатура со ШК:"+barcode+" в документе не найдена")
     # не нашли, ищем в базе 
     hashMap.put("func1C","ПоискНоменклатуры")
-    newhashMap=callfunc1C(hashMap)   
+    names_get=["Номенклатура"]
+    names_put=["barcode"]
+    newhashMap=callfunc1C(hashMap,names_put,names_get)   
 #    hashMap.put("RefreshScreen","")
     return hashMap
 
@@ -165,7 +167,7 @@ def GetProduct(hashMap,_files=None,_data=None):
     return hashMap
 
 # Функция вызов функции http сервиса 1С
-def callfunc1C(hashMap,_files=None,_data=None):
+def callfunc1C(hashMap,names_put,names_get):
     func1C=hashMap.get("func1C")     
     if not func1C:
         return hashMap
@@ -184,7 +186,13 @@ def callfunc1C(hashMap,_files=None,_data=None):
         return hashMap
     password1c = str(db.get("password1c"))
     auth = HTTPBasicAuth(login1c.encode('UTF-8'), password1c.encode('UTF-8'))
-    conv=hashMap.export()
+    # подготовим параметры
+    mp=[]
+    names_put.Append('_idtsd')
+    d={}
+    for name in names_put:
+        d.update({name:hashMap.get(name)})
+    conv={'hashMap':[d]} 
 #    conv={'hashMap':[{'key':'_idtsd','value':hashMap.get('_idtsd')},{'key':'barcode','value':hashMap.get('barcode')}]}
     _status_connect = "Offline"
     try:
@@ -196,9 +204,9 @@ def callfunc1C(hashMap,_files=None,_data=None):
         try:
             hashMap.put("toast",ret.text)
             fullresp = json.loads(ret.text)
-#            newhashMap=fullresp['hashmap']
-#            for el2 in newhashMap :
-#                hashMap.put(el2['key'],el2['value'])
+            newhashMap=fullresp['hashmap']
+            for name in names_get:
+                hashMap.put(name,newhashMap[name])
 #            ErrorMessage=fullresp['ErrorMessage']
 #            if ErrorMessage == '' :
 #                _status_connect = "Online"  
