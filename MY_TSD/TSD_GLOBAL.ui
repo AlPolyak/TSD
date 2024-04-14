@@ -194,7 +194,8 @@ def callfunc1C(hashMap,_files=None,_data=None):
         hashMap.put("toast","Ошибка подключения к http сервису 1С: " + str(er))    
     if ret.status_code == 200 :
         try:
-            fullresp = json.loads(ret.text)
+            hashMap.put("toast",ret.text)
+#           fullresp = json.loads(ret.text)
 #            newhashMap=fullresp['hashmap']
 #            for el2 in newhashMap :
 #                hashMap.put(el2['key'],el2['value'])
