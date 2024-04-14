@@ -187,15 +187,15 @@ def callfunc1C(hashMap,_files=None,_data=None):
 #    conv=json.dumps(hashMap,ensure_ascii=False)
     conv={'hashMap':[{'key':'_idtsd','value':hashMap.get('_idtsd')},{'key':'barcode','value':hashMap.get('barcode')}]}
     _status_connect = "Offline"
-#    try:
-#        ret=post(url, json=conv, auth=auth, headers={'content-type': 'application/json; charset=utf-8'}, timeout=60)
-#        ret.encoding = 'UTF-8'
-#    except Exception as er :
-#        hashMap.put("toast","Ошибка подключения к http сервису 1С: " + str(er))    
-#    if ret.status_code == 200 :
-#        try:
-#            hashMap.put("toast",ret.text)
-#           fullresp = json.loads(ret.text)
+    try:
+        ret=post(url, json=conv, auth=auth, headers={'content-type': 'application/json; charset=utf-8'}, timeout=60)
+        ret.encoding = 'UTF-8'
+    except Exception as er :
+        hashMap.put("toast","Ошибка подключения к http сервису 1С: " + str(er))    
+    if ret.status_code == 200 :
+        try:
+            hashMap.put("toast",ret.text)
+            fullresp = json.loads(ret.text)
 #            newhashMap=fullresp['hashmap']
 #            for el2 in newhashMap :
 #                hashMap.put(el2['key'],el2['value'])
@@ -204,12 +204,12 @@ def callfunc1C(hashMap,_files=None,_data=None):
 #                _status_connect = "Online"  
 #            else:
 #                hashMap.put("toast",ErrorMessage)
-#        except Exception as er :
-#            hashMap.put("toast",ret.text +' '+ str(er))    
-#    elif ret.status_code == 401 :
-#        hashMap.put("toast","Не корректный логин или пароль")
-#    else : 
-#        hashMap.put("toast","Ошибка подключения к http сервису 1С: "+str(ret.status_code))
+        except Exception as er :
+            hashMap.put("toast",ret.text +' '+ str(er))    
+    elif ret.status_code == 401 :
+        hashMap.put("toast","Не корректный логин или пароль")
+    else : 
+        hashMap.put("toast","Ошибка подключения к http сервису 1С: "+str(ret.status_code))
     if _status_connect=="Online":
         color="<font color = ""#006400"">"
     else:
