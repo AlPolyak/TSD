@@ -188,8 +188,7 @@ def callfunc1C(hashMap,_files=None,_data=None):
     conv={'hashMap':[{'key':'_idtsd','value':hashMap.get('_idtsd')},{'key':'barcode','value':hashMap.get('barcode')}]}
     _status_connect = "Offline"
     try:
-#'content-type': 'application/json;
-        ret=post(url, json=conv, auth=auth, headers={ charset='utf-8'}, timeout=60)
+        ret=post(url, json=conv, auth=auth, headers={'content-type': 'application/json; charset='utf-8'}, timeout=60)
         ret.encoding = 'UTF-8'
     except Exception as er :
         hashMap.put("toast","Ошибка подключения к http сервису 1С: " + str(er))    
