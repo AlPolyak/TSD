@@ -188,7 +188,7 @@ def callfunc1C(hashMap,names_put,names_get):
     auth = HTTPBasicAuth(login1c.encode('UTF-8'), password1c.encode('UTF-8'))
     # подготовим параметры
     mp=[]
-    names_put.Append('_idtsd')
+    names_put.append('_idtsd')
     d={}
     for name in names_put:
         d.update({name:hashMap.get(name)})
