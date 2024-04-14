@@ -207,6 +207,10 @@ def callfunc1C(hashMap,names_put,names_get):
             newhashMap=fullresp['hashmap']
             for name in names_get:
                 hashMap.put(name,newhashMap[name])
+# Если найдено несколько номенклатур, то показать выбор
+# Если не найлена, то сообщение, если ошибка - сообщение
+# Если найдена одна, то если есть настройка - ввод количества,
+# иначе добавление количества факт в накладную
 #            ErrorMessage=fullresp['ErrorMessage']
 #            if ErrorMessage == '' :
 #                _status_connect = "Online"  
