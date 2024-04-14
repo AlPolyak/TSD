@@ -167,7 +167,7 @@ def GetProduct(hashMap,_files=None,_data=None):
 # Функция вызов функции http сервиса 1С
 def callfunc1C(hashMap,_files=None,_data=None):
     func1C=hashMap.get("func1C")    
-    if func1C=="":
+    if not func1C:
         return hashMap
     noClass = jclass("ru.travelfood.simple_ui.NoSQL")
     db = noClass("dbtsd")
