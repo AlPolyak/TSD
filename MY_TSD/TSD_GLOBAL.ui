@@ -166,8 +166,7 @@ def GetProduct(hashMap,_files=None,_data=None):
 
 # Функция вызов функции http сервиса 1С
 def callfunc1C(hashMap,_files=None,_data=None):
-    func1C=hashMap.get("func1C")    
-    hashMap=screenmessage(hashMap,func1C) 
+    func1C=hashMap.get("func1C")     
     if not func1C:
         return hashMap
     noClass = jclass("ru.travelfood.simple_ui.NoSQL")
@@ -178,7 +177,7 @@ def callfunc1C(hashMap,_files=None,_data=None):
         return hashMap
     url = "http://"+IP+"/UNF/hs/simpleuiTSD/set_input_direct/"+func1C
     url = url.encode('UTF-8')
-
+    hashMap=screenmessage(hashMap,func1C) 
     login1c = db.get("login1c")
     if login1c == None :
         hashMap.put("toast","Не задан Login http сервиса")
@@ -220,9 +219,9 @@ def callfunc1C(hashMap,_files=None,_data=None):
     return hashMap
 
 def screenmessage(hashMap,mess,cap_mess=None):
-    hashMap.put("_message",mess)
+    hashMap.put("_message",str(mess))
     if cap_mess==None:
         cap_mess=""    
-    hashMap.put("_cap_message",cap_mess)
+    hashMap.put("_cap_message",str(cap_mess))
     hashMap.put("ShowScreen","Сообщение")
     return hashMap
