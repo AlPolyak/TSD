@@ -185,7 +185,7 @@ def callfunc1C(hashMap,_files=None,_data=None):
     password1c = str(db.get("password1c"))
     auth = HTTPBasicAuth(login1c.encode('UTF-8'), password1c.encode('UTF-8'))
 #    conv=json.dumps(hashMap,ensure_ascii=False)
-    conv={'hashMap':[{'key':'_idtsd','value':hashMap.get('_idtsd')},{'key':'_nametsd','value':hashMap.get('_nametsd')}]}
+    conv={'hashMap':[{'key':'_idtsd','value':hashMap.get('_idtsd')},{'key':'barcode','value':hashMap.get('barcode')}]}
     _status_connect = "Offline"
     try:
         ret=post(url, json=conv, auth=auth, headers={'content-type': 'application/json; charset=utf-8'}, timeout=60)
@@ -195,14 +195,14 @@ def callfunc1C(hashMap,_files=None,_data=None):
     if ret.status_code == 200 :
         try:
             fullresp = json.loads(ret.text)
-            newhashMap=fullresp['hashmap']
-            for el2 in newhashMap :
-                hashMap.put(el2['key'],el2['value'])
-            ErrorMessage=fullresp['ErrorMessage']
-            if ErrorMessage == '' :
-                _status_connect = "Online"  
-            else:
-                hashMap.put("toast",ErrorMessage)
+#            newhashMap=fullresp['hashmap']
+#            for el2 in newhashMap :
+#                hashMap.put(el2['key'],el2['value'])
+#            ErrorMessage=fullresp['ErrorMessage']
+#            if ErrorMessage == '' :
+#                _status_connect = "Online"  
+#            else:
+#                hashMap.put("toast",ErrorMessage)
         except Exception as er :
             hashMap.put("toast",ret.text +' '+ str(er))    
     elif ret.status_code == 401 :
