@@ -145,7 +145,7 @@ def Scanning(hashMap,_files=None,_data=None):
                 hashMap.put("toast","Номенклатура со ШК:"+barcode+" в документе не найдена")
     # не нашли, ищем в базе 
     hashMap.put("func1C","ПоискНоменклатуры")
-#    newhashMap=callfunc1C(hashMap)   
+    newhashMap=callfunc1C(hashMap)   
 #    hashMap.put("RefreshScreen","")
     return hashMap
 
@@ -187,11 +187,11 @@ def callfunc1C(hashMap,_files=None,_data=None):
 #    conv=json.dumps(hashMap,ensure_ascii=False)
     conv={'hashMap':[{'key':'_idtsd','value':hashMap.get('_idtsd')},{'key':'barcode','value':hashMap.get('barcode')}]}
     _status_connect = "Offline"
-    try:
-        ret=post(url, json=conv, auth=auth, headers={'content-type': 'application/json; charset=utf-8'}, timeout=60)
+#    try:
+#        ret=post(url, json=conv, auth=auth, headers={'content-type': 'application/json; charset=utf-8'}, timeout=60)
 #        ret.encoding = 'UTF-8'
-    except Exception as er :
-        hashMap.put("toast","Ошибка подключения к http сервису 1С: " + str(er))    
+#    except Exception as er :
+#        hashMap.put("toast","Ошибка подключения к http сервису 1С: " + str(er))    
 #    if ret.status_code == 200 :
 #        try:
 #            hashMap.put("toast",ret.text)
@@ -210,11 +210,11 @@ def callfunc1C(hashMap,_files=None,_data=None):
 #        hashMap.put("toast","Не корректный логин или пароль")
 #    else : 
 #        hashMap.put("toast","Ошибка подключения к http сервису 1С: "+str(ret.status_code))
-#    if _status_connect=="Online":
-#        color="<font color = ""#006400"">"
-#    else:
-#        color="<font color = ""red"">"
-#    hashMap.put("_status_connect",color+_status_connect+"</font>")
+    if _status_connect=="Online":
+        color="<font color = ""#006400"">"
+    else:
+        color="<font color = ""red"">"
+    hashMap.put("_status_connect",color+_status_connect+"</font>")
 #    hashMap.put("RefreshScreen","")
     return hashMap
 
