@@ -79,7 +79,7 @@ def connect(hashMap,_files=None,_data=None):
     conv={'hashmap':[{'key':'_idtsd','value':hashMap.get('_idtsd')},{'key':'_nametsd','value':hashMap.get('_nametsd')}]}
     _status_connect = "Offline"
     try:
-        ret=post(url, json=conv, auth=auth, headers={'content-type': 'application/json; charset=utf-8'}, timeout=60)
+        ret=post(url, data=conv, auth=auth, headers={'content-type': 'application/json; charset=utf-8'}, timeout=60)
         ret.encoding = 'UTF-8'
     except Exception as er :
         hashMap.put("toast","Ошибка подключения к http сервису 1С: " + str(er))    
