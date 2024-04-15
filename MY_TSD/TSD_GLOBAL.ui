@@ -235,8 +235,7 @@ def screenmessage(hashMap,mess,cap_mess=None):
     hashMap.put("ShowScreen","Сообщение")
     return hashMap
 
-def cardslist(hashMap,object):
-
+def cardslist(hashMap,object1):
     j = { "customcards":{
             "options":{
             "search_enabled":True,
@@ -277,21 +276,20 @@ def cardslist(hashMap,object):
             "Variable": ""
         },
         {
-        "type": "TextView",
-        "show_by_condition": "false",
-        "Value": "@val",
-        "NoRefresh": False,
-        "document_type": "",
-        "mask": "",
-        "Variable": "",
-        "TextSize": "16",
-        "TextColor": "#DB7093",
-        "TextBold": True,
-        "TextItalic": False,
-        "BackgroundColor": "",
-        "width": "match_parent",
-        "height": "wrap_content",
-        "weight": 2
+            "type": "TextView",
+            "show_by_condition": "false",
+            "Value": "@val",
+            "NoRefresh": False,
+            "document_type": "",
+            "mask": "",
+            "Variable": "",
+            "TextSize": "16",
+            "TextColor": "#DB7093",
+            "TextBold": True,
+            "TextItalic": False,
+            "BackgroundColor": "",
+            "width": "match_parent",
+            "height": "wrap_content",
         }
         ]
     }
@@ -300,7 +298,7 @@ def cardslist(hashMap,object):
 
 j["customcards"]["cardsdata"]=[]
 i=0
-for prod in object:
+for prod in object1:
     c =  {
     "key": str(i),
     "string1": prod["Номенклатура"],
