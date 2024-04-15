@@ -146,11 +146,21 @@ def Scanning(hashMap,_files=None,_data=None):
     names_get=["Номенклатура"]
     names_put=["barcode"]
     newhashMap=callfunc1C(hashMap,names_put,names_get) 
-    hashMap.put("toast",newhashMap.get("Номенклатура"))
-# Если найдено несколько номенклатур, то показать выбор
-# Если не найлена, то сообщение, если ошибка - сообщение
+    sprods=json.loads(newhashMap.get("Номенклатура"))
+    if not sprods:
+        hashMap=screenmessage(hashMap,"Не получена номенклатура по ШК:"+barcode) 
+    else:
+        retcode=sprods["КодЗавершения"]
+        if retcode==0:
+            prod=sprods["Номенклатура"][0]
 # Если найдена одна, то если есть настройка - ввод количества,
-# иначе добавление количества факт в накладную
+# иначе добавление количества факт в накладную        
+            hashMap.put("toast",prod["Номенклатура"])
+        elif retcode==3:
+ # Если найдено несколько номенклатур, то показать выбор    
+            hashMap.put("toast",sprods["ТекстОшибки"])
+        else:
+            hashMap.put("toast",sprods["ТекстОшибки"])
 #    hashMap.put("RefreshScreen","")
     return hashMap
 
