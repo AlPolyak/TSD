@@ -235,79 +235,78 @@ def screenmessage(hashMap,mess,cap_mess=None):
     hashMap.put("ShowScreen","Сообщение")
     return hashMap
 
-#def cardslist(hashMap,object1):
-#    j = { "customcards":{
-#            "options":{
-#            "search_enabled":True,
-#            "save_position":True
-#            },
-#        "layout": {
-#        "type": "LinearLayout",
-#        "orientation": "vertical",
-#        "height": "match_parent",
-#        "width": "match_parent",
-#        "weight": "0",
-#        "Elements": [
-#        {
-#            "type": "TextView",
-#            "show_by_condition": "",
-#            "Value": "@string1",
-#            "NoRefresh": False,
-#            "document_type": "",
-#            "mask": "",
-#            "Variable": ""
-#        },
-#        {
-#            "type": "TextView",
-#            "show_by_condition": "",
-#            "Value": "@string2",
-#            "NoRefresh": False,
-#            "document_type": "",
-#            "mask": "",
-#            "Variable": ""
-#        },
-#       {
-#            "type": "TextView",
-#            "show_by_condition": "",
-#            "Value": "@string3",
-#            "NoRefresh": False,
-#            "document_type": "",
-#            "mask": "",
-#            "Variable": ""
-#        },
-#        {
-#            "type": "TextView",
-#            "show_by_condition": "false",
-#            "Value": "@val",
-#            "NoRefresh": False,
-#            "document_type": "",
-#            "mask": "",
-#            "Variable": "",
-#            "TextSize": "16",
-#            "TextColor": "#DB7093",
-#            "TextBold": True,
-#            "TextItalic": False,
-#            "BackgroundColor": "",
-#            "width": "match_parent",
-#            "height": "wrap_content",
-#        }
-#        ]
-#    }
-#}
-#}
+def cardslist(hashMap,object1):
+    j = { "customcards":{
+            "options":{
+            "search_enabled":True,
+            "save_position":True
+            },
+        "layout": {
+        "type": "LinearLayout",
+        "orientation": "vertical",
+        "height": "match_parent",
+        "width": "match_parent",
+        "weight": "0",
+        "Elements": [
+        {
+            "type": "TextView",
+            "show_by_condition": "",
+            "Value": "@string1",
+            "NoRefresh": False,
+            "document_type": "",
+            "mask": "",
+            "Variable": ""
+        },
+        {
+            "type": "TextView",
+            "show_by_condition": "",
+            "Value": "@string2",
+            "NoRefresh": False,
+            "document_type": "",
+            "mask": "",
+            "Variable": ""
+        },
+        {
+        "type": "TextView",
+        "show_by_condition": "",
+        "Value": "@string3",
+        "NoRefresh": False,
+        "document_type": "",
+        "mask": "",
+        "Variable": ""
+        },
+        {
+        "type": "TextView",
+        "show_by_condition": "false",
+        "Value": "@val",
+        "NoRefresh": False,
+        "document_type": "",
+        "mask": "",
+        "Variable": "",
+        "TextSize": "16",
+        "TextColor": "#DB7093",
+        "TextBold": True,
+        "TextItalic": False,
+        "BackgroundColor": "",
+        "width": "match_parent",
+        "height": "wrap_content",
+        }
+        ]
+        }
+        }
+    }
 
-#j["customcards"]["cardsdata"]=[]
-#i=0
-#for prod in object1:
-#    c =  {
-#    "key": str(i),
-#    "string1": prod["Номенклатура"],
-#    "string2": prod["Характеристика"],
-#    "string3": prod["ЕдиницаИзмерения"],
-#    "val":  prod["Количество"],
-#    i=i+1
-#    }
-#    j["customcards"]["cardsdata"].append(c)
-#hashMap.put("cards_prod",json.dumps(j,ensure_ascii=False).encode('utf8').decode())
-
-#return hashMap
+    j["customcards"]["cardsdata"]=[]
+    i=0
+    for prod in object1:
+        c =  {
+        "key": str(i),
+        "string1": prod["Номенклатура"],
+        "string2": prod["Характеристика"],
+        "string3": prod["ЕдиницаИзмерения"],
+        "val":  prod["Количество"],
+        i=i+1
+        }
+        j["customcards"]["cardsdata"].append(c)
+    hashMap.put("cards_prod",json.dumps(j,ensure_ascii=False).encode('utf8').decode())
+    return hashMap
