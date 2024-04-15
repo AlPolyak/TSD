@@ -195,7 +195,7 @@ def callfunc1C(hashMap,names_put,names_get):
     names_put.append('_idtsd')
     d={}
     for name in names_put:
-        d.update({name:hashMap.get(name)})
+        d.update({"key":name,"value":hashMap.get(name)})
     conv={'hashMap':[d]} 
 #    conv={'hashMap':[{'key':'_idtsd','value':hashMap.get('_idtsd')},{'key':'barcode','value':hashMap.get('barcode')}]}
     _status_connect = "Offline"
