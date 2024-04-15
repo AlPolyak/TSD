@@ -159,8 +159,8 @@ def Scanning(hashMap,_files=None,_data=None):
         elif retcode==3:
  # Если найдено несколько номенклатур, то показать выбор    
             hashMap.put("toast",sprods["ТекстОшибки"])
-            hashMap=cardslist(hashMap,prod["Номенклатура"])
-            hashMap.put("ShowScreen","Выбор номенклатуры")
+#            hashMap=cardslist(hashMap,prod["Номенклатура"])
+#            hashMap.put("ShowScreen","Выбор номенклатуры")
         else:
             hashMap.put("toast",sprods["ТекстОшибки"])
 #    hashMap.put("RefreshScreen","")
