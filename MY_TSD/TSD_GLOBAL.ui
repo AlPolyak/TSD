@@ -148,6 +148,7 @@ def Scanning(hashMap,_files=None,_data=None):
     names_get=["Номенклатура"]
     names_put=["barcode"]
     newhashMap=callfunc1C(hashMap,names_put,names_get) 
+    hashMap.put("toast",newhashMap.get("Номенклатура")
 # Если найдено несколько номенклатур, то показать выбор
 # Если не найлена, то сообщение, если ошибка - сообщение
 # Если найдена одна, то если есть настройка - ввод количества,
@@ -207,7 +208,7 @@ def callfunc1C(hashMap,names_put,names_get):
         ErrorMessage="Ошибка подключения к http сервису 1С при выполнении функции: "+func1C+", "+ str(er)
     if ret.status_code == 200 :
         try:
-            hashMap.put("toast",ret.text)
+#            hashMap.put("toast",ret.text)
             fullresp = json.loads(ret.text)
             newhashMap=fullresp['hashmap']
             for name in names_get:
