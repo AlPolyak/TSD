@@ -147,7 +147,11 @@ def Scanning(hashMap,_files=None,_data=None):
     hashMap.put("func1C","ПоискНоменклатуры")
     names_get=["Номенклатура"]
     names_put=["barcode"]
-    newhashMap=callfunc1C(hashMap,names_put,names_get)   
+    newhashMap=callfunc1C(hashMap,names_put,names_get) 
+# Если найдено несколько номенклатур, то показать выбор
+# Если не найлена, то сообщение, если ошибка - сообщение
+# Если найдена одна, то если есть настройка - ввод количества,
+# иначе добавление количества факт в накладную
 #    hashMap.put("RefreshScreen","")
     return hashMap
 
@@ -199,7 +203,7 @@ def callfunc1C(hashMap,names_put,names_get):
         ret=post(url, json=conv, auth=auth, headers={'content-type': 'application/json; charset=utf-8'}, timeout=60)
         ret.encoding = 'UTF-8'
     except Exception as er :
-        hashMap.put("toast","Ошибка подключения к http сервису 1С: " + str(er))    
+        ErrorMessage="Ошибка подключения к http сервису 1С при выполнении функции: "+func1C+", "+ str(er)
     if ret.status_code == 200 :
         try:
             hashMap.put("toast",ret.text)
@@ -207,21 +211,18 @@ def callfunc1C(hashMap,names_put,names_get):
             newhashMap=fullresp['hashmap']
             for name in names_get:
                 hashMap.put(name,newhashMap[name])
-# Если найдено несколько номенклатур, то показать выбор
-# Если не найлена, то сообщение, если ошибка - сообщение
-# Если найдена одна, то если есть настройка - ввод количества,
-# иначе добавление количества факт в накладную
-#            ErrorMessage=fullresp['ErrorMessage']
-#            if ErrorMessage == '' :
-#                _status_connect = "Online"  
-#            else:
-#                hashMap.put("toast",ErrorMessage)
+            ErrorMessage=fullresp['ErrorMessage']
+            if ErrorMessage == '' :
+                _status_connect = "Online"                              
         except Exception as er :
-            hashMap.put("toast",ret.text +' '+ str(er))    
+            ErrorMessage=ret.text +' '+ str(er)
     elif ret.status_code == 401 :
-        hashMap.put("toast","Не корректный логин или пароль")
+        ErrorMessage="Не корректный логин или пароль"
     else : 
-        hashMap.put("toast","Ошибка подключения к http сервису 1С: "+str(ret.status_code))
+        ErrorMessage="Ошибка подключения к http сервису 1С: "+str(ret.status_code)
+    hashMap.put("ErrorMessage",ErrorMessage) 
+    if not ErrorMessage:
+        hashMap.put("toast",ErrorMessage)       
     if _status_connect=="Online":
         color="<font color = ""#006400"">"
     else:
