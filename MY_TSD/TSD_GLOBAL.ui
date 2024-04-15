@@ -220,7 +220,7 @@ def callfunc1C(hashMap,names_put,names_get):
     else : 
         ErrorMessage="Ошибка подключения к http сервису 1С: "+str(ret.status_code)
     hashMap.put("ErrorMessage",ErrorMessage) 
-    if not ErrorMessage:
+    if ErrorMessage != "":
         hashMap=screenmessage(hashMap,ErrorMessage)       
     if _status_connect=="Online":
         color="<font color = ""#006400"">"
