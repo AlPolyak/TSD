@@ -211,7 +211,7 @@ def callfunc1C(hashMap,names_put,names_get):
             fullresp = json.loads(ret.text)
             newhashMap=fullresp['hashmap']
             for name in names_get:
-                hashMap.put(name,newhashMap[name])
+                hashMap.put(name,newhashMap.get(name))
             ErrorMessage=fullresp['ErrorMessage']
             if ErrorMessage == '' :
                 _status_connect = "Online"                              
