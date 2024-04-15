@@ -148,7 +148,7 @@ def Scanning(hashMap,_files=None,_data=None):
     names_get=["Номенклатура"]
     names_put=["barcode"]
     newhashMap=callfunc1C(hashMap,names_put,names_get) 
-    hashMap.put("toast",newhashMap.get("Номенклатура")
+    hashMap.put("toast",newhashMap.get("Номенклатура"))
 # Если найдено несколько номенклатур, то показать выбор
 # Если не найлена, то сообщение, если ошибка - сообщение
 # Если найдена одна, то если есть настройка - ввод количества,
