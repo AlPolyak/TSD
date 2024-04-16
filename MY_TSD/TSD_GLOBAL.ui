@@ -99,6 +99,16 @@ def getlistdoc(hashMap,_files=None,_data=None):
         screenmessage(hashMap,texterr,"Ошибка соединения с 1С")
     return hashMap
 
+# Функция получить список документов 1С
+def selecteddoc(hashMap,_files=None,_data=None):
+    hashMap.put("func1C","ВыбранДокумент")
+    names_put=["_idtsd","_typeofoperation","_ТСД_Настройки","selected_card_key"]
+    names_get=["ТекстОшибки","ShowScreen","_ТСД_Настройки","cardsofproduct","docresult","_tabproducts"]
+    newhashMap=callfunc1C(hashMap,names_put,names_get) 
+    texterr=newhashMap.get("ТекстОшибки")
+    if texterr!="":
+        screenmessage(hashMap,texterr,"Ошибка соединения с 1С")
+    return hashMap
 
 #Функция при сканировании
 #В зависимости от режима ПоДокументу ищем в документе или в базе 
