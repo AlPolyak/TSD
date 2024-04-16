@@ -97,9 +97,14 @@ def getlistdoc(hashMap,_files=None,_data=None):
     texterr=newhashMap.get("ТекстОшибки")
     if texterr!="":
         screenmessage(hashMap,texterr,"Ошибка соединения с 1С")
+    else:
+        _ТСД_Настройки=json.loads(hashMap.get("_ТСД_Настройки"))
+        if _ТСД_Настройки["ПоДокументу"]!="true":
+            # сохраним документ результат в базе ТСД
+            savedocresult(hashMap)
     return hashMap
 
-# Функция получить список документов 1С
+# Функция получить список строк исходного документа 1С
 def selecteddoc(hashMap,_files=None,_data=None):
     hashMap.put("func1C","ВыбранДокумент")
     names_put=["_idtsd","_typeofoperation","_ТСД_Настройки","selected_card_key"]
@@ -108,6 +113,9 @@ def selecteddoc(hashMap,_files=None,_data=None):
     texterr=newhashMap.get("ТекстОшибки")
     if texterr!="":
         screenmessage(hashMap,texterr,"Ошибка соединения с 1С")
+    else:
+        # сохраним документ результат в базе ТСД
+        savedocresult(hashMap)
     return hashMap
 
 #Функция при сканировании
@@ -309,6 +317,27 @@ def iputqtty(hashMap,mess,cap_mess=None):
     _ТСД_Настройки=json.loads(hashMap.get("_ТСД_Настройки"))
     if _ТСД_Настройки["ВводКоличества"]=="true":   
         hashMap.put("ShowScreen","Ввод  количества")
+    return hashMap
+
+def savedocresult(hashMap):
+    noClass = jclass("ru.travelfood.simple_ui.NoSQL")
+    db = noClass("dbtsd")
+    docresult=hashMap.get("docresult") # строка json
+    # number,ДокументРезультат.Номер);
+    # date,Формат(ДокументРезультат.Дата,"ДФ=ггггММдд"));
+    # type,Строка(ТипЗнч(ДокументРезультат)));
+    # _id,Строка(ДокументРезультат.УникальныйИдентификатор()));
+    # stocks,ТЧ);
+        # prodid,Строка(Стр.Номенклатура.УникальныйИдентификатор()));
+        # prod,Строка(Стр.Номенклатура));
+        # characid,Строка(Стр.Характеристика.УникальныйИдентификатор()));
+        # charac,Строка(Стр.Характеристика));
+        # unitid,Строка(Стр.ЕдиницаИзмерения.УникальныйИдентификатор()));
+        # unit,Строка(Стр.ЕдиницаИзмерения));
+        # quantity,Стр.Количество);
+        # barcode,Стр.Штрихкод);
+    id = db['docresult'].insert(docresult, upsert=True)
+    hashMap.put("_docresultid",id)
     return hashMap
 
 def plus1(hashMap,prod,qnt):
