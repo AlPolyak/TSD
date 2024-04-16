@@ -61,51 +61,15 @@ def set_name_tsd(hashMap,_files=None,_data=None):
 
 # Функция подключение к http сервису 1С
 def connect(hashMap,_files=None,_data=None):
-    noClass = jclass("ru.travelfood.simple_ui.NoSQL")
-    db = noClass("dbtsd")
-    IP = db.get("IP")
-    if IP == None :
-        hashMap.put("toast","Не задан IP http сервиса")
-        return hashMap
-    url = 'http://'+IP+'/UNF/hs/simpleuiTSD/set_input_direct/тестHTTP'
-    url = url.encode('UTF-8')
-    login1c = db.get("login1c")
-    if login1c == None :
-        hashMap.put("toast","Не задан Login http сервиса")
-        return hashMap
-    password1c = str(db.get("password1c"))
-    auth = HTTPBasicAuth(login1c.encode('UTF-8'), password1c.encode('UTF-8'))
-#    conv=json.dumps(hashmap)
-    conv={'hashmap':[{'key':'_idtsd','value':hashMap.get('_idtsd')},{'key':'_nametsd','value':hashMap.get('_nametsd')}]}
-    _status_connect = "Offline"
-    try:
-        ret=post(url, json=conv, auth=auth, headers={'content-type': 'application/json; charset=utf-8'}, timeout=60)
-        ret.encoding = 'UTF-8'
-    except Exception as er :
-        hashMap.put("toast","Ошибка подключения к http сервису 1С: " + str(er))    
-    if ret.status_code == 200 :
-        try:
-            fullresp = json.loads(ret.text)
-            newhashMap=fullresp['hashmap']
-            for el2 in newhashMap :
-                hashMap.put(el2['key'],el2['value'])
-            ErrorMessage=fullresp['ErrorMessage']
-            if ErrorMessage == '' :
-                _status_connect = "Online"  
-            else:
-                hashMap.put("toast",ErrorMessage)
-        except Exception as er :
-            hashMap.put("toast",ret.text +' '+ str(er))    
-    elif ret.status_code == 401 :
-        hashMap.put("toast","Не корректный логин или пароль")
-    else : 
-        hashMap.put("toast","Ошибка подключения к http сервису 1С: "+str(ret.status_code))
-    if _status_connect=="Online":
-        color="<font color = ""#006400"">"
+    hashMap.put("func1C","Подключение")
+    names_get=["_idtsd","_nametsd"]
+    names_put=["ТекстОшибки","ShowScreen"]
+    newhashMap=callfunc1C(hashMap,names_put,names_get) 
+    texterr=newhashMap.get("ТекстОшибки")
+    if texterr="":
+        hashMap.put("ShowScreen",newhashMap.get("ShowScreen"))
     else:
-        color="<font color = ""red"">"
-    hashMap.put("_status_connect",color+_status_connect+"</font>")
-    hashMap.put("RefreshScreen","")
+        screenmessage(hashMap,texterr,"Ошибка соединения с 1С")
     return hashMap
 
 # Функция выбор операции
