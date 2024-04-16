@@ -62,8 +62,8 @@ def set_name_tsd(hashMap,_files=None,_data=None):
 # Функция подключение к http сервису 1С
 def connect(hashMap,_files=None,_data=None):
     hashMap.put("func1C","Подключение")
-    names_get=["_idtsd","_nametsd"]
-    names_put=["ТекстОшибки","ShowScreen"]
+    names_put=["_idtsd","_nametsd"]
+    names_get=["ТекстОшибки","ShowScreen"]
     newhashMap=callfunc1C(hashMap,names_put,names_get) 
     texterr=newhashMap.get("ТекстОшибки")
     if texterr=="":
