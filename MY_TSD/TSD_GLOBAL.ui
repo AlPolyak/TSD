@@ -90,7 +90,7 @@ def type_of_operation(hashMap,_files=None,_data=None):
 
 # Функция получить список документов 1С
 def getlistdoc(hashMap,_files=None,_data=None):
-    hashMap.put("func1C","Подключение")
+    hashMap.put("func1C","ПолучитьСписок")
     names_put=["_idtsd","listener","_typeofoperation","_ТСД_Настройки"]
     names_get=["ТекстОшибки","ShowScreen","_ТСД_Настройки","cards","docresult"]
     newhashMap=callfunc1C(hashMap,names_put,names_get) 
