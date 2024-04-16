@@ -253,6 +253,7 @@ def cardslist(hashMap,object1):
             "type": "TextView",
             "show_by_condition": "",
             "Value": "@string1",
+            "TextSize": "20",
             "NoRefresh": False,
             "document_type": "",
             "mask": "",
@@ -262,19 +263,11 @@ def cardslist(hashMap,object1):
             "type": "TextView",
             "show_by_condition": "",
             "Value": "@string2",
+            "TextSize": "20",
             "NoRefresh": False,
             "document_type": "",
             "mask": "",
             "Variable": ""
-        },
-        {
-        "type": "TextView",
-        "show_by_condition": "",
-        "Value": "@string3",
-        "NoRefresh": False,
-        "document_type": "",
-        "mask": "",
-        "Variable": ""
         },
         {
         "type": "TextView",
@@ -302,9 +295,8 @@ def cardslist(hashMap,object1):
     for prod in object1:
         c =  {
         "key": str(i),
-        "string1": prod["Номенклатура"],
-        "string2": prod["Характеристика"],
-        "string3": prod["ЕдиницаИзмерения"],
+        "string1": prod["Номенклатура"]+" "+prod["Характеристика"].rstrip(),
+        "string2": prod["ЕдиницаИзмерения"],
         "val":  prod["Количество"]
         }
         i=i+1  
