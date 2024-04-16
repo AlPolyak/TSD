@@ -66,7 +66,7 @@ def connect(hashMap,_files=None,_data=None):
     names_put=["ТекстОшибки","ShowScreen"]
     newhashMap=callfunc1C(hashMap,names_put,names_get) 
     texterr=newhashMap.get("ТекстОшибки")
-    if texterr="":
+    if texterr=="":
         hashMap.put("ShowScreen",newhashMap.get("ShowScreen"))
     else:
         screenmessage(hashMap,texterr,"Ошибка соединения с 1С")
