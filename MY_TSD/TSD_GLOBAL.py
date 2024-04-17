@@ -1,19 +1,19 @@
 from pysimplebase import SimpleBase
 import json
 
-#from java import jclass 
+#from ru.travelfood.simple_ui import NoSQL as noClass
+from java import jclass
 import uuid
 import requests
 from requests import post
 from requests.auth import HTTPBasicAuth
 
-db = SimpleBase("dbtsd")
-
 #https://api.github.com/repos/AlPolyak/TSD/contents/MY_TSD/TSD_GLOBAL.ui
 # Функция запускается при старте программы ищет и устанавливает ID
 def init_on_start(hashMap,_files=None,_data=None):
-   # noClass = jclass("ru.travelfood.simple_ui.NoSQL")
+    noClass = jclass("ru.travelfood.simple_ui.NoSQL")
     db = noClass("dbtsd")
+#    db.initialize()
     result = db.get("idtsd")
     if not result:
         _idtsd=str(uuid.uuid4())
@@ -36,7 +36,7 @@ def init_on_start(hashMap,_files=None,_data=None):
 
 # Функция запускается при вводе имени тсд
 def set_name_tsd(hashMap,_files=None,_data=None):
-  #  noClass = jclass("ru.travelfood.simple_ui.NoSQL")
+    noClass = jclass("ru.travelfood.simple_ui.NoSQL")
     db = noClass("dbtsd")
     listener=hashMap.get("listener")
     if listener == "ntsd":
@@ -74,12 +74,14 @@ def connect(hashMap,_files=None,_data=None):
 
 # Функция выбор операции
 def type_of_operation(hashMap,_files=None,_data=None):
- #   noClass = jclass("ru.travelfood.simple_ui.NoSQL")
+    noClass = jclass("ru.travelfood.simple_ui.NoSQL")
     db = noClass("dbtsd")
     listener=hashMap.get("listener")
     if listener in ["btn_get","btn_put","btn_inv"]:
         db.put("typeofoperation",listener,True)
         hashMap.put("_typeofoperation",listener)
+#        hashMap.put("noRefresh","");
+#        hashMap.put("ShowScreen","Выбор документа")
     elif listener=="btn_ret":
         db.put("typeofoperation","",True)
         hashMap.put("_typeofoperation","")
@@ -95,14 +97,9 @@ def getlistdoc(hashMap,_files=None,_data=None):
     texterr=newhashMap.get("ТекстОшибки")
     if texterr!="":
         screenmessage(hashMap,texterr,"Ошибка соединения с 1С")
-    else:
-        _ТСД_Настройки=json.loads(hashMap.get("_ТСД_Настройки"))
-        if _ТСД_Настройки["ПоДокументу"]!="true":
-            # сохраним документ результат в базе ТСД
-            savedocresult(hashMap)
     return hashMap
 
-# Функция получить список строк исходного документа 1С
+# Функция получить список документов 1С
 def selecteddoc(hashMap,_files=None,_data=None):
     hashMap.put("func1C","ВыбранДокумент")
     names_put=["_idtsd","_typeofoperation","_ТСД_Настройки","selected_card_key"]
@@ -111,9 +108,6 @@ def selecteddoc(hashMap,_files=None,_data=None):
     texterr=newhashMap.get("ТекстОшибки")
     if texterr!="":
         screenmessage(hashMap,texterr,"Ошибка соединения с 1С")
-    else:
-        # сохраним документ результат в базе ТСД
-        savedocresult(hashMap)
     return hashMap
 
 #Функция при сканировании
@@ -176,7 +170,7 @@ def callfunc1C(hashMap,names_put,names_get):
     func1C=hashMap.get("func1C")     
     if not func1C:
         return hashMap
-  #  noClass = jclass("ru.travelfood.simple_ui.NoSQL")
+    noClass = jclass("ru.travelfood.simple_ui.NoSQL")
     db = noClass("dbtsd")
     IP = db.get("IP")
     if IP == None :
@@ -315,27 +309,6 @@ def iputqtty(hashMap,mess,cap_mess=None):
     _ТСД_Настройки=json.loads(hashMap.get("_ТСД_Настройки"))
     if _ТСД_Настройки["ВводКоличества"]=="true":   
         hashMap.put("ShowScreen","Ввод  количества")
-    return hashMap
-
-def savedocresult(hashMap):
-   # noClass = jclass("ru.travelfood.simple_ui.NoSQL")
-    db = noClass("dbtsd")
-    docresult=hashMap.get("docresult") # строка json
-    # number,ДокументРезультат.Номер);
-    # date,Формат(ДокументРезультат.Дата,"ДФ=ггггММдд"));
-    # type,Строка(ТипЗнч(ДокументРезультат)));
-    # _id,Строка(ДокументРезультат.УникальныйИдентификатор()));
-    # stocks,ТЧ);
-        # prodid,Строка(Стр.Номенклатура.УникальныйИдентификатор()));
-        # prod,Строка(Стр.Номенклатура));
-        # characid,Строка(Стр.Характеристика.УникальныйИдентификатор()));
-        # charac,Строка(Стр.Характеристика));
-        # unitid,Строка(Стр.ЕдиницаИзмерения.УникальныйИдентификатор()));
-        # unit,Строка(Стр.ЕдиницаИзмерения));
-        # quantity,Стр.Количество);
-        # barcode,Стр.Штрихкод);
-    id = db['docresult'].insert(docresult, upsert=True)
-    hashMap.put("_docresultid",id)
     return hashMap
 
 def plus1(hashMap,prod,qnt):
