@@ -1,15 +1,18 @@
 from pysimplebase import SimpleBase
 import json
-from java import jclass
+
+#from java import jclass 
 import uuid
 import requests
 from requests import post
 from requests.auth import HTTPBasicAuth
 
+db = SimpleBase("dbtsd")
+
 #https://api.github.com/repos/AlPolyak/TSD/contents/MY_TSD/TSD_GLOBAL.ui
 # Функция запускается при старте программы ищет и устанавливает ID
 def init_on_start(hashMap,_files=None,_data=None):
-    noClass = jclass("ru.travelfood.simple_ui.NoSQL")
+   # noClass = jclass("ru.travelfood.simple_ui.NoSQL")
     db = noClass("dbtsd")
     result = db.get("idtsd")
     if not result:
@@ -33,7 +36,7 @@ def init_on_start(hashMap,_files=None,_data=None):
 
 # Функция запускается при вводе имени тсд
 def set_name_tsd(hashMap,_files=None,_data=None):
-    noClass = jclass("ru.travelfood.simple_ui.NoSQL")
+  #  noClass = jclass("ru.travelfood.simple_ui.NoSQL")
     db = noClass("dbtsd")
     listener=hashMap.get("listener")
     if listener == "ntsd":
@@ -71,7 +74,7 @@ def connect(hashMap,_files=None,_data=None):
 
 # Функция выбор операции
 def type_of_operation(hashMap,_files=None,_data=None):
-    noClass = jclass("ru.travelfood.simple_ui.NoSQL")
+ #   noClass = jclass("ru.travelfood.simple_ui.NoSQL")
     db = noClass("dbtsd")
     listener=hashMap.get("listener")
     if listener in ["btn_get","btn_put","btn_inv"]:
@@ -173,7 +176,7 @@ def callfunc1C(hashMap,names_put,names_get):
     func1C=hashMap.get("func1C")     
     if not func1C:
         return hashMap
-    noClass = jclass("ru.travelfood.simple_ui.NoSQL")
+  #  noClass = jclass("ru.travelfood.simple_ui.NoSQL")
     db = noClass("dbtsd")
     IP = db.get("IP")
     if IP == None :
@@ -315,7 +318,7 @@ def iputqtty(hashMap,mess,cap_mess=None):
     return hashMap
 
 def savedocresult(hashMap):
-    noClass = jclass("ru.travelfood.simple_ui.NoSQL")
+   # noClass = jclass("ru.travelfood.simple_ui.NoSQL")
     db = noClass("dbtsd")
     docresult=hashMap.get("docresult") # строка json
     # number,ДокументРезультат.Номер);
