@@ -131,8 +131,9 @@ def Scanning(hashMap,_files=None,_data=None):
                 else:
                     # просто добавим 1
                     plus1(hashMap,prod,1)
-            else:
-                hashMap.put("toast","Номенклатура со ШК:"+barcode+" в документе не найдена")
+                    return hashMap
+        else:
+            hashMap.put("toast","Номенклатура со ШК:"+barcode+" в документе не найдена")
     if _ТСД_Настройки["ДобавлятьСтроки"]=="true":
         # не нашли, ищем в базе 
         hashMap.put("func1C","ПоискНоменклатуры")
@@ -306,12 +307,20 @@ def cardslist(hashMap,object1):
     return hashMap
 
 # Ввод количества
-def iputqtty(hashMap,mess,cap_mess=None):
+def iputqtty(hashMap):
     _ТСД_Настройки=json.loads(hashMap.get("_ТСД_Настройки"))
     if _ТСД_Настройки["ВводКоличества"]=="true":   
         hashMap.put("ShowScreen","Ввод  количества")
+    else:
+        #  просто добавим количество
+        prod=json.loads(hashMap.get("_curprod"))
+        plus1(hashMap,prod,qnt)
     return hashMap
 
 def plus1(hashMap,prod,qnt):
+    # получим по prod ключи номенклатуры
+    # поищем в документе результате эту номенклатуру
+    # если нашли, добавим или заменим в зависимости от настройки qnt
+    # если нет добавим строку
     return hashMap
     
