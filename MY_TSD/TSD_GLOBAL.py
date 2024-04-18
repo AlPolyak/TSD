@@ -238,7 +238,8 @@ def screenmessage(hashMap,mess,cap_mess=None):
     return hashMap
 
 def cardslist(hashMap,object1):
-    j = {"customcards": {
+    j = {
+        "customcards": {
             "options": {
                 "search_enabled": true,
                 "save_position": true
@@ -251,49 +252,40 @@ def cardslist(hashMap,object1):
                 "weight": "0",
                 "Elements": [
                     {
-                        "type": "LinearLayout",
-                        "orientation": "vertical",
-                        "height": "match_parent",
+                        "type": "TextView",
+                        "show_by_condition": "",
+                        "Value": "@string1",
+                        "TextSize": "20",
+                        "NoRefresh": false,
+                        "document_type": "",
+                        "mask": "",
+                        "Variable": ""
+                    },
+                    {
+                        "type": "TextView",
+                        "show_by_condition": "",
+                        "Value": "@string2",
+                        "TextSize": "20",
+                        "NoRefresh": false,
+                        "document_type": "",
+                        "mask": "",
+                        "Variable": ""
+                    },
+                    {
+                        "type": "TextView",
+                        "show_by_condition": "false",
+                        "Value": "@val",
+                        "NoRefresh": false,
+                        "document_type": "",
+                        "mask": "",
+                        "Variable": "",
+                        "TextSize": "16",
+                        "TextColor": "#DB7093",
+                        "TextBold": true,
+                        "TextItalic": false,
+                        "BackgroundColor": "",
                         "width": "match_parent",
-                        "weight": "1",
-                        "Elements": [
-                            {
-                                "type": "TextView",
-                                "show_by_condition": "",
-                                "Value": "@string1",
-                                "TextSize": "20",
-                                "NoRefresh": false,
-                                "document_type": "",
-                                "mask": "",
-                                "Variable": ""
-                            },
-                            {
-                                "type": "TextView",
-                                "show_by_condition": "",
-                                "Value": "@string2",
-                                "TextSize": "20",
-                                "NoRefresh": false,
-                                "document_type": "",
-                                "mask": "",
-                                "Variable": ""
-                            },
-                            {
-                                "type": "TextView",
-                                "show_by_condition": "false",
-                                "Value": "@val",
-                                "NoRefresh": false,
-                                "document_type": "",
-                                "mask": "",
-                                "Variable": "",
-                                "TextSize": "16",
-                                "TextColor": "#DB7093",
-                                "TextBold": true,
-                                "TextItalic": false,
-                                "BackgroundColor": "",
-                                "width": "match_parent",
-                                "height": "wrap_content"
-                            }
-                        ]
+                        "height": "wrap_content"
                     }
                 ]
             }
