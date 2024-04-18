@@ -302,15 +302,13 @@ def cardslist(hashMap,object1):
     }
     
     j["customcards"]["cardsdata"]=[]
-    i=0
     for prod in object1:
         c =  {
-        "key": str(i),
+        "key": str(object1.index(prod)),
         "string1": prod["Номенклатура"]+" "+prod["Характеристика"].rstrip(),
         "string2": prod["ЕдиницаИзмерения"],
         "val":  prod["Количество"]
-        }
-        i=i+1  
+        } 
         j["customcards"]["cardsdata"].append(c)
     hashMap.put("cards_prod",json.dumps(j,ensure_ascii=False).encode('utf8').decode())
     return hashMap
@@ -318,9 +316,10 @@ def cardslist(hashMap,object1):
 # Ввод количества
 def iputqtty(hashMap,_files=None,_data=None):
     cards_prod=json.loads(hashMap.get("cards_prod"))
+    screenmessage(hashMap,hashMap.get("cards_prod"))
     selected_card_key=hashMap.get("selected_card_key")
     selected_card_position=hashMap.get("selected_card_position")
-    screenmessage(hashMap,str(selected_card_key)+" "+str(selected_card_position),"Индекс выбранной номенклатуры")
+#    screenmessage(hashMap,str(selected_card_key)+" "+str(selected_card_position),"Индекс выбранной номенклатуры")
     prod=cards_prod["customcards"]["cardsdata"][selected_card_key]
     hashMap.put("_curprod",json.dumps(prod))
     _ТСД_Настройки=json.loads(hashMap.get("_ТСД_Настройки"))
