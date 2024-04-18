@@ -239,57 +239,67 @@ def screenmessage(hashMap,mess,cap_mess=None):
     return hashMap
 
 def cardslist(hashMap,object1):
-    j = { "customcards":{
+    j = { "customcards":
+          {
             "options":{
             "search_enabled":True,
             "save_position":True
             },
-        "layout": {
-        "type": "LinearLayout",
-        "orientation": "vertical",
-        "height": "match_parent",
-        "width": "match_parent",
-        "weight": "1",
-        "Elements": [
-        {
-            "type": "TextView",
-            "show_by_condition": "",
-            "Value": "@string1",
-            "TextSize": "20",
-            "NoRefresh": False,
-            "document_type": "",
-            "mask": "",
-            "Variable": ""
-        },
-        {
-            "type": "TextView",
-            "show_by_condition": "",
-            "Value": "@string2",
-            "TextSize": "20",
-            "NoRefresh": False,
-            "document_type": "",
-            "mask": "",
-            "Variable": ""
-        },
-        {
-        "type": "TextView",
-        "show_by_condition": "false",
-        "Value": "@val",
-        "NoRefresh": False,
-        "document_type": "",
-        "mask": "",
-        "Variable": "",
-        "TextSize": "16",
-        "TextColor": "#DB7093",
-        "TextBold": True,
-        "TextItalic": False,
-        "BackgroundColor": "",
-        "width": "match_parent",
-        "height": "wrap_content",
-        }
-        ]
-        }
-        }
+            "layout": {
+            "type": "LinearLayout",
+            "orientation": "vertical",
+            "height": "match_parent",
+            "width": "match_parent",
+            "weight": "0",
+            "Elements": [ 
+                "layout": {
+                "type": "LinearLayout",
+                "orientation": "vertical",
+                "height": "match_parent",
+                "width": "match_parent",
+                "weight": "1",
+                "Elements": [
+                    {
+                    "type": "TextView",
+                    "show_by_condition": "",
+                    "Value": "@string1",
+                    "TextSize": "20",
+                    "NoRefresh": False,
+                    "document_type": "",
+                    "mask": "",
+                    "Variable": ""
+                    },
+                    {
+                    "type": "TextView",
+                    "show_by_condition": "",
+                    "Value": "@string2",
+                    "TextSize": "20",
+                    "NoRefresh": False,
+                    "document_type": "",
+                    "mask": "",
+                    "Variable": ""
+                    },
+                    {
+                    "type": "TextView",
+                    "show_by_condition": "false",
+                    "Value": "@val",
+                    "NoRefresh": False,
+                    "document_type": "",
+                    "mask": "",
+                    "Variable": "",
+                    "TextSize": "16",
+                    "TextColor": "#DB7093",
+                    "TextBold": True,
+                    "TextItalic": False,
+                    "BackgroundColor": "",
+                    "width": "match_parent",
+                    "height": "wrap_content",
+                    }
+                 ]
+                 }
+              ]
+              }
+           }
     }
 
     j["customcards"]["cardsdata"]=[]
