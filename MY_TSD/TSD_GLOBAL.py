@@ -295,7 +295,7 @@ def cardslist(hashMap,object1):
     j["customcards"]["cardsdata"]=[]
     for prod in object1:
         c =  {
-        "key": str(object1.index(prod)),
+        "key": prod[prodid], #str(object1.index(prod)),
         "string1": prod["Номенклатура"]+" "+prod["Характеристика"].rstrip(),
         "string2": prod["ЕдиницаИзмерения"],
         "val":  prod["Количество"]
