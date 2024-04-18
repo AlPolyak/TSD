@@ -135,7 +135,7 @@ def Scanning(hashMap,_files=None,_data=None):
                     return hashMap
                 else:
                     # просто добавим 1
-                    plus1(hashMap,prod,1)
+                    plus1(hashMap,prod,1,_ТСД_Настройки)
                     return hashMap
         else:
             hashMap.put("toast","Номенклатура со ШК:"+barcode+" в документе не найдена")
@@ -161,7 +161,7 @@ def Scanning(hashMap,_files=None,_data=None):
                     return hashMap
                 else:
                     # просто добавим 1
-                    plus1(hashMap,prod,1)
+                    plus1(hashMap,prod,1,_ТСД_Настройки)
             elif retcode==3:
                 # Если найдено несколько номенклатур, то показать выбор    
                 hashMap.put("toast",sprods["ТекстОшибки"])
@@ -320,7 +320,7 @@ def inputqtty(hashMap,_files=None,_data=None):
         hashMap.put("ShowScreen","Ввод количества")
     else:
         #  просто добавим количество
-        plus1(hashMap,prod,prod["Количество",_ТСД_Настройки) # Количество из ШК
+        plus1(hashMap,prod,prod["Количество"],_ТСД_Настройки) # Количество из ШК
     return hashMap
 
 def plus1(hashMap,prod,qnt,Настройки):
