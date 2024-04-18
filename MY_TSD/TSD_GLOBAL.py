@@ -308,12 +308,16 @@ def cardslist(hashMap,object1):
 
 # Ввод количества
 def iputqtty(hashMap):
+    cards_prod=json.loads(hashMap.get("cards_prod"))
+    selected_card_key=hashMap.get("selected_card_key")
+    screenmessage(hashMap,selected_card_key,"Индекс выбранной номенклатуры")
+    prod=cards_prod["customcards"]["cardsdata"][selected_card_key]
+    hashMap.put("_curprod",json.dumps(prod))
     _ТСД_Настройки=json.loads(hashMap.get("_ТСД_Настройки"))
     if _ТСД_Настройки["ВводКоличества"]=="true":   
         hashMap.put("ShowScreen","Ввод  количества")
     else:
         #  просто добавим количество
-        prod=json.loads(hashMap.get("_curprod"))
         plus1(hashMap,prod,qnt)
     return hashMap
 
