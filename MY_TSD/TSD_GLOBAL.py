@@ -146,7 +146,6 @@ def Scanning(hashMap,_files=None,_data=None):
             hashMap=screenmessage(hashMap,"Не получена номенклатура по ШК:"+barcode) 
         else:
             retcode=sprods["КодЗавершения"] 
-            hashMap=screenmessage(hashMap,retcode) 
             if retcode==0:
                 prod=sprods["Номенклатура"][0]
                 # Если найдена одна, то если есть настройка - ввод количества,
