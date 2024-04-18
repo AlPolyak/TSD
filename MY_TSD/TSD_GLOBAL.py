@@ -325,8 +325,8 @@ def iputqtty(hashMap,_files=None,_data=None):
 def plus1(hashMap,prod,qnt):
     selected_card_key=hashMap.get("selected_card_key")
     selected_card_position=hashMap.get("selected_card_position")
-    screenmessage(hashMap,selected_card_key,"Индекс выбранной номенклатуры")
-    # получим по prod ключи номенклатуры
+    screenmessage(hashMap,str(selected_card_key)+" "+str(selected_card_position),"Индекс выбранной номенклатуры")
+     # получим по prod ключи номенклатуры
     # поищем в документе результате эту номенклатуру
     # если нашли, добавим или заменим в зависимости от настройки qnt
     # если нет добавим строку
