@@ -241,22 +241,22 @@ def cardslist(hashMap,object1):
     j = {
         "customcards": {
             "options": {
-                "search_enabled": true,
-                "save_position": true
+                "search_enabled": True,
+                "save_position": True
             },
             "layout": {
                 "type": "LinearLayout",
                 "orientation": "vertical",
                 "height": "match_parent",
                 "width": "match_parent",
-                "weight": "0",
+                "weight": "1",
                 "Elements": [
                     {
                         "type": "TextView",
                         "show_by_condition": "",
                         "Value": "@string1",
                         "TextSize": "20",
-                        "NoRefresh": false,
+                        "NoRefresh": False,
                         "document_type": "",
                         "mask": "",
                         "Variable": ""
@@ -266,23 +266,23 @@ def cardslist(hashMap,object1):
                         "show_by_condition": "",
                         "Value": "@string2",
                         "TextSize": "20",
-                        "NoRefresh": false,
+                        "NoRefresh": False,
                         "document_type": "",
                         "mask": "",
                         "Variable": ""
                     },
                     {
                         "type": "TextView",
-                        "show_by_condition": "false",
+                        "show_by_condition": "False",
                         "Value": "@val",
-                        "NoRefresh": false,
+                        "NoRefresh": False,
                         "document_type": "",
                         "mask": "",
                         "Variable": "",
                         "TextSize": "16",
                         "TextColor": "#DB7093",
-                        "TextBold": true,
-                        "TextItalic": false,
+                        "TextBold": True,
+                        "TextItalic": False,
                         "BackgroundColor": "",
                         "width": "match_parent",
                         "height": "wrap_content"
