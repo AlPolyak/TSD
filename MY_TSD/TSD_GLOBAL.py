@@ -251,7 +251,22 @@ def cardslist(hashMap,object1):
                 "width": "match_parent",
                 "weight": "1",
                 "Elements": [
-                    {
+        {
+            "type": "LinearLayout",
+            "orientation": "horizontal",
+            "height": "wrap_content",
+            "width": "match_parent",
+            "weight": "0",
+            "Elements": [
+            
+            {
+            "type": "LinearLayout",
+            "orientation": "vertical",
+            "height": "wrap_content",
+            "width": "match_parent",
+            "weight": "1",
+            "Elements": [
+                {
                         "type": "TextView",
                         "show_by_condition": "",
                         "Value": "@string1",
@@ -288,6 +303,10 @@ def cardslist(hashMap,object1):
                         "height": "wrap_content"
                     }
                 ]
+            }
+            ]
+            }
+            ]
             }
         }
     }
