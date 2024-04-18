@@ -336,8 +336,8 @@ def plus1(hashMap,prod,qnt,Настройки):
     characid=prod["characid"] 
     unitid=prod["unitid"]
     # поищем в документе результате эту номенклатуру
-    docresult=hashMap.get("docresult")
-    stocks=docresult["docresult"]
+    docresult=json.loads(hashMap.get("docresult"))
+    stocks=docresult["stocks"]
     for line in stocks:
         if line["prodid"]==prodid and line["characid"]==characid and line["unitid"]==unitid:
             # если нашли, добавим или заменим в зависимости от настройки qnt
@@ -345,7 +345,7 @@ def plus1(hashMap,prod,qnt,Настройки):
                 line["факт"]=qnt
             else:
                 line["факт"]=line["факт"]+qnt
-            hashMap.put("docresult",docresult)
+            hashMap.put("docresult",json.dumps(docresult,ensure_ascii=False))
             return hashMap
     # если нет добавим строку 
     newline={"Номенклатура":prod["Номенклатура"],
@@ -358,6 +358,6 @@ def plus1(hashMap,prod,qnt,Настройки):
              "key":str(uuid.uuid4()), 
              "barcode":prod["barcode"]} 
     stocks.append(newline)  
-    hashMap.put("docresult",docresult)
+    hashMap.put("docresult",json.dumps(docresult,ensure_ascii=False))
     return hashMap
     
