@@ -303,7 +303,6 @@ def cardslist(hashMap,object1):
         }
         i=i+1  
         j["customcards"]["cardsdata"].append(c)
-    hashMap=screenmessage(hashMap,j) 
     hashMap.put("cards_prod",json.dumps(j,ensure_ascii=False).encode('utf8').decode())
     return hashMap
 
