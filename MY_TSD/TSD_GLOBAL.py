@@ -274,7 +274,7 @@ def cardslist(hashMap,object1):
                     {
                         "type": "TextView",
                         "show_by_condition": "",
-                        "Value": "@key",
+                        "Value": "@val",
                         "NoRefresh": False,
                         "document_type": "",
                         "mask": "",
@@ -295,7 +295,7 @@ def cardslist(hashMap,object1):
     j["customcards"]["cardsdata"]=[]
     for prod in object1:
         c =  {
-        "key": prod["prodid"], #str(object1.index(prod)),
+        "key": str(object1.index(prod)),
         "string1": prod["Номенклатура"]+" "+prod["Характеристика"].rstrip(),
         "string2": prod["ЕдиницаИзмерения"],
         "val":  prod["Количество"]
@@ -307,15 +307,12 @@ def cardslist(hashMap,object1):
 # Ввод количества
 def inputqtty(hashMap,_files=None,_data=None):
     cards_prod=json.loads(hashMap.get("cards_prod"))
-#    screenmessage(hashMap,hashMap.get("cards_prod"))
     selected_card_key=hashMap.get("selected_card_key")
-    selected_card_position=hashMap.get("selected_card_position")
-    screenmessage(hashMap,str(selected_card_key)+" "+str(selected_card_position),"Индекс выбранной номенклатуры")
     prod=cards_prod["customcards"]["cardsdata"][selected_card_key]
     hashMap.put("_curprod",json.dumps(prod))
     _ТСД_Настройки=json.loads(hashMap.get("_ТСД_Настройки"))
     if _ТСД_Настройки["ВводКоличества"]=="true":   
-        hashMap.put("ShowScreen","Ввод  количества")
+        hashMap.put("ShowScreen","Ввод количества")
     else:
         #  просто добавим количество
         plus1(hashMap,prod,qnt)
@@ -323,8 +320,7 @@ def inputqtty(hashMap,_files=None,_data=None):
 
 def plus1(hashMap,prod,qnt):
     selected_card_key=hashMap.get("selected_card_key")
-    selected_card_position=hashMap.get("selected_card_position")
-    screenmessage(hashMap,str(selected_card_key)+" "+str(selected_card_position),"Индекс выбранной номенклатуры")
+    screenmessage(hashMap,str(selected_card_key),"Индекс выбранной номенклатуры")
      # получим по prod ключи номенклатуры
     # поищем в документе результате эту номенклатуру
     # если нашли, добавим или заменим в зависимости от настройки qnt
