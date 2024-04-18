@@ -8,12 +8,12 @@ import requests
 from requests import post
 from requests.auth import HTTPBasicAuth
 
+noClass = jclass("ru.travelfood.simple_ui.NoSQL")
+db = noClass("dbtsd")
+
 #https://api.github.com/repos/AlPolyak/TSD/contents/MY_TSD/TSD_GLOBAL.ui
 # Функция запускается при старте программы ищет и устанавливает ID
 def init_on_start(hashMap,_files=None,_data=None):
-    noClass = jclass("ru.travelfood.simple_ui.NoSQL")
-    db = noClass("dbtsd")
-#    db.initialize()
     result = db.get("idtsd")
     if not result:
         _idtsd=str(uuid.uuid4())
@@ -36,8 +36,6 @@ def init_on_start(hashMap,_files=None,_data=None):
 
 # Функция запускается при вводе имени тсд
 def set_name_tsd(hashMap,_files=None,_data=None):
-    noClass = jclass("ru.travelfood.simple_ui.NoSQL")
-    db = noClass("dbtsd")
     listener=hashMap.get("listener")
     if listener == "ntsd":
         ntsd=hashMap.get("ntsd")
@@ -74,8 +72,6 @@ def connect(hashMap,_files=None,_data=None):
 
 # Функция выбор операции
 def type_of_operation(hashMap,_files=None,_data=None):
-    noClass = jclass("ru.travelfood.simple_ui.NoSQL")
-    db = noClass("dbtsd")
     listener=hashMap.get("listener")
     if listener in ["btn_get","btn_put","btn_inv"]:
         db.put("typeofoperation",listener,True)
@@ -97,9 +93,14 @@ def getlistdoc(hashMap,_files=None,_data=None):
     texterr=newhashMap.get("ТекстОшибки")
     if texterr!="":
         screenmessage(hashMap,texterr,"Ошибка соединения с 1С")
+    else:
+        # запишем документ результат в базу ТСД
+        docresult=hashMap.get("docresult")
+        if docresult != "":
+            db.put("docresult",docresult,True)
     return hashMap
 
-# Функция получить список документов 1С
+# Функция получить список строк выбранного документа 1С
 def selecteddoc(hashMap,_files=None,_data=None):
     hashMap.put("func1C","ВыбранДокумент")
     names_put=["_idtsd","_typeofoperation","_ТСД_Настройки","selected_card_key"]
@@ -110,7 +111,7 @@ def selecteddoc(hashMap,_files=None,_data=None):
         screenmessage(hashMap,texterr,"Ошибка соединения с 1С")
     return hashMap
 
-#Функция при сканировании
+# Функция при сканировании
 #В зависимости от режима ПоДокументу ищем в документе или в базе 
 def Scanning(hashMap,_files=None,_data=None):
     barcode=hashMap.get("barcode")
@@ -119,9 +120,9 @@ def Scanning(hashMap,_files=None,_data=None):
         # надо попытаться найти шк в табличной части _tabproducts
         _tabproducts=json.loads(hashMap.get("_tabproducts")) 
         # (Массив структур) *key;*Наименование;*Характеристика;*ЕдиницаИзмерения;
-        # *Количество;*Факт;*Цена;*Сумма;*СуммаФакт;*Штрихкоды(Массив);*Ключи(Структура);
+        # *Количество;*Факт;*Цена;*Сумма;*СуммаФакт;*barcodes(Массив);
         for prod in _tabproducts:
-            namecol=prod["Штрихкоды"]
+            namecol=prod["barcodes"]
             if barcode in prod[namecol]:
                 hashMap.put("_curprod",json.dumps(prod,ensure_ascii=False))
                 if _ТСД_Настройки["ВводКоличества"]=="true":
