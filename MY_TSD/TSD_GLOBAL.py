@@ -274,7 +274,7 @@ def cardslist(hashMap,object1):
                     {
                         "type": "TextView",
                         "show_by_condition": "",
-                        "Value": "@val",
+                        "Value": "@key",
                         "NoRefresh": False,
                         "document_type": "",
                         "mask": "",
