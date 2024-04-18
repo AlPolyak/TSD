@@ -269,7 +269,7 @@ def cardslist(hashMap,object1):
                     {
                         "type": "TextView",
                         "show_by_condition": "",
-                        "Value": "@string2",
+                        "Value": "@ЕдиницаИзмерения",
                         "TextSize": "20",
                         "NoRefresh": False,
                         "document_type": "",
@@ -279,7 +279,7 @@ def cardslist(hashMap,object1):
                     {
                         "type": "TextView",
                         "show_by_condition": "",
-                        "Value": "@val",
+                        "Value": "@Количество",
                         "NoRefresh": False,
                         "document_type": "",
                         "mask": "",
@@ -302,8 +302,14 @@ def cardslist(hashMap,object1):
         c =  {
         "key": str(object1.index(prod)),
         "string1": prod["Номенклатура"]+" "+prod["Характеристика"].rstrip(),
-        "string2": prod["ЕдиницаИзмерения"],
-        "val":  prod["Количество"]
+        "ЕдиницаИзмерения": prod["ЕдиницаИзмерения"],
+        "Номенклатура":  prod["Номенклатура"], 
+        "Характеристика":  prod["Характеристика"],
+        "prodid":  prod["prodid"],
+        "characid":  prod["characid"],
+        "unitid":  prod["unitid"],
+        "Количество":  prod["Количество"],
+        "barcode":  prod["barcode"]            
         } 
         j["customcards"]["cardsdata"].append(c)
     hashMap.put("cards_prod",json.dumps(j,ensure_ascii=False).encode('utf8').decode())
@@ -320,8 +326,8 @@ def inputqtty(hashMap,_files=None,_data=None):
         hashMap.put("ShowScreen","Ввод количества")
     else:
         #  просто добавим количество
-        screenmessage(hashMap,json.dumps(prod,ensure_ascii=False)) 
-        #plus1(hashMap,prod,prod["Количество"],_ТСД_Настройки) # Количество из ШК
+        #screenmessage(hashMap,json.dumps(prod,ensure_ascii=False)) 
+        plus1(hashMap,prod,prod["Количество"],_ТСД_Настройки) # Количество из ШК
     return hashMap
 
 def plus1(hashMap,prod,qnt,Настройки):
