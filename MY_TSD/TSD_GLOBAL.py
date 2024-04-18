@@ -239,69 +239,68 @@ def screenmessage(hashMap,mess,cap_mess=None):
     return hashMap
 
 def cardslist(hashMap,object1):
-    j = { "customcards":
-          {
-            "options":{
-            "search_enabled":True,
-            "save_position":True
+    j = {"customcards": {
+            "options": {
+                "search_enabled": true,
+                "save_position": true
             },
             "layout": {
-            "type": "LinearLayout",
-            "orientation": "vertical",
-            "height": "match_parent",
-            "width": "match_parent",
-            "weight": "0",
-            "Elements": [ 
-                "layout": {
                 "type": "LinearLayout",
                 "orientation": "vertical",
                 "height": "match_parent",
                 "width": "match_parent",
-                "weight": "1",
+                "weight": "0",
                 "Elements": [
                     {
-                    "type": "TextView",
-                    "show_by_condition": "",
-                    "Value": "@string1",
-                    "TextSize": "20",
-                    "NoRefresh": False,
-                    "document_type": "",
-                    "mask": "",
-                    "Variable": ""
-                    },
-                    {
-                    "type": "TextView",
-                    "show_by_condition": "",
-                    "Value": "@string2",
-                    "TextSize": "20",
-                    "NoRefresh": False,
-                    "document_type": "",
-                    "mask": "",
-                    "Variable": ""
-                    },
-                    {
-                    "type": "TextView",
-                    "show_by_condition": "false",
-                    "Value": "@val",
-                    "NoRefresh": False,
-                    "document_type": "",
-                    "mask": "",
-                    "Variable": "",
-                    "TextSize": "16",
-                    "TextColor": "#DB7093",
-                    "TextBold": True,
-                    "TextItalic": False,
-                    "BackgroundColor": "",
-                    "width": "match_parent",
-                    "height": "wrap_content",
+                        "type": "LinearLayout",
+                        "orientation": "vertical",
+                        "height": "match_parent",
+                        "width": "match_parent",
+                        "weight": "1",
+                        "Elements": [
+                            {
+                                "type": "TextView",
+                                "show_by_condition": "",
+                                "Value": "@string1",
+                                "TextSize": "20",
+                                "NoRefresh": false,
+                                "document_type": "",
+                                "mask": "",
+                                "Variable": ""
+                            },
+                            {
+                                "type": "TextView",
+                                "show_by_condition": "",
+                                "Value": "@string2",
+                                "TextSize": "20",
+                                "NoRefresh": false,
+                                "document_type": "",
+                                "mask": "",
+                                "Variable": ""
+                            },
+                            {
+                                "type": "TextView",
+                                "show_by_condition": "false",
+                                "Value": "@val",
+                                "NoRefresh": false,
+                                "document_type": "",
+                                "mask": "",
+                                "Variable": "",
+                                "TextSize": "16",
+                                "TextColor": "#DB7093",
+                                "TextBold": true,
+                                "TextItalic": false,
+                                "BackgroundColor": "",
+                                "width": "match_parent",
+                                "height": "wrap_content"
+                            }
+                        ]
                     }
-                 ]
-                 }
-              ]
-              }
-           }
+                ]
+            }
+        }
     }
-
+    
     j["customcards"]["cardsdata"]=[]
     i=5
     for prod in object1:
