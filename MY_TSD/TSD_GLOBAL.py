@@ -302,7 +302,7 @@ def cardslist(hashMap,object1):
     }
     
     j["customcards"]["cardsdata"]=[]
-    i=5
+    i=0
     for prod in object1:
         c =  {
         "key": str(i),
