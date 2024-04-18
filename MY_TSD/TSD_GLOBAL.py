@@ -308,15 +308,14 @@ def cardslist(hashMap,object1):
 def inputqtty(hashMap,_files=None,_data=None):
     cards_prod=json.loads(hashMap.get("cards_prod"))
     selected_card_key=hashMap.get("selected_card_key")
-    hashMap.put("toast",selected_card_key) #json.dumps(prod)
-#    prod=cards_prod["customcards"]["cardsdata"][selected_card_key]
-#    hashMap.put("_curprod",json.dumps(prod))
-#    _ТСД_Настройки=json.loads(hashMap.get("_ТСД_Настройки"))
-#    if _ТСД_Настройки["ВводКоличества"]=="true":   
-#        hashMap.put("ShowScreen","Ввод количества")
-#    else:
+    prod=cards_prod["customcards"]["cardsdata"][int(selected_card_key)]
+    hashMap.put("_curprod",json.dumps(prod))
+    _ТСД_Настройки=json.loads(hashMap.get("_ТСД_Настройки"))
+    if _ТСД_Настройки["ВводКоличества"]=="true":   
+        hashMap.put("ShowScreen","Ввод количества")
+    else:
         #  просто добавим количество
-#        plus1(hashMap,prod,qnt)
+        plus1(hashMap,prod,qnt)
     return hashMap
 
 def plus1(hashMap,prod,qnt):
