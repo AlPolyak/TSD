@@ -304,6 +304,7 @@ def cardslist(hashMap,object1):
         i=i+1  
         j["customcards"]["cardsdata"].append(c)
     hashMap.put("cards_prod",json.dumps(j,ensure_ascii=False).encode('utf8').decode())
+    screenmessage(hashMap,json.dumps(j,ensure_ascii=False).encode('utf8').decode(),"Индекс выбранной номенклатуры")
     return hashMap
 
 # Ввод количества
