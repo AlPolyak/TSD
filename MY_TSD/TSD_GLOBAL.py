@@ -307,7 +307,7 @@ def cardslist(hashMap,object1):
     return hashMap
 
 # Ввод количества
-def iputqtty(hashMap):
+def iputqtty(hashMap,_files=None,_data=None):
     cards_prod=json.loads(hashMap.get("cards_prod"))
     selected_card_key=hashMap.get("selected_card_key")
     screenmessage(hashMap,selected_card_key,"Индекс выбранной номенклатуры")
