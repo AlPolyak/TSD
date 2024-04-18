@@ -249,14 +249,14 @@ def cardslist(hashMap,object1):
                 "orientation": "vertical",
                 "height": "match_parent",
                 "width": "match_parent",
-                "weight": "1",
+                "weight": "0",
                 "Elements": [
         {
             "type": "LinearLayout",
             "orientation": "horizontal",
             "height": "wrap_content",
             "width": "match_parent",
-            "weight": "1",
+            "weight": "0",
             "Elements": [
             
             {
