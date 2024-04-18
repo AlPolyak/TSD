@@ -109,6 +109,11 @@ def selecteddoc(hashMap,_files=None,_data=None):
     texterr=newhashMap.get("ТекстОшибки")
     if texterr!="":
         screenmessage(hashMap,texterr,"Ошибка соединения с 1С")
+    else:
+        # запишем документ результат в базу ТСД
+        docresult=hashMap.get("docresult")
+        if docresult != "":
+            db.put("docresult",docresult,True)    
     return hashMap
 
 # Функция при сканировании
@@ -315,15 +320,37 @@ def inputqtty(hashMap,_files=None,_data=None):
         hashMap.put("ShowScreen","Ввод количества")
     else:
         #  просто добавим количество
-        plus1(hashMap,prod,qnt)
+        plus1(hashMap,prod,prod["Количество",_ТСД_Настройки) # Количество из ШК
     return hashMap
 
-def plus1(hashMap,prod,qnt):
-    selected_card_key=hashMap.get("selected_card_key")
-    screenmessage(hashMap,str(selected_card_key),"Индекс выбранной номенклатуры")
-     # получим по prod ключи номенклатуры
+def plus1(hashMap,prod,qnt,Настройки):
+    # получим по prod ключи номенклатуры
+    prodid=prod["prodid"]  
+    characid=prod["characid"] 
+    unitid=prod["unitid"]
     # поищем в документе результате эту номенклатуру
-    # если нашли, добавим или заменим в зависимости от настройки qnt
-    # если нет добавим строку
+    docresult=hashMap.get("docresult")
+    stocks=docresult["docresult"]
+    for line in stocks:
+        if line["prodid"]==prodid and line["characid"]==characid and line["unitid"]==unitid:
+            # если нашли, добавим или заменим в зависимости от настройки qnt
+            if Настройки["ЗаменятьКоличество"]=="true":
+                line["факт"]=qnt
+            else:
+                line["факт"]=line["факт"]+qnt
+            hashMap.put("docresult",docresult)
+            return hashMap
+    # если нет добавим строку 
+    newline={"Номенклатура":prod["Номенклатура"],
+             "prodid":prod["prodid"], 
+             "Характеристика":prod["Характеристика"], 
+             "characid":prod["characid"], 
+             "ЕдиницаИзмерения":prod["ЕдиницаИзмерения"], 
+             "unitid":prod["unitid"], 
+             "факт":qnt, 
+             "key":str(uuid.uuid4()), 
+             "barcode":prod["barcode"]} 
+    stocks.append(newline)  
+    hashMap.put("docresult",docresult)
     return hashMap
     
