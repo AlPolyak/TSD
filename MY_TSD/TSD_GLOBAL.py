@@ -256,7 +256,7 @@ def cardslist(hashMap,object1):
             "orientation": "horizontal",
             "height": "wrap_content",
             "width": "match_parent",
-            "weight": "0",
+            "weight": "1",
             "Elements": [
             
             {
@@ -288,7 +288,7 @@ def cardslist(hashMap,object1):
                     },
                     {
                         "type": "TextView",
-                        "show_by_condition": "False",
+                        "show_by_condition": "",
                         "Value": "@val",
                         "NoRefresh": False,
                         "document_type": "",
