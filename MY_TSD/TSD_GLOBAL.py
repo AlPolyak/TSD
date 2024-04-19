@@ -330,6 +330,14 @@ def inputqtty(hashMap,_files=None,_data=None):
         plus1(hashMap,prod,prod["Количество"],_ТСД_Настройки) # Количество из ШК
     return hashMap
 
+# добавление количества в документ после диалога ввода количества
+def plus2(hashMap,_files=None,_data=None):
+    qtty=hashMap.get("qtty")
+    prod=json.dumps(hashMap.get("_curprod"))
+    _ТСД_Настройки=json.loads(hashMap.get("_ТСД_Настройки"))
+    plus1(hashMap, prod, qtty, _ТСД_Настройки)
+    return hashMap
+    
 def plus1(hashMap,prod,qnt,Настройки):
     # получим по prod ключи номенклатуры
     prodid=prod["prodid"]  
