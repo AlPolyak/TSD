@@ -360,4 +360,19 @@ def plus1(hashMap,prod,qnt,Настройки):
     stocks.append(newline)  
     hashMap.put("docresult",json.dumps(docresult,ensure_ascii=False))
     return hashMap
-    
+
+def savedoc(hashMap,_files=None,_data=None):
+    # требуется онлайн
+    hashMap.put("func1C","СохранитьДокумент")
+    names_put=["_idtsd","docresult","listener","_typeofoperation","_ТСД_Настройки"]
+    names_get=["ТекстОшибки","ShowScreen","_ТСД_Настройки","list_doc","docresult"]
+    newhashMap=callfunc1C(hashMap,names_put,names_get) 
+    texterr=newhashMap.get("ТекстОшибки")
+    if texterr!="":
+        screenmessage(hashMap,texterr,"Ошибка соединения с 1С")
+    else:
+        # запишем документ результат в базу ТСД
+        docresult=hashMap.get("docresult")
+        if docresult != "":
+            db.put("docresult",docresult,True)    
+    return hashMap    
