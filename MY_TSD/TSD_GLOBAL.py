@@ -384,12 +384,12 @@ def plus1(hashMap,prod,qnt,Настройки):
     hashMap.put("docresult",json.dumps(docresult,ensure_ascii=False))
     # попробуем сохранить в 1с
     ok=savein1c(hashMap,False)
-    if ok=False:
+    if ok==False:
         hashMap.put("toast","Ошибка сохранения документа в базе 1С")
     hashMap.put("ShowScreen","Сканирование")
     return hashMap
 
-def savein1c(hashMap,showerr=True)
+def savein1c(hashMap,showerr=True):
     # требуется онлайн
     hashMap.put("func1C","СохранитьДокумент")
     names_put=["_idtsd","docresult","listener","_typeofoperation","_ТСД_Настройки"]
