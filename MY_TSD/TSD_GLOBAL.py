@@ -370,6 +370,7 @@ def plus1(hashMap,prod,qnt,Настройки):
              "barcode":prod["barcode"]} 
     stocks.append(newline)  
     hashMap.put("docresult",json.dumps(docresult,ensure_ascii=False))
+    hashMap.put("ShowScreen","Сканирование")
     return hashMap
 
 def savedoc(hashMap,_files=None,_data=None):
