@@ -336,7 +336,7 @@ def inputqtty(hashMap,_files=None,_data=None):
 # добавление количества в документ после диалога ввода количества
 def plus2(hashMap,_files=None,_data=None):
     qtty=hashMap.get("qtty")
-    prod=json.dumps(hashMap.get("_curprod"))
+    prod=json.loads(hashMap.get("_curprod"))
     _ТСД_Настройки=json.loads(hashMap.get("_ТСД_Настройки"))
     plus1(hashMap, prod, qtty, _ТСД_Настройки)
     return hashMap
