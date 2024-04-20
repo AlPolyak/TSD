@@ -204,25 +204,25 @@ def callfunc1C(hashMap,names_put,names_get):
     try:
         ret=post(url, json=conv, auth=auth, headers={'content-type': 'application/json; charset=utf-8'}, timeout=60)
         ret.encoding = 'UTF-8'
+        if ret.status_code == 200 :
+            try:
+                fullresp = json.loads(ret.text)
+                newhashMap=fullresp['hashmap']
+                for el in newhashMap:
+                    name=el["key"]
+                    if name in names_get:
+                        hashMap.put(name,el["value"])
+                ErrorMessage=fullresp['ErrorMessage']
+                if ErrorMessage == '' :
+                    _status_connect = "Online"                              
+            except Exception as er :
+                ErrorMessage="Ошибка при получении результата HTTP запроса:"+ret.text +' '+ str(er)
+        elif ret.status_code == 401 :
+            ErrorMessage="Не корректный логин или пароль"
+        else : 
+            ErrorMessage="Ошибка подключения к http сервису 1С: "+str(ret.status_code)
     except Exception as er :
         ErrorMessage="Ошибка подключения к http сервису 1С при выполнении функции: "+func1C+", "+ str(er)
-    if ret.status_code == 200 :
-        try:
-            fullresp = json.loads(ret.text)
-            newhashMap=fullresp['hashmap']
-            for el in newhashMap:
-                name=el["key"]
-                if name in names_get:
-                    hashMap.put(name,el["value"])
-            ErrorMessage=fullresp['ErrorMessage']
-            if ErrorMessage == '' :
-                _status_connect = "Online"                              
-        except Exception as er :
-            ErrorMessage="Ошибка при получении результата HTTP запроса:"+ret.text +' '+ str(er)
-    elif ret.status_code == 401 :
-        ErrorMessage="Не корректный логин или пароль"
-    else : 
-        ErrorMessage="Ошибка подключения к http сервису 1С: "+str(ret.status_code)
     hashMap.put("ErrorMessage",ErrorMessage) 
     if ErrorMessage != "":
         hashMap=screenmessage(hashMap,ErrorMessage)       
