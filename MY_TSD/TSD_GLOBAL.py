@@ -63,11 +63,11 @@ def connect(hashMap,_files=None,_data=None):
     names_put=["_idtsd","_nametsd"]
     names_get=["ТекстОшибки","ShowScreen"]
     newhashMap=callfunc1C(hashMap,names_put,names_get) 
-    texterr=newhashMap.get("ТекстОшибки")
-    if texterr=="":
+    err=newhashMap.get("errhttp")
+    if err==False:
         hashMap.put("ShowScreen",newhashMap.get("ShowScreen"))
     else:
-        screenmessage(hashMap,texterr,"Ошибка соединения с 1С")
+        screenmessage(hashMap,newhashMap.get("ТекстОшибки"),"Ошибка соединения с 1С")
     return hashMap
 
 # Функция выбор операции
@@ -90,9 +90,9 @@ def getlistdoc(hashMap,_files=None,_data=None):
     names_put=["_idtsd","onClick","listener","_typeofoperation","_ТСД_Настройки"]
     names_get=["ТекстОшибки","ShowScreen","_ТСД_Настройки","cards","docresult"]
     newhashMap=callfunc1C(hashMap,names_put,names_get) 
-    texterr=newhashMap.get("ТекстОшибки")
-    if texterr!="":
-        screenmessage(hashMap,texterr,"Ошибка соединения с 1С")
+    err=newhashMap.get("errhttp")
+    if err==True:
+        screenmessage(hashMap,newhashMap.get("ТекстОшибки"),"Ошибка соединения с 1С")
     else:
         # запишем документ результат в базу ТСД
         docresult=hashMap.get("docresult")
@@ -106,9 +106,9 @@ def selecteddoc(hashMap,_files=None,_data=None):
     names_put=["_idtsd","_typeofoperation","_ТСД_Настройки","selected_card_key"]
     names_get=["ТекстОшибки","ShowScreen","_ТСД_Настройки","cardsofproduct","docresult","_tabproducts"]
     newhashMap=callfunc1C(hashMap,names_put,names_get) 
-    texterr=newhashMap.get("ТекстОшибки")
-    if texterr!="":
-        screenmessage(hashMap,texterr,"Ошибка соединения с 1С")
+    err=newhashMap.get("errhttp")
+    if err==True:
+        screenmessage(hashMap,newhashMap.get("ТекстОшибки"),"Ошибка соединения с 1С")
     else:
         # запишем документ результат в базу ТСД
         docresult=hashMap.get("docresult")
@@ -129,6 +129,7 @@ def Scanning(hashMap,_files=None,_data=None):
         for prod in _tabproducts:
             namecol=prod["barcodes"]
             if barcode in prod[namecol]:
+                # нашли строку в тч документа, передадим ее в процедуру ввода количества
                 hashMap.put("_curprod",json.dumps(prod,ensure_ascii=False))
                 if _ТСД_Настройки["ВводКоличества"]=="true":
                     hashMap.put("ShowScreen","Ввод количества")
@@ -145,47 +146,53 @@ def Scanning(hashMap,_files=None,_data=None):
         names_get=["Номенклатура"]
         names_put=["barcode"]
         newhashMap=callfunc1C(hashMap,names_put,names_get) 
-        # получаем массив номенклатуры
-        sprods=json.loads(newhashMap.get("Номенклатура"))
-        if not sprods:
-            hashMap=screenmessage(hashMap,"Не получена номенклатура по ШК:"+barcode) 
-        else:
-            retcode=sprods["КодЗавершения"] 
-            if retcode==0:
-                prod=sprods["Номенклатура"][0]
-                # Если найдена одна, то если есть настройка - ввод количества,
-                # иначе добавление количества факт в накладную        
-                hashMap.put("toast",prod["Номенклатура"])
-                if _ТСД_Настройки["ВводКоличества"]=="true":
-                    hashMap.put("ShowScreen","Ввод количества")
-                    return hashMap
-                else:
-                    # просто добавим 1
-                    plus1(hashMap,prod,1,_ТСД_Настройки)
-            elif retcode==3:
-                # Если найдено несколько номенклатур, то показать выбор    
-                hashMap.put("toast",sprods["ТекстОшибки"])
-                hashMap=cardslist(hashMap,sprods["Номенклатура"])
-                hashMap.put("ShowScreen","Выбор номенклатуры")
+        err=newhashMap.get("errhttp")
+        if err==True:
+            screenmessage(hashMap,newhashMap.get("ТекстОшибки"),"Ошибка соединения с 1С")
+        else:       # получаем массив номенклатуры
+            sprods=json.loads(newhashMap.get("Номенклатура"))
+            if not sprods:
+                hashMap=screenmessage(hashMap,"Не получена номенклатура по ШК:"+barcode) 
             else:
-                hashMap.put("toast",sprods["ТекстОшибки"])
+                retcode=sprods["КодЗавершения"] 
+                if retcode==0:
+                    prod=sprods["Номенклатура"][0]
+                    # Если найдена одна, то если есть настройка - ввод количества,
+                    # иначе добавление количества факт в накладную        
+                    hashMap.put("toast",prod["Номенклатура"])
+                    if _ТСД_Настройки["ВводКоличества"]=="true":
+                        hashMap.put("ShowScreen","Ввод количества")
+                        return hashMap
+                    else:
+                        # просто добавим 1
+                        plus1(hashMap,prod,1,_ТСД_Настройки)
+                elif retcode==3:
+                    # Если найдено несколько номенклатур, то показать выбор    
+                    hashMap.put("toast",sprods["ТекстОшибки"])
+                    hashMap=cardslist(hashMap,sprods["Номенклатура"])
+                    hashMap.put("ShowScreen","Выбор номенклатуры")
+                else:
+                    hashMap.put("toast",sprods["ТекстОшибки"])
     return hashMap
 
 # Функция вызов функции http сервиса 1С
-def callfunc1C(hashMap,names_put,names_get):
-    func1C=hashMap.get("func1C")     
+def callfunc1C(hashMap,names_put,names_get,showerr=True):
+    func1C=hashMap.get("func1C")   
+    hashMap.put("errhttp",False)
     if not func1C:
         return hashMap
     noClass = jclass("ru.travelfood.simple_ui.NoSQL")
     db = noClass("dbtsd")
     IP = db.get("IP")
     if IP == None :
+        hashMap.put("errhttp",True)
         hashMap.put("toast","Не задан IP http сервиса")
         return hashMap
     url = "http://"+IP+"/UNF/hs/simpleuiTSD/set_input_direct/"+func1C
     url = url.encode('UTF-8')
     login1c = db.get("login1c")
     if login1c == None :
+        hashMap.put("errhttp",True)
         hashMap.put("toast","Не задан Login http сервиса")
         return hashMap
     password1c = str(db.get("password1c"))
@@ -201,6 +208,7 @@ def callfunc1C(hashMap,names_put,names_get):
             mp.append(d)
     conv={'hashMap':mp} 
     _status_connect = "Offline"
+    hashMap.put("ТекстОшибки","")
     try:
         ret=post(url, json=conv, auth=auth, headers={'content-type': 'application/json; charset=utf-8'}, timeout=60)
         ret.encoding = 'UTF-8'
@@ -214,17 +222,21 @@ def callfunc1C(hashMap,names_put,names_get):
                         hashMap.put(name,el["value"])
                 ErrorMessage=fullresp['ErrorMessage']
                 if ErrorMessage == '' :
-                    _status_connect = "Online"                              
+                    _status_connect = "Online"  
             except Exception as er :
+                hashMap.put("errhttp",True)
                 ErrorMessage="Ошибка при получении результата HTTP запроса:"+ret.text +' '+ str(er)
         elif ret.status_code == 401 :
+            hashMap.put("errhttp",True)
             ErrorMessage="Не корректный логин или пароль"
         else : 
+            hashMap.put("errhttp",True)
             ErrorMessage="Ошибка подключения к http сервису 1С: "+str(ret.status_code)
     except Exception as er :
+        hashMap.put("errhttp",True)
         ErrorMessage="Ошибка подключения к http сервису 1С при выполнении функции: "+func1C+", "+ str(er)
     hashMap.put("ErrorMessage",ErrorMessage) 
-    if ErrorMessage != "":
+    if ErrorMessage != "" and showerr:
         hashMap=screenmessage(hashMap,ErrorMessage)       
     if _status_connect=="Online":
         color="<font color = ""#006400"">"
@@ -370,24 +382,33 @@ def plus1(hashMap,prod,qnt,Настройки):
              "barcode":prod["barcode"]} 
     stocks.append(newline)  
     hashMap.put("docresult",json.dumps(docresult,ensure_ascii=False))
+    # попробуем сохранить в 1с
+    ok=savein1c(hashMap,False)
+    if ok=False:
+        hashMap.put("toast","Ошибка сохранения документа в базе 1С")
     hashMap.put("ShowScreen","Сканирование")
     return hashMap
 
-def savedoc(hashMap,_files=None,_data=None):
+def savein1c(hashMap,showerr=True)
     # требуется онлайн
     hashMap.put("func1C","СохранитьДокумент")
     names_put=["_idtsd","docresult","listener","_typeofoperation","_ТСД_Настройки"]
-    names_get=["ТекстОшибки","ShowScreen","_ТСД_Настройки","list_doc","docresult"]
+    names_get=["ТекстОшибки"]
     newhashMap=callfunc1C(hashMap,names_put,names_get) 
-    texterr=newhashMap.get("ТекстОшибки")
-    if texterr!="":
-        screenmessage(hashMap,texterr,"Ошибка соединения с 1С")
+    err=newhashMap.get("errhttp")
+    if err==True and showerr:
+        screenmessage(hashMap,newhashMap.get("ТекстОшибки"),"Ошибка соединения с 1С")
+        return False
     else:
         # запишем документ результат в базу ТСД
         docresult=hashMap.get("docresult")
         if docresult != "":
             db.put("docresult",docresult,True)    
-    return hashMap 
+    return True     
+
+def savedoc(hashMap,_files=None,_data=None):
+    savein1c(hashMap,True)
+    return hashMap   
     
 # показ на экране документа результата
 def showdoc(hashMap,_files=None,_data=None):
@@ -445,7 +466,7 @@ def showdoc(hashMap,_files=None,_data=None):
        }
      }
     j["customcards"]["cardsdata"]=[]
-    stocks=docresult[stocks]
+    stocks=docresult["stocks"]
     for line in stocks:
         c =  {
         "key": str(line["key"]),
