@@ -64,7 +64,7 @@ def connect(hashMap,_files=None,_data=None):
     names_get=["ТекстОшибки","ShowScreen"]
     newhashMap=callfunc1C(hashMap,names_put,names_get) 
     err=newhashMap.get("errhttp")
-    if err==False:
+    if err=="False":
         hashMap.put("ShowScreen",newhashMap.get("ShowScreen"))
     else:
         screenmessage(hashMap,newhashMap.get("ТекстОшибки"),"Ошибка соединения с 1С")
@@ -91,7 +91,7 @@ def getlistdoc(hashMap,_files=None,_data=None):
     names_get=["ТекстОшибки","ShowScreen","_ТСД_Настройки","cards","docresult"]
     newhashMap=callfunc1C(hashMap,names_put,names_get) 
     err=newhashMap.get("errhttp")
-    if err==True:
+    if err=="True":
         screenmessage(hashMap,newhashMap.get("ТекстОшибки"),"Ошибка соединения с 1С")
     else:
         # запишем документ результат в базу ТСД
@@ -107,7 +107,7 @@ def selecteddoc(hashMap,_files=None,_data=None):
     names_get=["ТекстОшибки","ShowScreen","_ТСД_Настройки","cardsofproduct","docresult","_tabproducts"]
     newhashMap=callfunc1C(hashMap,names_put,names_get) 
     err=newhashMap.get("errhttp")
-    if err==True:
+    if err=="True":
         screenmessage(hashMap,newhashMap.get("ТекстОшибки"),"Ошибка соединения с 1С")
     else:
         # запишем документ результат в базу ТСД
@@ -147,7 +147,7 @@ def Scanning(hashMap,_files=None,_data=None):
         names_put=["barcode"]
         newhashMap=callfunc1C(hashMap,names_put,names_get) 
         err=newhashMap.get("errhttp")
-        if err==True:
+        if err=="True":
             screenmessage(hashMap,newhashMap.get("ТекстОшибки"),"Ошибка соединения с 1С")
         else:       # получаем массив номенклатуры
             sprods=json.loads(newhashMap.get("Номенклатура"))
@@ -178,21 +178,21 @@ def Scanning(hashMap,_files=None,_data=None):
 # Функция вызов функции http сервиса 1С
 def callfunc1C(hashMap,names_put,names_get,showerr=True):
     func1C=hashMap.get("func1C")   
-    hashMap.put("errhttp",False)
+    hashMap.put("errhttp","False")
     if not func1C:
         return hashMap
     noClass = jclass("ru.travelfood.simple_ui.NoSQL")
     db = noClass("dbtsd")
     IP = db.get("IP")
     if IP == None :
-        hashMap.put("errhttp",True)
+        hashMap.put("errhttp","True")
         hashMap.put("toast","Не задан IP http сервиса")
         return hashMap
     url = "http://"+IP+"/UNF/hs/simpleuiTSD/set_input_direct/"+func1C
     url = url.encode('UTF-8')
     login1c = db.get("login1c")
     if login1c == None :
-        hashMap.put("errhttp",True)
+        hashMap.put("errhttp","True")
         hashMap.put("toast","Не задан Login http сервиса")
         return hashMap
     password1c = str(db.get("password1c"))
@@ -224,16 +224,16 @@ def callfunc1C(hashMap,names_put,names_get,showerr=True):
                 if ErrorMessage == '' :
                     _status_connect = "Online"  
             except Exception as er :
-                hashMap.put("errhttp",True)
+                hashMap.put("errhttp","True")
                 ErrorMessage="Ошибка при получении результата HTTP запроса:"+ret.text +' '+ str(er)
         elif ret.status_code == 401 :
-            hashMap.put("errhttp",True)
+            hashMap.put("errhttp","True")
             ErrorMessage="Не корректный логин или пароль"
         else : 
-            hashMap.put("errhttp",True)
+            hashMap.put("errhttp","True")
             ErrorMessage="Ошибка подключения к http сервису 1С: "+str(ret.status_code)
     except Exception as er :
-        hashMap.put("errhttp",True)
+        hashMap.put("errhttp","True")
         ErrorMessage="Ошибка подключения к http сервису 1С при выполнении функции: "+func1C+", "+ str(er)
     hashMap.put("ErrorMessage",ErrorMessage) 
     if ErrorMessage != "" and showerr:
@@ -396,7 +396,7 @@ def savein1c(hashMap,showerr=True):
     names_get=["ТекстОшибки"]
     newhashMap=callfunc1C(hashMap,names_put,names_get) 
     err=newhashMap.get("errhttp")
-    if err==True and showerr:
+    if err=="True" and showerr:
         screenmessage(hashMap,newhashMap.get("ТекстОшибки"),"Ошибка соединения с 1С")
         return False
     else:
