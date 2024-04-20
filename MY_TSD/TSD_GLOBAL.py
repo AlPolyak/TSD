@@ -387,4 +387,75 @@ def savedoc(hashMap,_files=None,_data=None):
         docresult=hashMap.get("docresult")
         if docresult != "":
             db.put("docresult",docresult,True)    
+    return hashMap 
+    
+# показ на экране документа результата
+def showdoc(hashMap,_files=None,_data=None):
+    docresult=json.loads(hashMap.get("docresult"))
+    j = { "customcards":         {
+        "options":{
+          "search_enabled":True,
+          "save_position":True
+        },
+
+        "layout": {
+        "type": "LinearLayout",
+        "orientation": "vertical",
+        "height": "match_parent",
+        "width": "match_parent",
+        "weight": "0",
+        "Elements": [
+            {
+                "type": "TextView",
+                "show_by_condition": "",
+                "Value": "@string1",
+                "NoRefresh": False,
+                "document_type": "",
+                "mask": "",
+                "Variable": ""
+            },
+            {
+                "type": "TextView",
+                "show_by_condition": "",
+                "Value": "@string2",
+                "NoRefresh": False,
+                "document_type": "",
+                "mask": "",
+                "Variable": ""
+            },
+            {
+            "type": "TextView",
+            "show_by_condition": "",
+            "Value": "@val",
+            "NoRefresh": False,
+            "document_type": "",
+            "mask": "",
+            "Variable": "",
+            "TextSize": "16",
+            "TextColor": "#DB7093",
+            "TextBold": True,
+            "TextItalic": False,
+            "BackgroundColor": "",
+            "width": "match_parent",
+            "height": "wrap_content",
+            "weight": 2
+            }
+            ]
+         }
+       }
+     }
+    j["customcards"]["cardsdata"]=[]
+    stocks=docresult[stocks]
+    for line in stocks:
+        c =  {
+        "key": str(line["key"]),
+        "val": str(line["Факт"])+" "+line["ЕдиницаИзмерения"],
+        "string1": line["Номенклатура"]+" "+line["Характеристика"],
+        "string2": line["barcode"]
+            }
+        j["customcards"]["cardsdata"].append(c)
+    hashMap.put("list_doc",json.dumps(j,ensure_ascii=False).encode('utf8').decode())
+    namedoc=docresult["type"]+" №"+docresult["Номер"]+" от "+docresult["Дата"]
+    hashMap.put("namedoc",namedoc)
+    hashMap.put("ShowScreen","Документ результат")    
     return hashMap    
