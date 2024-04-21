@@ -238,7 +238,7 @@ def callfunc1C(hashMap,names_put,names_get,showerr=True):
     hashMap.put("ErrorMessage",ErrorMessage) 
     if ErrorMessage != "" and showerr:
         hashMap.put("errhttp","True")
-        hashMap=screenmessage(hashMap,ErrorMessage)       
+        hashMap=screenmessage(hashMap,"Ошибка в функции callfunc1C:"+ErrorMessage)       
     if _status_connect=="Online":
         color="<font color = ""#006400"">"
     else:
