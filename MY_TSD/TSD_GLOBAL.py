@@ -178,73 +178,76 @@ def Scanning(hashMap,_files=None,_data=None):
 
 # Функция вызов функции http сервиса 1С
 def callfunc1C(hashMap,names_put,names_get,showerr=True):
-    func1C=hashMap.get("func1C")   
-    hashMap.put("errhttp","False")
-    if not func1C:
-        hashMap.put("errhttp","True")
-        hashMap.put("toast","Не задана функция http сервиса")
-        return hashMap
-    noClass = jclass("ru.travelfood.simple_ui.NoSQL")
-    db = noClass("dbtsd")
-    IP = db.get("IP")
-    if IP == None :
-        hashMap.put("errhttp","True")
-        hashMap.put("toast","Не задан IP http сервиса")
-        return hashMap
-    url = "http://"+IP+"/UNF/hs/simpleuiTSD/set_input_direct/"+func1C
-    url = url.encode('UTF-8')
-    login1c = db.get("login1c")
-    if login1c == None :
-        hashMap.put("errhttp","True")
-        hashMap.put("toast","Не задан Login http сервиса")
-        return hashMap
-    password1c = str(db.get("password1c"))
-    auth = HTTPBasicAuth(login1c.encode('UTF-8'), password1c.encode('UTF-8'))
-    # подготовим параметры
-    mp=[]
-    names_put.append('_idtsd')
-    for name in names_put:
-        val=hashMap.get(name)
-        if val != None:
-            d={}
-            d.update({"key":name,"value":val})
-            mp.append(d)
-    conv={'hashMap':mp} 
-    _status_connect = "Offline"
-    hashMap.put("ТекстОшибки","")
-    ErrorMessage = ""
-    try:
-        ret=post(url, json=conv, auth=auth, headers={'content-type': 'application/json; charset=utf-8'}, timeout=60)
-        ret.encoding = 'UTF-8'
-        if ret.status_code == 200 :
-            try:
-                fullresp = json.loads(ret.text)
-                newhashMap=fullresp['hashmap']
-                for el in newhashMap:
-                    name=el["key"]
-                    if name in names_get:
-                        hashMap.put(name,el["value"])
-                ErrorMessage=fullresp['ErrorMessage']
-                if ErrorMessage == "" :
-                    _status_connect = "Online"  
-            except Exception as er :
-                ErrorMessage="Ошибка при получении результата HTTP запроса:"+ret.text +' '+ str(er)
-        elif ret.status_code == 401 :
-            ErrorMessage="Не корректный логин или пароль"
-        else : 
-            ErrorMessage="Ошибка подключения к http сервису 1С: "+str(ret.status_code)
+    try
+        func1C=hashMap.get("func1C")   
+        hashMap.put("errhttp","False")
+        if not func1C:
+            hashMap.put("errhttp","True")
+            hashMap.put("toast","Не задана функция http сервиса")
+            return hashMap
+        noClass = jclass("ru.travelfood.simple_ui.NoSQL")
+        db = noClass("dbtsd")
+        IP = db.get("IP")
+        if IP == None :
+            hashMap.put("errhttp","True")
+            hashMap.put("toast","Не задан IP http сервиса")
+            return hashMap
+        url = "http://"+IP+"/UNF/hs/simpleuiTSD/set_input_direct/"+func1C
+        url = url.encode('UTF-8')
+        login1c = db.get("login1c")
+        if login1c == None :
+            hashMap.put("errhttp","True")
+            hashMap.put("toast","Не задан Login http сервиса")
+            return hashMap
+        password1c = str(db.get("password1c"))
+        auth = HTTPBasicAuth(login1c.encode('UTF-8'), password1c.encode('UTF-8'))
+        # подготовим параметры
+        mp=[]
+        names_put.append('_idtsd')
+        for name in names_put:
+            val=hashMap.get(name)
+            if val != None:
+                d={}
+                d.update({"key":name,"value":val})
+                mp.append(d)
+        conv={'hashMap':mp} 
+        _status_connect = "Offline"
+        hashMap.put("ТекстОшибки","")
+        ErrorMessage = ""
+        try:
+            ret=post(url, json=conv, auth=auth, headers={'content-type': 'application/json; charset=utf-8'}, timeout=60)
+            ret.encoding = 'UTF-8'
+            if ret.status_code == 200 :
+                try:
+                    fullresp = json.loads(ret.text)
+                    newhashMap=fullresp['hashmap']
+                    for el in newhashMap:
+                        name=el["key"]
+                        if name in names_get:
+                            hashMap.put(name,el["value"])
+                    ErrorMessage=fullresp['ErrorMessage']
+                    if ErrorMessage == "" :
+                        _status_connect = "Online"  
+                except Exception as er :
+                    ErrorMessage="Ошибка при получении результата HTTP запроса:"+ret.text +' '+ str(er)
+            elif ret.status_code == 401 :
+                ErrorMessage="Не корректный логин или пароль"
+            else : 
+                ErrorMessage="Ошибка подключения к http сервису 1С: "+str(ret.status_code)
+        except Exception as er :
+            ErrorMessage="Ошибка подключения к http сервису 1С при выполнении функции: "+func1C+", "+ str(er)   
+        if _status_connect=="Online":
+            color="<font color = ""#006400"">"
+        else:
+            color="<font color = ""red"">"
+        hashMap.put("_status_connect",color+_status_connect+"</font>")
+    #    hashMap.put("RefreshScreen","")
     except Exception as er :
         ErrorMessage="Ошибка подключения к http сервису 1С при выполнении функции: "+func1C+", "+ str(er)
     hashMap.put("ErrorMessage",ErrorMessage) 
     if ErrorMessage != "" and showerr:
-        hashMap.put("errhttp","True")
-        hashMap=screenmessage(hashMap,"Ошибка в функции callfunc1C:"+ErrorMessage)       
-    if _status_connect=="Online":
-        color="<font color = ""#006400"">"
-    else:
-        color="<font color = ""red"">"
-    hashMap.put("_status_connect",color+_status_connect+"</font>")
-#    hashMap.put("RefreshScreen","")
+            hashMap.put("errhttp","True")
+            hashMap=screenmessage(hashMap,"Ошибка в функции callfunc1C:"+ErrorMessage)       
     return hashMap
 
 def screenmessage(hashMap,mess,cap_mess=None):
