@@ -259,8 +259,8 @@ def callfunc1C(hashMap,names_put,names_get,showerr=True):
     hashMap.put("ErrorMessage",ErrorMessage) 
     if ErrorMessage != "":
         hashMap.put("errhttp","True") 
-        if showerr:
-            hashMap=screenmessage(hashMap,"Ошибка в функции callfunc1C:"+ErrorMessage)       
+       # if showerr:
+           # hashMap=screenmessage(hashMap,"Ошибка в функции callfunc1C:"+ErrorMessage)       
     return hashMap
 
 def screenmessage(hashMap,mess,cap_mess=None):
