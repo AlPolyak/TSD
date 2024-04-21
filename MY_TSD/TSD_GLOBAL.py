@@ -70,7 +70,7 @@ def connect(hashMap,_files=None,_data=None):
             screenmessage(hashMap,"Ошибка connect: "+texterr,"Ошибка в функции 1С")
         else:
             hashMap.put("ShowScreen",newhashMap.get("ShowScreen"))
-     return hashMap
+    return hashMap
 
 # Функция выбор операции
 def type_of_operation(hashMap,_files=None,_data=None):
