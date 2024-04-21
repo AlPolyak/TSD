@@ -382,9 +382,9 @@ def plus1(hashMap,prod,qnt,settings,showerr=True):
             if line["prodid"]==prodid and line["characid"]==characid and line["unitid"]==unitid and line["typeunit"]==typeunit:
                 # если нашли, добавим или заменим в зависимости от настройки qnt
                 if settings["ЗаменятьКоличество"]=="true":
-                    line["факт"]=float(qnt)
+                    line["Факт"]=float(qnt)
                 else:
-                    line["факт"]=line["факт"]+float(qnt)
+                    line["Факт"]=line["Факт"]+float(qnt)
                 hashMap.put("docresult",json.dumps(docresult,ensure_ascii=False))
                 return hashMap
         # если нет добавим строку 
@@ -395,7 +395,7 @@ def plus1(hashMap,prod,qnt,settings,showerr=True):
                  "ЕдиницаИзмерения":prod["ЕдиницаИзмерения"], 
                  "unitid":prod["unitid"], 
                  "typeunit":prod["typeunit"], 
-                 "факт":float(qnt), 
+                 "Факт":float(qnt), 
                  "key":str(uuid.uuid4()), 
                  "barcode":prod["barcode"]
         } 
