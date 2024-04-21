@@ -237,7 +237,7 @@ def callfunc1C(hashMap,names_put,names_get,showerr=True):
                 ErrorMessage="Ошибка подключения к http сервису 1С: "+str(ret.status_code)
         except Exception as er :
             ErrorMessage="Ошибка подключения к http сервису 1С при выполнении функции: "+func1C+", "+ str(er)  
-        hashMap.put("toast","После подключения")
+        hashMap.put("toast","После подключения "+ErrorMessage)
         if _status_connect=="Online":
             color="<font color = ""#006400"">"
         else:
@@ -247,9 +247,10 @@ def callfunc1C(hashMap,names_put,names_get,showerr=True):
     except Exception as er :
         ErrorMessage="Ошибка подключения к http сервису 1С при выполнении функции: "+func1C+", "+ str(er)
     hashMap.put("ErrorMessage",ErrorMessage) 
-    if ErrorMessage != "" and showerr:
-        hashMap.put("errhttp","True")
-        hashMap=screenmessage(hashMap,"Ошибка в функции callfunc1C:"+ErrorMessage)       
+    if ErrorMessage != "":
+        hashMap.put("errhttp","True") 
+        if showerr:
+            hashMap=screenmessage(hashMap,"Ошибка в функции callfunc1C:"+ErrorMessage)       
     return hashMap
 
 def screenmessage(hashMap,mess,cap_mess=None):
