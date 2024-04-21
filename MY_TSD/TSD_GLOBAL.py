@@ -66,7 +66,7 @@ def connect(hashMap,_files=None,_data=None):
     err=newhashMap.get("errhttp")
     if err=="False":
         texterr=newhashMap.get("ТекстОшибки")
-        if str(texterr) != ""
+        if str(texterr) != "":
             screenmessage(hashMap,"Ошибка connect: "+texterr,"Ошибка в функции 1С")
         else:
             hashMap.put("ShowScreen",newhashMap.get("ShowScreen"))
@@ -95,7 +95,7 @@ def getlistdoc(hashMap,_files=None,_data=None):
     err=newhashMap.get("errhttp")
     if err=="False":
         texterr=newhashMap.get("ТекстОшибки")
-        if str(texterr) != ""
+        if str(texterr) != "":
             screenmessage(hashMap,"Ошибка getlistdoc: "+texterr,"Ошибка в функции 1С")
         else:
             # запишем документ результат в базу ТСД
@@ -113,7 +113,7 @@ def selecteddoc(hashMap,_files=None,_data=None):
     err=newhashMap.get("errhttp")
     if err=="False":
         texterr=newhashMap.get("ТекстОшибки")
-        if str(texterr) != ""
+        if str(texterr) != "":
             screenmessage(hashMap,"Ошибка selecteddoc: "+texterr,"Ошибка в функции 1С")
         else:
             # запишем документ результат в базу ТСД
@@ -156,7 +156,7 @@ def Scanning(hashMap,_files=None,_data=None):
         err=newhashMap.get("errhttp")
         if err=="False":
             texterr=newhashMap.get("ТекстОшибки")
-            if str(texterr) != ""
+            if str(texterr) != "":
                 screenmessage(hashMap,"Ошибка ПоискНоменклатуры: "+texterr,"Ошибка в функции 1С")
             else:
                 # получаем массив номенклатуры
@@ -416,7 +416,7 @@ def savein1c(hashMap,showerr=True):
     err=newhashMap.get("errhttp")
     if err=="False":
         texterr=newhashMap.get("ТекстОшибки")
-        if str(texterr) != ""
+        if str(texterr) != "":
             screenmessage(hashMap,"Ошибка СохранитьДокумент: "+texterr,"Ошибка в функции 1С")
         else:
             # запишем документ результат в базу ТСД
