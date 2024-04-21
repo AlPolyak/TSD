@@ -369,42 +369,46 @@ def plus2(hashMap,_files=None,_data=None):
     return hashMap
     
 def plus1(hashMap,prod,qnt,settings,showerr=True):
-    # получим по prod ключи номенклатуры
-    prodid=prod["prodid"]  
-    characid=prod["characid"] 
-    unitid=prod["unitid"]
-    typeunit=prod["typeunit"]
-    # поищем в документе результате эту номенклатуру
-    docresult=json.loads(hashMap.get("docresult"))
-    stocks=docresult["stocks"]
-    for line in stocks:
-        if line["prodid"]==prodid and line["characid"]==characid and line["unitid"]==unitid and line["typeunit"]==typeunit:
-            # если нашли, добавим или заменим в зависимости от настройки qnt
-            if settings["ЗаменятьКоличество"]=="true":
-                line["факт"]=float(qnt)
-            else:
-                line["факт"]=line["факт"]+float(qnt)
-            hashMap.put("docresult",json.dumps(docresult,ensure_ascii=False))
-            return hashMap
-    # если нет добавим строку 
-    newline={
-             "Номенклатура":prod["Номенклатура"],
-             "prodid":prod["prodid"], 
-             "characid":prod["characid"], 
-             "ЕдиницаИзмерения":prod["ЕдиницаИзмерения"], 
-             "unitid":prod["unitid"], 
-             "typeunit":prod["typeunit"], 
-             "факт":float(qnt), 
-             "key":str(uuid.uuid4()), 
-             "barcode":prod["barcode"]
-    } 
-    stocks.append(newline)  
-    hashMap.put("docresult",json.dumps(docresult,ensure_ascii=False))
-    # попробуем сохранить в 1с
-    ok=savein1c(hashMap,showerr)
-    if ok==False and showerr:
-        hashMap.put("toast","Ошибка сохранения документа в базе 1С")
-    hashMap.put("ShowScreen","Сканирование")
+    try:
+        # получим по prod ключи номенклатуры
+        prodid=prod["prodid"]  
+        characid=prod["characid"] 
+        unitid=prod["unitid"]
+        typeunit=prod["typeunit"]
+        # поищем в документе результате эту номенклатуру
+        docresult=json.loads(hashMap.get("docresult"))
+        stocks=docresult["stocks"]
+        for line in stocks:
+            if line["prodid"]==prodid and line["characid"]==characid and line["unitid"]==unitid and line["typeunit"]==typeunit:
+                # если нашли, добавим или заменим в зависимости от настройки qnt
+                if settings["ЗаменятьКоличество"]=="true":
+                    line["факт"]=float(qnt)
+                else:
+                    line["факт"]=line["факт"]+float(qnt)
+                hashMap.put("docresult",json.dumps(docresult,ensure_ascii=False))
+                return hashMap
+        # если нет добавим строку 
+        newline={
+                 "Номенклатура":prod["Номенклатура"],
+                 "prodid":prod["prodid"], 
+                 "characid":prod["characid"], 
+                 "ЕдиницаИзмерения":prod["ЕдиницаИзмерения"], 
+                 "unitid":prod["unitid"], 
+                 "typeunit":prod["typeunit"], 
+                 "факт":float(qnt), 
+                 "key":str(uuid.uuid4()), 
+                 "barcode":prod["barcode"]
+        } 
+        
+        stocks.append(newline)  
+        hashMap.put("docresult",json.dumps(docresult,ensure_ascii=False))
+        # попробуем сохранить в 1с
+        ok=savein1c(hashMap,showerr)
+        if ok==False and showerr:
+            hashMap.put("toast","Ошибка сохранения документа в базе 1С")
+        hashMap.put("ShowScreen","Сканирование")
+    except Exception as er :
+        hashMap=screenmessage(hashMap,"Ошибка в функции plus1:"+str(er))  
     return hashMap
 
 def savein1c(hashMap,showerr=True):
