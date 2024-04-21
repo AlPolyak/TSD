@@ -65,7 +65,7 @@ def connect(hashMap,_files=None,_data=None):
     newhashMap=callfunc1C(hashMap,names_put,names_get) 
     err=newhashMap.get("errhttp")
     if err=="False":
-        hashMap.put("ShowScreen",newhashMap.get("ShowScreen"))
+        hashMap.put("ShowScreen","Ошибка connect: "+newhashMap.get("ShowScreen"))
     else:
         screenmessage(hashMap,newhashMap.get("ТекстОшибки"),"Ошибка соединения с 1С")
     return hashMap
@@ -92,7 +92,7 @@ def getlistdoc(hashMap,_files=None,_data=None):
     newhashMap=callfunc1C(hashMap,names_put,names_get) 
     err=newhashMap.get("errhttp")
     if err=="True":
-        screenmessage(hashMap,newhashMap.get("ТекстОшибки"),"Ошибка соединения с 1С")
+        screenmessage(hashMap,"Ошибка getlistdoc: "+newhashMap.get("ТекстОшибки"),"Ошибка соединения с 1С")
     else:
         # запишем документ результат в базу ТСД
         docresult=hashMap.get("docresult")
@@ -108,7 +108,7 @@ def selecteddoc(hashMap,_files=None,_data=None):
     newhashMap=callfunc1C(hashMap,names_put,names_get) 
     err=newhashMap.get("errhttp")
     if err=="True":
-        screenmessage(hashMap,newhashMap.get("ТекстОшибки"),"Ошибка соединения с 1С")
+        screenmessage(hashMap,"Ошибка selecteddoc: "+newhashMap.get("ТекстОшибки"),"Ошибка соединения с 1С")
     else:
         # запишем документ результат в базу ТСД
         docresult=hashMap.get("docresult")
@@ -181,6 +181,8 @@ def callfunc1C(hashMap,names_put,names_get,showerr=True):
     func1C=hashMap.get("func1C")   
     hashMap.put("errhttp","False")
     if not func1C:
+        hashMap.put("errhttp","True")
+        hashMap.put("toast","Не задана функция http сервиса")
         return hashMap
     noClass = jclass("ru.travelfood.simple_ui.NoSQL")
     db = noClass("dbtsd")
@@ -223,22 +225,19 @@ def callfunc1C(hashMap,names_put,names_get,showerr=True):
                     if name in names_get:
                         hashMap.put(name,el["value"])
                 ErrorMessage=fullresp['ErrorMessage']
-                if ErrorMessage == '' :
+                if ErrorMessage == "" :
                     _status_connect = "Online"  
             except Exception as er :
-                hashMap.put("errhttp","True")
                 ErrorMessage="Ошибка при получении результата HTTP запроса:"+ret.text +' '+ str(er)
         elif ret.status_code == 401 :
-            hashMap.put("errhttp","True")
             ErrorMessage="Не корректный логин или пароль"
         else : 
-            hashMap.put("errhttp","True")
             ErrorMessage="Ошибка подключения к http сервису 1С: "+str(ret.status_code)
     except Exception as er :
-        hashMap.put("errhttp","True")
         ErrorMessage="Ошибка подключения к http сервису 1С при выполнении функции: "+func1C+", "+ str(er)
     hashMap.put("ErrorMessage",ErrorMessage) 
     if ErrorMessage != "" and showerr:
+        hashMap.put("errhttp","True")
         hashMap=screenmessage(hashMap,ErrorMessage)       
     if _status_connect=="Online":
         color="<font color = ""#006400"">"
@@ -401,7 +400,7 @@ def savein1c(hashMap,showerr=True):
     newhashMap=callfunc1C(hashMap,names_put,names_get) 
     err=newhashMap.get("errhttp")
     if err=="True" and showerr:
-        screenmessage(hashMap,newhashMap.get("ТекстОшибки"),"Ошибка соединения с 1С")
+        screenmessage(hashMap,"Ошибка СохранитьДокумент: "+newhashMap.get("ТекстОшибки"),"Ошибка соединения с 1С")
         return False
     else:
         # запишем документ результат в базу ТСД
