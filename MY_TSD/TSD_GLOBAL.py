@@ -363,7 +363,7 @@ def plus1(hashMap,prod,qnt,settings,showerr=True):
     docresult=json.loads(hashMap.get("docresult"))
     stocks=docresult["stocks"]
     for line in stocks:
-        if line["prodid"]==prodid and line["characid"]==characid and line["unitid"]==unitid and line["typeunit"]=typeunit:
+        if line["prodid"]==prodid and line["characid"]==characid and line["unitid"]==unitid and line["typeunit"]==typeunit:
             # если нашли, добавим или заменим в зависимости от настройки qnt
             if settings["ЗаменятьКоличество"]=="true":
                 line["факт"]=qnt
