@@ -203,8 +203,8 @@ def callfunc1C(hashMap,names_put,names_get,showerr=True):
             hashMap.put("errhttp","True")
             hashMap.put("ТекстОшибки","Не задан IP http сервиса")
             return hashMap
-        url = "http://"+IP+"/UNF/hs/simpleuiTSD/set_input_direct/"+func1C.encode('UTF-8')
-        url = url.encode('UTF-8')
+        url = "http://"+IP+"/UNF/hs/simpleuiTSD/set_input_direct/"+func1C
+        url = url.encode('UTF-8').decode() 
         hashMap=screenmessage(hashMap,url)   
         login1c = db.get("login1c")
         if login1c == None :
