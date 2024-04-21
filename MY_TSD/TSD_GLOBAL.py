@@ -178,7 +178,7 @@ def Scanning(hashMap,_files=None,_data=None):
 
 # Функция вызов функции http сервиса 1С
 def callfunc1C(hashMap,names_put,names_get,showerr=True):
-    try
+    try:
         func1C=hashMap.get("func1C")   
         hashMap.put("errhttp","False")
         if not func1C:
