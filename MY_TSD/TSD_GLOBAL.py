@@ -205,14 +205,13 @@ def callfunc1C(hashMap,names_put,names_get,showerr=True):
             return hashMap
         url = "http://"+IP+"/UNF/hs/simpleuiTSD/set_input_direct/"+func1C
         url = url.encode('UTF-8').decode() 
-        hashMap=screenmessage(hashMap,url)   
         login1c = db.get("login1c")
         if login1c == None :
             hashMap.put("errhttp","True")
             hashMap.put("ТекстОшибки","Не задан Login http сервиса");
             return hashMap
         password1c = str(db.get("password1c"))
-        auth = HTTPBasicAuth(login1c.encode('UTF-8'), password1c.encode('UTF-8'))
+        auth = HTTPBasicAuth(login1c.encode('UTF-8').decode(), password1c.encode('UTF-8').decode())
         # подготовим параметры
         mp=[]
         names_put.append('_idtsd')
@@ -259,8 +258,8 @@ def callfunc1C(hashMap,names_put,names_get,showerr=True):
     hashMap.put("ErrorMessage",ErrorMessage) 
     if ErrorMessage != "":
         hashMap.put("errhttp","True") 
-       # if showerr:
-           # hashMap=screenmessage(hashMap,"Ошибка в функции callfunc1C:"+ErrorMessage)       
+        if showerr:
+            hashMap=screenmessage(hashMap,"Ошибка в функции callfunc1C:"+ErrorMessage)       
     return hashMap
 
 def screenmessage(hashMap,mess,cap_mess=None):
