@@ -65,9 +65,9 @@ def connect(hashMap,_files=None,_data=None):
     newhashMap=callfunc1C(hashMap,names_put,names_get) 
     err=newhashMap.get("errhttp")
     if err=="False":
-        hashMap.put("ShowScreen","Ошибка connect: "+newhashMap.get("ShowScreen"))
+        hashMap.put("ShowScreen",newhashMap.get("ShowScreen"))
     else:
-        screenmessage(hashMap,newhashMap.get("ТекстОшибки"),"Ошибка соединения с 1С")
+        screenmessage(hashMap,"Ошибка connect: "+newhashMap.get("ТекстОшибки"),"Ошибка соединения с 1С")
     return hashMap
 
 # Функция выбор операции
