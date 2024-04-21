@@ -179,25 +179,27 @@ def Scanning(hashMap,_files=None,_data=None):
 # Функция вызов функции http сервиса 1С
 def callfunc1C(hashMap,names_put,names_get,showerr=True):
     try:
+        ErrorMessage = ""
+        hashMap.put("ТекстОшибки","")
         func1C=hashMap.get("func1C")   
         hashMap.put("errhttp","False")
         if not func1C:
             hashMap.put("errhttp","True")
-            hashMap.put("toast","Не задана функция http сервиса")
+            ТекстОшибки = "Не задана функция http сервиса"
             return hashMap
         noClass = jclass("ru.travelfood.simple_ui.NoSQL")
         db = noClass("dbtsd")
         IP = db.get("IP")
         if IP == None :
             hashMap.put("errhttp","True")
-            hashMap.put("toast","Не задан IP http сервиса")
+            ТекстОшибки = "Не задан IP http сервиса"
             return hashMap
         url = "http://"+IP+"/UNF/hs/simpleuiTSD/set_input_direct/"+func1C
         url = url.encode('UTF-8')
         login1c = db.get("login1c")
         if login1c == None :
             hashMap.put("errhttp","True")
-            hashMap.put("toast","Не задан Login http сервиса")
+            ТекстОшибки = "Не задан Login http сервиса"
             return hashMap
         password1c = str(db.get("password1c"))
         auth = HTTPBasicAuth(login1c.encode('UTF-8'), password1c.encode('UTF-8'))
@@ -212,8 +214,7 @@ def callfunc1C(hashMap,names_put,names_get,showerr=True):
                 mp.append(d)
         conv={'hashMap':mp} 
         _status_connect = "Offline"
-        hashMap.put("ТекстОшибки","")
-        ErrorMessage = ""
+        
         try:
             ret=post(url, json=conv, auth=auth, headers={'content-type': 'application/json; charset=utf-8'}, timeout=60)
             ret.encoding = 'UTF-8'
