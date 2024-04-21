@@ -190,8 +190,8 @@ def callfunc1C(hashMap,names_put,names_get,showerr=True):
     try:
         ErrorMessage = ""
         hashMap.put("ТекстОшибки","")
-        func1C=hashMap.get("func1C")   
         hashMap.put("errhttp","False")
+        func1C=hashMap.get("func1C")   
         if not func1C:
             hashMap.put("errhttp","True")
             hashMap.put("ТекстОшибки","Не задана функция http сервиса")
@@ -205,6 +205,7 @@ def callfunc1C(hashMap,names_put,names_get,showerr=True):
             return hashMap
         url = "http://"+IP+"/UNF/hs/simpleuiTSD/set_input_direct/"+func1C
         url = url.encode('UTF-8')
+        hashMap=screenmessage(hashMap,url)   
         login1c = db.get("login1c")
         if login1c == None :
             hashMap.put("errhttp","True")
@@ -246,7 +247,7 @@ def callfunc1C(hashMap,names_put,names_get,showerr=True):
                 ErrorMessage="Ошибка подключения к http сервису 1С: "+str(ret.status_code)
         except Exception as er :
             ErrorMessage="Ошибка подключения к http сервису 1С при выполнении функции: "+func1C+", "+ str(er)  
-        hashMap.put("toast","После подключения "+ErrorMessage)
+        #hashMap.put("toast","После подключения "+ErrorMessage)
         if _status_connect=="Online":
             color="<font color = ""#006400"">"
         else:
