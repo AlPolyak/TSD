@@ -211,7 +211,7 @@ def callfunc1C(hashMap,names_put,names_get,showerr=True):
             hashMap.put("ТекстОшибки","Не задан Login http сервиса");
             return hashMap
         password1c = str(db.get("password1c"))
-        auth = HTTPBasicAuth(login1c.encode('UTF-8').decode(), password1c.encode('UTF-8').decode())
+        auth = HTTPBasicAuth(login1c.encode('UTF-8'), password1c.encode('UTF-8'))
         # подготовим параметры
         mp=[]
         names_put.append('_idtsd')
