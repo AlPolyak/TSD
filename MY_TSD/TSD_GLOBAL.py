@@ -378,29 +378,29 @@ def plus1(hashMap,prod,qnt,settings,showerr=True):
         # поищем в документе результате эту номенклатуру
         docresult=json.loads(hashMap.get("docresult"))
         stocks=docresult["stocks"]
+        yes=False
         for line in stocks:
             if line["prodid"]==prodid and line["characid"]==characid and line["unitid"]==unitid and line["typeunit"]==typeunit:
                 # если нашли, добавим или заменим в зависимости от настройки qnt
+                yes=True
                 if settings["ЗаменятьКоличество"]=="true":
                     line["Факт"]=float(qnt)
                 else:
                     line["Факт"]=line["Факт"]+float(qnt)
-                hashMap.put("docresult",json.dumps(docresult,ensure_ascii=False))
-                return hashMap
-        # если нет добавим строку 
-        newline={
-                 "Номенклатура":prod["Номенклатура"],
-                 "prodid":prod["prodid"], 
-                 "characid":prod["characid"], 
-                 "ЕдиницаИзмерения":prod["ЕдиницаИзмерения"], 
-                 "unitid":prod["unitid"], 
-                 "typeunit":prod["typeunit"], 
-                 "Факт":float(qnt), 
-                 "key":str(uuid.uuid4()), 
-                 "barcode":prod["barcode"]
-        } 
-        
-        stocks.append(newline)  
+        if yes == False:
+            # если нет добавим строку 
+            newline={
+                     "Номенклатура":prod["Номенклатура"],
+                     "prodid":prod["prodid"], 
+                     "characid":prod["characid"], 
+                     "ЕдиницаИзмерения":prod["ЕдиницаИзмерения"], 
+                     "unitid":prod["unitid"], 
+                     "typeunit":prod["typeunit"], 
+                     "Факт":float(qnt), 
+                     "key":str(uuid.uuid4()), 
+                     "barcode":prod["barcode"]
+            } 
+            stocks.append(newline)  
         hashMap.put("docresult",json.dumps(docresult,ensure_ascii=False))
         # попробуем сохранить в 1с
         ok=savein1c(hashMap,showerr)
