@@ -120,27 +120,28 @@ def selecteddoc(hashMap,_files=None,_data=None):
 #В зависимости от режима ПоДокументу ищем в документе или в базе 
 def Scanning(hashMap,_files=None,_data=None):
     barcode=hashMap.get("barcode")
-    _ТСД_Настройки=json.loads(hashMap.get("_ТСД_Настройки"))
-    if _ТСД_Настройки["ПоДокументу"]=="true":
+    settings=json.loads(hashMap.get("_ТСД_Настройки"))
+    if settings["ПоДокументу"]=="true":
         # надо попытаться найти шк в табличной части _tabproducts
         _tabproducts=json.loads(hashMap.get("_tabproducts")) 
-        # (Массив структур) *key;*Наименование;*Характеристика;*ЕдиницаИзмерения;
-        # *Количество;*Факт;*Цена;*Сумма;*СуммаФакт;*barcodes(Массив);
+        # (Массив структур) *key;*Номенклатура;*ЕдиницаИзмерения;*prodid;*characid;
+        # *typeunit;*unitid;*Количество;*Факт;*Цена;*Сумма;*СуммаФакт;*barcodes(Массив);
         for prod in _tabproducts:
             namecol=prod["barcodes"]
             if barcode in prod[namecol]:
                 # нашли строку в тч документа, передадим ее в процедуру ввода количества
                 hashMap.put("_curprod",json.dumps(prod,ensure_ascii=False))
-                if _ТСД_Настройки["ВводКоличества"]=="true":
+                if settings["ВводКоличества"]=="true":
                     hashMap.put("ShowScreen","Ввод количества")
                     return hashMap
                 else:
                     # просто добавим 1
-                    plus1(hashMap,prod,1,_ТСД_Настройки)
+                    plus1(hashMap,prod,1,_ТСД_Настройки,False)
+                    hashMap.put("toast","Кол. +1 " + _tabproducts[Номенклатура])
                     return hashMap
         else:
             hashMap.put("toast","Номенклатура со ШК:"+barcode+" в документе не найдена")
-    if _ТСД_Настройки["ДобавлятьСтроки"]=="true":
+    if settings["ДобавлятьСтроки"]=="true":
         # не нашли, ищем в базе 
         hashMap.put("func1C","ПоискНоменклатуры")
         names_get=["Номенклатура"]
@@ -159,13 +160,13 @@ def Scanning(hashMap,_files=None,_data=None):
                     prod=sprods["Номенклатура"][0]
                     # Если найдена одна, то если есть настройка - ввод количества,
                     # иначе добавление количества факт в накладную        
-                    hashMap.put("toast",prod["Номенклатура"])
-                    if _ТСД_Настройки["ВводКоличества"]=="true":
+                    if settings["ВводКоличества"]=="true":
                         hashMap.put("ShowScreen","Ввод количества")
                         return hashMap
                     else:
                         # просто добавим 1
-                        plus1(hashMap,prod,1,_ТСД_Настройки)
+                        plus1(hashMap,prod,1,_ТСД_Настройки,False)
+                        hashMap.put("toast","Кол. +1 " + prod["Номенклатура"])
                 elif retcode==3:
                     # Если найдено несколько номенклатур, то показать выбор    
                     hashMap.put("toast",sprods["ТекстОшибки"])
@@ -271,7 +272,7 @@ def cardslist(hashMap,object1):
                 {
                         "type": "TextView",
                         "show_by_condition": "",
-                        "Value": "@string1",
+                        "Value": "@Номенклатура",
                         "TextSize": "20",
                         "NoRefresh": False,
                         "document_type": "",
@@ -313,13 +314,12 @@ def cardslist(hashMap,object1):
     for prod in object1:
         c =  {
         "key": str(object1.index(prod)),
-        "string1": prod["Номенклатура"]+" "+prod["Характеристика"].rstrip(),
+        "Номенклатура": prod["Номенклатура"],
         "ЕдиницаИзмерения": prod["ЕдиницаИзмерения"],
-        "Номенклатура":  prod["Номенклатура"], 
-        "Характеристика":  prod["Характеристика"],
         "prodid":  prod["prodid"],
         "characid":  prod["characid"],
         "unitid":  prod["unitid"],
+        "typeunit":  prod["typeunit"],    
         "Количество":  prod["Количество"],
         "barcode":  prod["barcode"]            
         } 
@@ -334,10 +334,10 @@ def inputqtty(hashMap,_files=None,_data=None):
     prod=cards_prod["customcards"]["cardsdata"][int(selected_card_key)]
     hashMap.put("qtty",prod["Количество"])
     hashMap.put("_curprod",json.dumps(prod,ensure_ascii=False))
-    _ТСД_Настройки=json.loads(hashMap.get("_ТСД_Настройки"))
+    settings=json.loads(hashMap.get("_ТСД_Настройки"))
     # надо достать Факт из док результата по id номенклатуры Характеристике и Ед изм
     
-    if _ТСД_Настройки["ВводКоличества"]=="true":   
+    if settings["ВводКоличества"]=="true":   
         hashMap.put("ShowScreen","Ввод количества")
     else:
         #  просто добавим количество
@@ -349,42 +349,45 @@ def inputqtty(hashMap,_files=None,_data=None):
 def plus2(hashMap,_files=None,_data=None):
     qtty=hashMap.get("qtty")
     prod=json.loads(hashMap.get("_curprod"))
-    _ТСД_Настройки=json.loads(hashMap.get("_ТСД_Настройки"))
-    plus1(hashMap, prod, qtty, _ТСД_Настройки)
+    settings=json.loads(hashMap.get("_ТСД_Настройки"))
+    plus1(hashMap, prod, qtty, settings)
     return hashMap
     
-def plus1(hashMap,prod,qnt,Настройки):
+def plus1(hashMap,prod,qnt,settings,showerr=True):
     # получим по prod ключи номенклатуры
     prodid=prod["prodid"]  
     characid=prod["characid"] 
     unitid=prod["unitid"]
+    typeunit=prod["typeunit"]
     # поищем в документе результате эту номенклатуру
     docresult=json.loads(hashMap.get("docresult"))
     stocks=docresult["stocks"]
     for line in stocks:
-        if line["prodid"]==prodid and line["characid"]==characid and line["unitid"]==unitid:
+        if line["prodid"]==prodid and line["characid"]==characid and line["unitid"]==unitid and line["typeunit"]=typeunit:
             # если нашли, добавим или заменим в зависимости от настройки qnt
-            if Настройки["ЗаменятьКоличество"]=="true":
+            if settings["ЗаменятьКоличество"]=="true":
                 line["факт"]=qnt
             else:
                 line["факт"]=line["факт"]+qnt
             hashMap.put("docresult",json.dumps(docresult,ensure_ascii=False))
             return hashMap
     # если нет добавим строку 
-    newline={"Номенклатура":prod["Номенклатура"],
+    newline={
+             "Номенклатура":prod["Номенклатура"],
              "prodid":prod["prodid"], 
-             "Характеристика":prod["Характеристика"], 
              "characid":prod["characid"], 
              "ЕдиницаИзмерения":prod["ЕдиницаИзмерения"], 
              "unitid":prod["unitid"], 
+             "typeunit":prod["typeunit"], 
              "факт":qnt, 
              "key":str(uuid.uuid4()), 
-             "barcode":prod["barcode"]} 
+             "barcode":prod["barcode"]
+    } 
     stocks.append(newline)  
     hashMap.put("docresult",json.dumps(docresult,ensure_ascii=False))
     # попробуем сохранить в 1с
-    ok=savein1c(hashMap,False)
-    if ok==False:
+    ok=savein1c(hashMap,showerr)
+    if ok==False and showerr:
         hashMap.put("toast","Ошибка сохранения документа в базе 1С")
     hashMap.put("ShowScreen","Сканирование")
     return hashMap
@@ -429,7 +432,7 @@ def showdoc(hashMap,_files=None,_data=None):
             {
                 "type": "TextView",
                 "show_by_condition": "",
-                "Value": "@string1",
+                "Value": "@Номенклатура",
                 "NoRefresh": False,
                 "document_type": "",
                 "mask": "",
@@ -438,7 +441,7 @@ def showdoc(hashMap,_files=None,_data=None):
             {
                 "type": "TextView",
                 "show_by_condition": "",
-                "Value": "@string2",
+                "Value": "@barcode",
                 "NoRefresh": False,
                 "document_type": "",
                 "mask": "",
@@ -471,8 +474,8 @@ def showdoc(hashMap,_files=None,_data=None):
         c =  {
         "key": str(line["key"]),
         "val": str(line["Факт"])+" "+line["ЕдиницаИзмерения"],
-        "string1": line["Номенклатура"]+" "+line["Характеристика"],
-        "string2": line["barcode"]
+        "Номенклатура": line["Номенклатура"],
+        "barcode": line["barcode"]
             }
         j["customcards"]["cardsdata"].append(c)
     hashMap.put("list_doc",json.dumps(j,ensure_ascii=False).encode('utf8').decode())
