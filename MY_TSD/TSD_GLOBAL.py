@@ -185,21 +185,21 @@ def callfunc1C(hashMap,names_put,names_get,showerr=True):
         hashMap.put("errhttp","False")
         if not func1C:
             hashMap.put("errhttp","True")
-            ТекстОшибки = "Не задана функция http сервиса"
+            hashMap.put("ТекстОшибки","Не задана функция http сервиса")
             return hashMap
         noClass = jclass("ru.travelfood.simple_ui.NoSQL")
         db = noClass("dbtsd")
         IP = db.get("IP")
         if IP == None :
             hashMap.put("errhttp","True")
-            ТекстОшибки = "Не задан IP http сервиса"
+            hashMap.put("ТекстОшибки","Не задан IP http сервиса")
             return hashMap
         url = "http://"+IP+"/UNF/hs/simpleuiTSD/set_input_direct/"+func1C
         url = url.encode('UTF-8')
         login1c = db.get("login1c")
         if login1c == None :
             hashMap.put("errhttp","True")
-            ТекстОшибки = "Не задан Login http сервиса"
+            hashMap.put("ТекстОшибки","Не задан Login http сервиса");
             return hashMap
         password1c = str(db.get("password1c"))
         auth = HTTPBasicAuth(login1c.encode('UTF-8'), password1c.encode('UTF-8'))
