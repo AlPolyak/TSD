@@ -246,8 +246,8 @@ def callfunc1C(hashMap,names_put,names_get,showerr=True):
         ErrorMessage="Ошибка подключения к http сервису 1С при выполнении функции: "+func1C+", "+ str(er)
     hashMap.put("ErrorMessage",ErrorMessage) 
     if ErrorMessage != "" and showerr:
-            hashMap.put("errhttp","True")
-            hashMap=screenmessage(hashMap,"Ошибка в функции callfunc1C:"+ErrorMessage)       
+        hashMap.put("errhttp","True")
+        hashMap=screenmessage(hashMap,"Ошибка в функции callfunc1C:"+ErrorMessage)       
     return hashMap
 
 def screenmessage(hashMap,mess,cap_mess=None):
