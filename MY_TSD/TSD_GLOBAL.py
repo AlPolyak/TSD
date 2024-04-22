@@ -454,7 +454,7 @@ def closedoc(hashMap,_files=None,_data=None):
             return hashMap
     # попробуем закрыть документ в 1С
     hashMap.put("func1C","ЗакрытьДокумент")
-    names_put=["_idtsd","docresult","_typeofoperation"]
+    names_put=["_idtsd","docresult","_typeofoperation","Изменен"]
     names_get=["ТекстОшибки"]
     newhashMap=callfunc1C(hashMap,names_put,names_get) 
     err=newhashMap.get("errhttp")
