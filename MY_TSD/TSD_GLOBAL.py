@@ -271,7 +271,9 @@ def callfunc1C(hashMap,names_put,names_get,showerr=True):
 def screenmessage(hashMap,mess,cap_mess=None):
     hashMap.put("_message",str(mess))
     if cap_mess==None:
-        cap_mess=""    
+        cap_mess="" 
+    if hashMap.get("screenerr")=="" or hashMap.get("screenerr")==None:
+        hashMap.put("screenerr",parent_screen)
     hashMap.put("_cap_message",str(cap_mess))
     hashMap.put("ShowScreen","Сообщение")
     return hashMap
