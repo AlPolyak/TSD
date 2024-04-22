@@ -102,6 +102,8 @@ def getlistdoc(hashMap,_files=None,_data=None):
             docresult=hashMap.get("docresult")
             if docresult != "":
                 db.put("docresult",docresult,True)
+                # признак документ результат изменен и не записан в 1с
+                hashMap.put("Изменен","нет")
     return hashMap
 
 # Функция получить список строк выбранного документа 1С
@@ -119,7 +121,9 @@ def selecteddoc(hashMap,_files=None,_data=None):
             # запишем документ результат в базу ТСД
             docresult=hashMap.get("docresult")
             if docresult != "":
-                db.put("docresult",docresult,True)    
+                db.put("docresult",docresult,True)   
+                # признак документ результат изменен и не записан в 1с
+                hashMap.put("Изменен","нет")
     return hashMap
 
 # Функция при сканировании
@@ -142,7 +146,7 @@ def Scanning(hashMap,_files=None,_data=None):
                     return hashMap
                 else:
                     # просто добавим 1
-                    plus1(hashMap,prod,1,_ТСД_Настройки,False)
+                    plus1(hashMap,prod,1,settings,False)
                     hashMap.put("toast","Кол. +1 " + _tabproducts[Номенклатура])
                     return hashMap
         else:
@@ -174,7 +178,7 @@ def Scanning(hashMap,_files=None,_data=None):
                             return hashMap
                         else:
                             # просто добавим 1
-                            plus1(hashMap,prod,1,_ТСД_Настройки,False)
+                            plus1(hashMap,prod,1,settings,False)
                             hashMap.put("toast","Кол. +1 " + prod["Номенклатура"])
                     elif retcode==3:
                         # Если найдено несколько номенклатур, то показать выбор    
@@ -387,6 +391,7 @@ def plus1(hashMap,prod,qnt,settings,showerr=True):
                     line["Факт"]=float(qnt)
                 else:
                     line["Факт"]=line["Факт"]+float(qnt)
+                break
         if yes == False:
             # если нет добавим строку 
             newline={
@@ -401,17 +406,28 @@ def plus1(hashMap,prod,qnt,settings,showerr=True):
                      "barcode":prod["barcode"]
             } 
             stocks.append(newline)  
+        # признак документ результат изменен и не записан в 1с
+        hashMap.put("Изменен","да")
         hashMap.put("docresult",json.dumps(docresult,ensure_ascii=False))
         # попробуем сохранить в 1с
         ok=savein1c(hashMap,showerr)
-        if ok==False and showerr:
-            hashMap.put("toast","Ошибка сохранения документа в базе 1С")
+        if ok==False:
+           # if showerr:
+            #    hashMap.put("toast","Ошибка сохранения документа в базе 1С")
+            else:
+                # записали в 1с
+                # признак документ результат изменен и не записан в 1с
+                hashMap.put("Изменен","нет")
         hashMap.put("ShowScreen","Сканирование")
     except Exception as er :
         hashMap=screenmessage(hashMap,"Ошибка в функции plus1:"+str(er))  
     return hashMap
 
 def savein1c(hashMap,showerr=True):
+    # запишем документ результат в базу ТСД
+    docresult=hashMap.get("docresult")
+    if docresult != "":
+        db.put("docresult",docresult,True) 
     # требуется онлайн
     hashMap.put("func1C","СохранитьДокумент")
     names_put=["_idtsd","docresult","listener","_typeofoperation","_ТСД_Настройки"]
@@ -419,19 +435,45 @@ def savein1c(hashMap,showerr=True):
     newhashMap=callfunc1C(hashMap,names_put,names_get) 
     err=newhashMap.get("errhttp")
     if err=="False":
+        # нет ошибки соединения, проверим ошибку 1С
         texterr=newhashMap.get("ТекстОшибки")
         if str(texterr) != "":
-            screenmessage(hashMap,"Ошибка СохранитьДокумент: "+texterr,"Ошибка в функции 1С")
+            # ошибка записи в 1С 
+            if showerr:               
+                screenmessage(hashMap,"Ошибка СохранитьДокумент: "+texterr,"Ошибка в функции 1С")
+            return False      
         else:
-            # запишем документ результат в базу ТСД
-            docresult=hashMap.get("docresult")
-            if docresult != "":
-                db.put("docresult",docresult,True)    
-    return True     
+            # все хорошо
+            return True 
+    # ошибка соединения http
+    return False     
 
 def savedoc(hashMap,_files=None,_data=None):
-    savein1c(hashMap,True)
+    if savein1c(hashMap,True):
+        hashMap.put("toast","Документ записан в 1С")
     return hashMap   
+
+def closedoc(hashMap,_files=None,_data=None):
+    if hashMap.get("Изменен")=="да":
+        if savein1c(hashMap)=False:
+            return hashMap
+    # попробуем закрыть документ в 1С
+    hashMap.put("func1C","ЗакрытьДокумент")
+    names_put=["_idtsd","docresult"]
+    names_get=["ТекстОшибки"]
+    newhashMap=callfunc1C(hashMap,names_put,names_get) 
+    err=newhashMap.get("errhttp")
+    if err=="False":
+        # нет ошибки соединения, проверим ошибку 1С
+        texterr=newhashMap.get("ТекстОшибки")
+        if str(texterr) != "":
+            # ошибка в 1С        
+            screenmessage(hashMap,"Ошибка ЗакрытьДокумент: "+texterr,"Ошибка в функции 1С")
+        else:
+            # все хорошо
+            hashMap.put("toast","Документ закрыт в 1С")
+    # ошибка соединения http      
+    return hashMap
     
 # показ на экране документа результата
 def showdoc(hashMap,_files=None,_data=None):
