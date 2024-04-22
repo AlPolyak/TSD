@@ -229,7 +229,7 @@ def callfunc1C(hashMap,names_put,names_get,showerr=True):
                 mp.append(d)
         conv={'hashMap':mp} 
         _status_connect = "Offline"
-        hashMap.put("toast","Подключение...")
+       # hashMap.put("toast","Подключение...")
         try:
             ret=post(url, json=conv, auth=auth, headers={'content-type': 'application/json; charset=utf-8'}, timeout=100)
             ret.encoding = 'UTF-8'
