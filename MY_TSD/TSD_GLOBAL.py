@@ -88,6 +88,7 @@ def type_of_operation(hashMap,_files=None,_data=None):
 
 # Функция получить список документов 1С
 def getlistdoc(hashMap,_files=None,_data=None):
+    hashMap.put("screenerr","Выбор операции")
     hashMap.put("func1C","ПолучитьСписок")
     names_put=["_idtsd","onClick","listener","_typeofoperation","_ТСД_Настройки"]
     names_get=["ТекстОшибки","ShowScreen","_ТСД_Настройки","cards","docresult"]
@@ -108,6 +109,7 @@ def getlistdoc(hashMap,_files=None,_data=None):
 
 # Функция получить список строк выбранного документа 1С
 def selecteddoc(hashMap,_files=None,_data=None):
+    hashMap.put("screenerr","Выбор документа")
     hashMap.put("func1C","ВыбранДокумент")
     names_put=["_idtsd","_typeofoperation","_ТСД_Настройки","selected_card_key"]
     names_get=["ТекстОшибки","ShowScreen","_ТСД_Настройки","cardsofproduct","docresult","_tabproducts"]
@@ -413,9 +415,9 @@ def plus1(hashMap,prod,qnt,settings,showerr=True):
         ok=savein1c(hashMap,showerr)
         if ok:
             hashMap.put("Изменен","нет")
-        hashMap.put("ShowScreen","Сканирование")
     except Exception as er :
         hashMap=screenmessage(hashMap,"Ошибка в функции plus1:"+str(er))  
+    hashMap.put("ShowScreen","Сканирование")
     return hashMap
 
 def savein1c(hashMap,showerr=True):
@@ -449,6 +451,7 @@ def savedoc(hashMap,_files=None,_data=None):
     return hashMap   
 
 def closedoc(hashMap,_files=None,_data=None):
+    hashMap.put("screenerr","Сканирование")
     if hashMap.get("Изменен")=="да":
         if not savein1c(hashMap):
             return hashMap
