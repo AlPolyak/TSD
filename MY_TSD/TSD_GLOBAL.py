@@ -78,12 +78,10 @@ def type_of_operation(hashMap,_files=None,_data=None):
     if listener in ["btn_get","btn_put","btn_inv"]:
         db.put("typeofoperation",listener,True)
         hashMap.put("_typeofoperation",listener)
-#        hashMap.put("noRefresh","");
-#        hashMap.put("ShowScreen","Выбор документа")
     elif listener=="btn_ret":
         db.put("typeofoperation","",True)
         hashMap.put("_typeofoperation","")
-        hashMap.put("BackScreen","")
+        hashMap.put("ShowScreen","Подключение")
     return hashMap
 
 # Функция получить список документов 1С
