@@ -411,13 +411,8 @@ def plus1(hashMap,prod,qnt,settings,showerr=True):
         hashMap.put("docresult",json.dumps(docresult,ensure_ascii=False))
         # попробуем сохранить в 1с
         ok=savein1c(hashMap,showerr)
-        if ok==False:
-           # if showerr:
-            #    hashMap.put("toast","Ошибка сохранения документа в базе 1С")
-            else:
-                # записали в 1с
-                # признак документ результат изменен и не записан в 1с
-                hashMap.put("Изменен","нет")
+        if ok:
+            hashMap.put("Изменен","нет")
         hashMap.put("ShowScreen","Сканирование")
     except Exception as er :
         hashMap=screenmessage(hashMap,"Ошибка в функции plus1:"+str(er))  
@@ -455,7 +450,7 @@ def savedoc(hashMap,_files=None,_data=None):
 
 def closedoc(hashMap,_files=None,_data=None):
     if hashMap.get("Изменен")=="да":
-        if savein1c(hashMap)=False:
+        if not savein1c(hashMap):
             return hashMap
     # попробуем закрыть документ в 1С
     hashMap.put("func1C","ЗакрытьДокумент")
