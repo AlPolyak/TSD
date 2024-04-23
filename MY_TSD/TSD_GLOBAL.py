@@ -546,7 +546,7 @@ def testhttp(hashMap,_files=None,_data=None):
     hashMap.put("func1C","ТестСвязи")
     names_put=["_idtsd"]
     names_get=["ТекстОшибки"]
-    newhashMap=callfunc1C(hashMap,names_put,names_get,,10) 
+    newhashMap=callfunc1C(hashMap,names_put,names_get,False,10) 
     newhashMap.put("RefreshScreen","")
     return False     
     
