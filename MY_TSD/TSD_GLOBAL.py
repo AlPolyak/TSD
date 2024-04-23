@@ -239,8 +239,6 @@ def callfunc1C(hashMap,names_put,names_get,showerr=True):
                         name=el["key"]
                         if name in names_get:
                             hashMap.put(name,el["value"])
-                    ErrorMessage=fullresp['ErrorMessage']
-                    if ErrorMessage == "" :
                         _status_connect = "Online"  
                 except Exception as er :
                     ErrorMessage="Ошибка при получении результата HTTP запроса:"+ret.text +' '+ str(er)
@@ -545,5 +543,12 @@ def showdoc(hashMap,_files=None,_data=None):
     return hashMap    
 
 def testhttp(hashMap,_files=None,_data=None):
+    hashMap.put("func1C","ТестСвязи")
+    names_put=["_idtsd"]
+    names_get=["ТекстОшибки"]
+    newhashMap=callfunc1C(hashMap,names_put,names_get) 
+    newhashMap.put("RefreshScreen","")
+    return False     
+    
     hashMap.put("toast","Работа таймера")
     return hashMap    
