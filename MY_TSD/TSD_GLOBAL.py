@@ -551,6 +551,6 @@ def testhttp(hashMap,_files=None,_data=None):
     hashMap.put("_status_connect",_status_connect)
     current_screen_name=hashMap.get("current_screen_name")
     hashMap.put("toast", current_screen_name)          
-    hashMap.put("ShowScreen",hashMap.get("current_screen_name"))
+    hashMap.put("RefreshScreen","")
     return False     
     
