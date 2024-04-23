@@ -190,7 +190,7 @@ def Scanning(hashMap,_files=None,_data=None):
     return hashMap
 
 # Функция вызов функции http сервиса 1С
-def callfunc1C(hashMap,names_put,names_get,showerr=True):
+def callfunc1C(hashMap,names_put,names_get,showerr=True, httptimeout=100):
     try:
         ErrorMessage = ""
         hashMap.put("ТекстОшибки","")
@@ -229,7 +229,7 @@ def callfunc1C(hashMap,names_put,names_get,showerr=True):
         _status_connect = "Offline"
        # hashMap.put("toast","Подключение...")
         try:
-            ret=post(url, json=conv, auth=auth, headers={'content-type': 'application/json; charset=utf-8'}, timeout=100)
+            ret=post(url, json=conv, auth=auth, headers={'content-type': 'application/json; charset=utf-8'}, timeout=httptimeout)
             ret.encoding = 'UTF-8'
             if ret.status_code == 200 :
                 try:
@@ -546,7 +546,7 @@ def testhttp(hashMap,_files=None,_data=None):
     hashMap.put("func1C","ТестСвязи")
     names_put=["_idtsd"]
     names_get=["ТекстОшибки"]
-    newhashMap=callfunc1C(hashMap,names_put,names_get) 
+    newhashMap=callfunc1C(hashMap,names_put,names_get,,10) 
     newhashMap.put("RefreshScreen","")
     return False     
     
