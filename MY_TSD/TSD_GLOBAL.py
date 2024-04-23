@@ -82,10 +82,14 @@ def type_of_operation(hashMap,_files=None,_data=None):
         db.put("typeofoperation","",True)
         hashMap.put("_typeofoperation","")
         hashMap.put("ShowScreen","Подключение")
+    else
+        hashMap.put("_typeofoperation","")
     return hashMap
 
 # Функция получить список документов 1С
 def getlistdoc(hashMap,_files=None,_data=None):
+    if hashMap.get("_typeofoperation")=="":
+        return hashMap
     hashMap.put("screenerr","Выбор операции")
     hashMap.put("func1C","ПолучитьСписок")
     names_put=["_idtsd","onClick","listener","_typeofoperation","_ТСД_Настройки"]
