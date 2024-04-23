@@ -550,6 +550,6 @@ def testhttp(hashMap,_files=None,_data=None):
     _status_connect=newhashMap.get("_status_connect")
     hashMap.put("_status_connect",_status_connect)
     hashMap.put("toast", _status_connect)          
-    hashMap.put("ShowScreen",current_process_name+"|"+current_screen_name)
+    hashMap.put("ShowScreen",current_screen_name)
     return False     
     
