@@ -82,7 +82,7 @@ def type_of_operation(hashMap,_files=None,_data=None):
         db.put("typeofoperation","",True)
         hashMap.put("_typeofoperation","")
         hashMap.put("ShowScreen","Подключение")
-    else
+    else:
         hashMap.put("_typeofoperation","")
     return hashMap
 
