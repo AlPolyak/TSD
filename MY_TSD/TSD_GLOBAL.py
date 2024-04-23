@@ -549,7 +549,8 @@ def testhttp(hashMap,_files=None,_data=None):
     newhashMap=callfunc1C(hashMap,names_put,names_get,False,10) 
     _status_connect=newhashMap.get("_status_connect")
     hashMap.put("_status_connect",_status_connect)
-    hashMap.put("toast", _status_connect)          
-    hashMap.put("ShowScreen",current_screen_name)
+    current_screen_name=hashMap.get("current_screen_name")
+    hashMap.put("toast", current_screen_name)          
+    hashMap.put("ShowScreen",hashMap.get("current_screen_name"))
     return False     
     
