@@ -543,3 +543,7 @@ def showdoc(hashMap,_files=None,_data=None):
     hashMap.put("namedoc",namedoc)
     hashMap.put("ShowScreen","Документ результат")    
     return hashMap    
+
+def testhttp(hashMap,_files=None,_data=None):
+    hashMap.put("toast","Работа таймера")
+    return hashMap    
