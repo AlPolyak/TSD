@@ -550,5 +550,3 @@ def testhttp(hashMap,_files=None,_data=None):
     newhashMap.put("RefreshScreen","")
     return False     
     
-    hashMap.put("toast","Работа таймера")
-    return hashMap    
