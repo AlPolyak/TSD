@@ -68,7 +68,9 @@ def connect(hashMap,_files=None,_data=None):
         texterr=hashMap.get("ТекстОшибки")
         if str(texterr) != "":
             screenmessage(hashMap,"Ошибка connect: "+texterr,"Ошибка в функции 1С")
-        return hashMap
+        hashMap.put("StartTimer",{ "handler": [{"event": "","action":"run","listener":"","type":"python","method":"testhttp","postExecute":"","alias":""}],"period":15000})
+        hashMap.put("StartTimers"."")
+   return hashMap
 
 # Функция выбор операции
 def type_of_operation(hashMap,_files=None,_data=None):
