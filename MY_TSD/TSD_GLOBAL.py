@@ -543,10 +543,6 @@ def testhttp(hashMap,_files=None,_data=None):
     names_put=["_idtsd"]
     names_get=["ТекстОшибки"]
     hashMap=callfunc1C(hashMap,names_put,names_get,False,10) 
-    #current_screen_name=hashMap.get("current_screen_name")
-    #hashMap.put("toast", current_screen_name)    
-    hashMap.put("toast", hashMap.get("_status_connect"))    
     hashMap.put("RefreshScreen","")
-    #hashMap.put("ShowScreen",current_screen_name)
     return hashMap     
     
