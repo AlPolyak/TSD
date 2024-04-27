@@ -47,6 +47,7 @@ def init_on_start(hashMap,_files=None,_data=None):
     hashMap.put("_login1c",getconst("login1c"))
     hashMap.put("_password1c",getconst("password1c"))
     hashMap.put("_status_connect","Offline")
+    hashMap.put("toast","Offline")
     return hashMap
 
 # Функция запускается при вводе имени тсд
