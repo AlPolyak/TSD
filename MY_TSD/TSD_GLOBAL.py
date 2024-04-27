@@ -120,7 +120,6 @@ def type_of_operation(hashMap,_files=None,_data=None):
                 hashMap.put("ShowScreen","Сканирование")
                 return hashMap
         if hashMap.get("_status_connect")=="Offline":
-            #hashMap.put("ShowScreen","Подключение")
             hashMap=connect(hashMap,None,None)
         hashMap=getlistdoc(hashMap,None,None)
         
@@ -159,7 +158,7 @@ def getlistdoc(hashMap,_files=None,_data=None):
                 Docs.insert({"doc":"", "docresult":docresult, "_id":_typeofoperation}, upsert=True)
                 # признак документ результат изменен и не записан в 1с
                 hashMap.put("Изменен","нет")
-            #hashMap.put("ShowScreen","Выбор документа")
+            hashMap.put("ShowScreen","Выбор документа")
             #hashMap.put("RefreshScreen","")
     return hashMap
 
