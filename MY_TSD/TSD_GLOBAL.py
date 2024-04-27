@@ -107,7 +107,7 @@ def type_of_operation(hashMap,_files=None,_data=None):
             captionscr=""
         hashMap.put("typeopstr",captionscr)        
         #В зависимости от выбранного типа операции получим doc и docresult из базы ТСД
-        md=Docs.get("_typeofoperation")
+        md=Docs.get("listener")
         # если документ результат из базы ТСД пустой, то переходим к запросу списка документов
         # иначе переходим на экран сканирования, там возможно завершение документа
         if md != None:
