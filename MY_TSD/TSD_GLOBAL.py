@@ -23,7 +23,7 @@ def setconst(name,value):
 # Чтение константы
 def getconst(name):
     res=Settings.get(name)
-    if res=None:
+    if res==None:
         return ""
     else:
         return res["value"]
@@ -102,7 +102,7 @@ def type_of_operation(hashMap,_files=None,_data=None):
             docresult=md["docresult"]
             hashMap.put("cardocresult",docresult)
             hashMap.put("cardoc",md["doc"])
-            if docresult==None or docresult="":
+            if docresult==None or docresult=="":
                 hashMap.put("ShowScreen","Сканирование")
                 return hashMap
         getlistdoc(hashMap,_files=None,_data=None)
@@ -123,7 +123,6 @@ def getlistdoc(hashMap,_files=None,_data=None):
         if hashMap.get("errhttp"):
             hashMap.put("ShowScreen","Подключение")
             return hashMap
-    if hashMap.get("_typeofoperation")=="":    
     hashMap.put("screenerr","Выбор операции")
     hashMap.put("func1C","ПолучитьСписок")
     names_put=["_idtsd","onClick","listener","_typeofoperation","_ТСД_Настройки"]
