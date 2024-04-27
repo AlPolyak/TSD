@@ -60,7 +60,7 @@ def set_name_tsd(hashMap,_files=None,_data=None):
 # Функция подключение к http сервису 1С
 def connect(hashMap,_files=None,_data=None):
     hashMap.put("func1C","Подключение")
-    names_put=["_idtsd","_nametsd"]
+    names_put=["_idtsd","_nametsd","DEVICE_MODEL"]
     names_get=["ТекстОшибки","ShowScreen"]
     hashMap=callfunc1C(hashMap,names_put,names_get) 
     err=hashMap.get("errhttp")
