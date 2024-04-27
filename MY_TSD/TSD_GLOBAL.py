@@ -159,7 +159,7 @@ def getlistdoc(hashMap,_files=None,_data=None):
                 # признак документ результат изменен и не записан в 1с
                 hashMap.put("Изменен","нет")
             hashMap.put("ShowScreen","Выбор документа")
-            #hashMap.put("RefreshScreen","")
+            hashMap.put("RefreshScreen","")
     return hashMap
 
 # Функция получить список строк выбранного документа 1С
