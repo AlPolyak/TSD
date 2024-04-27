@@ -141,7 +141,7 @@ def getlistdoc(hashMap,_files=None,_data=None):
     hashMap.put("SetTitle",typeopstr+" [Выбор документа]")
     hashMap.put("screenerr","Выбор операции")
     hashMap.put("func1C","ПолучитьСписок")
-    names_put=["_idtsd","onClick","listener","_typeofoperation","_ТСД_Настройки"]
+    names_put=["_idtsd","_typeofoperation","_ТСД_Настройки"]
     names_get=["ТекстОшибки","ShowScreen","toast","_ТСД_Настройки","cards","docresult"]
     hashMap=callfunc1C(hashMap,names_put,names_get) 
     err=hashMap.get("errhttp")
