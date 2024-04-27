@@ -124,6 +124,16 @@ def type_of_operation(hashMap,_files=None,_data=None):
 
 # Функция получить список документов 1С
 def getlistdoc(hashMap,_files=None,_data=None):
+    _typeofoperation=hashMap.get("_typeofoperation")
+    if _typeofoperation=="btn_get":
+        captionscr="Приемка"
+    elif _typeofoperation=="btn_put":
+        captionscr="Отгрузка"
+    elif _typeofoperation=="btn_inv":
+        captionscr="Инвент."
+    else:
+        captionscr=""
+    hashMap.put("SetTitle",captionscr+" \[Выбор документа\]")
     hashMap.put("screenerr","Выбор операции")
     hashMap.put("func1C","ПолучитьСписок")
     names_put=["_idtsd","onClick","listener","_typeofoperation","_ТСД_Настройки"]
