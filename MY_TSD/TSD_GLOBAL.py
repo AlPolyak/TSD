@@ -97,11 +97,11 @@ def type_of_operation(hashMap,_files=None,_data=None):
     if listener in ["btn_get","btn_put","btn_inv"]:
         setconst("typeofoperation",listener)
         hashMap.put("_typeofoperation",listener)
-        if _typeofoperation=="btn_get":
+        if listener=="btn_get":
             captionscr="Приемка"
-        elif _typeofoperation=="btn_put":
+        elif listener=="btn_put":
             captionscr="Отгрузка"
-        elif _typeofoperation=="btn_inv":
+        elif listener=="btn_inv":
             captionscr="Инвент."
         else:
             captionscr=""
