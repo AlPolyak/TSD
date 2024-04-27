@@ -99,7 +99,6 @@ def type_of_operation(hashMap,_files=None,_data=None):
     if listener in ["btn_get","btn_put","btn_inv"]:
         setconst("typeofoperation",listener)
         hashMap.put("_typeofoperation",listener)
-        hashMap.put("toast",listener)
         if listener=="btn_get":
             captionscr="Приемка"
         elif listener=="btn_put":
@@ -123,8 +122,7 @@ def type_of_operation(hashMap,_files=None,_data=None):
         if hashMap.get("_status_connect")=="Offline":
             #hashMap.put("ShowScreen","Подключение")
             hashMap=connect(hashMap,None,None)
-        else:
-            hashMap=getlistdoc(hashMap,None,None)
+        hashMap=getlistdoc(hashMap,None,None)
         
     elif listener=="btn_set":
         hashMap.put("toast","btn_set")
