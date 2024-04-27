@@ -155,6 +155,7 @@ def getlistdoc(hashMap,_files=None,_data=None):
                 Docs.insert({"doc":"", "docresult":docresult, "_id":_typeofoperation}, upsert=True)
                 # признак документ результат изменен и не записан в 1с
                 hashMap.put("Изменен","нет")
+            hashMap.put("ShowScreen","Выбор документа")
            # hashMap.put("RefreshScreen","")
     return hashMap
 
