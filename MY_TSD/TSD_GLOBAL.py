@@ -48,7 +48,6 @@ def init_on_start(hashMap,_files=None,_data=None):
         hashMap.put("_login1c",getconst("login1c"))
         hashMap.put("_password1c",getconst("password1c"))
         hashMap.put("_status_connect","Offline")
-        hashMap.put("toast","Offline")
     except Exception as er :
         ErrorMessage="Ошибка "+ str(er)
     return hashMap
@@ -143,6 +142,7 @@ def getlistdoc(hashMap,_files=None,_data=None):
                 Docs.insert({"doc":"", "docresult":docresult, "_id":_typeofoperation}, upsert=True)
                 # признак документ результат изменен и не записан в 1с
                 hashMap.put("Изменен","нет")
+            hashMap.put("RefreshScreen","")
     return hashMap
 
 # Функция получить список строк выбранного документа 1С
