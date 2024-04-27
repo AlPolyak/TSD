@@ -21,23 +21,23 @@ dbp = Pelican("samples_db1",path=os.path.dirname(Path(__file__).parent))
 # Функция запускается при старте программы ищет и устанавливает ID
 def init_on_start(hashMap,_files=None,_data=None):
     #PELICAN
-    dbp["settings"].insert({"value":db.get("idtsd"),"_id":"idtsd"},upsert=True)
-    dbp["settings"].insert({"value":db.get("nametsd"),"_id":"nametsd"},upsert=True)
-    dbp["settings"].insert({"value":db.get("IP"),"_id":"IP"},upsert=True)
-    dbp["settings"].insert({"value":db.get("login1c"),"_id":"login1c"},upsert=True)
-    dbp["settings"].insert({"value":db.get("password1c"),"_id":"password1c"},upsert=True)
+   # dbp["settings"].insert({"value":db.get("idtsd"),"_id":"idtsd"},upsert=True)
+   # dbp["settings"].insert({"value":db.get("nametsd"),"_id":"nametsd"},upsert=True)
+   # dbp["settings"].insert({"value":db.get("IP"),"_id":"IP"},upsert=True)
+   # dbp["settings"].insert({"value":db.get("login1c"),"_id":"login1c"},upsert=True)
+   # dbp["settings"].insert({"value":db.get("password1c"),"_id":"password1c"},upsert=True)
     
     result = dbp.get("idtsd")
-#    if not result:
-#        _idtsd=str(uuid.uuid4())
-#        db.put("idtsd",_idtsd,True)
-#        hashMap.put("_idtsd",_idtsd)
-#    else:
+    if not result:
+        _idtsd=str(uuid.uuid4())
+        dbp["settings"].insert({"value":_idtsd,"_id":"idtsd"},upsert=True)
+        hashMap.put("_idtsd",_idtsd)
+    else:
         hashMap.put("_idtsd",result["value"])
     result = dbp["settings"].get("nametsd")
     if not result:
         _nametsd="ТСД 1"
-        db.put("nametsd",_nametsd,True)
+        dbp["settings"].insert({"value":_nametsd,"_id":"nametsd"},upsert=True)
         hashMap.put("_nametsd",_nametsd)
     else:
         hashMap.put("_nametsd",result["value"])
@@ -52,19 +52,19 @@ def set_name_tsd(hashMap,_files=None,_data=None):
     listener=hashMap.get("listener")
     if listener == "ntsd":
         ntsd=hashMap.get("ntsd")
-        db.put("nametsd",ntsd,True)
+        dbp["settings"].insert({"value":ntsd,"_id":"nametsd"},upsert=True)
         hashMap.put("_nametsd",ntsd)
     elif listener == "IP_field":
         IP=hashMap.get(listener)
-        db.put("IP",IP,True)
+        dbp["settings"].insert({"value":IP,"_id":"IP"},upsert=True)
         hashMap.put("_IP",IP)
     elif listener == "login1c_field":
         login1c=hashMap.get(listener)
-        db.put("login1c",login1c,True)
+        dbp["settings"].insert({"value":login1c,"_id":"login1c"},upsert=True)
         hashMap.put("_login1c",login1c)
     elif listener == "password1c_field":
         password1c=hashMap.get(listener)
-        db.put("password1c",password1c,True)
+        dbp["settings"].insert({"value":password1c,"_id":"password1c"},upsert=True)
         hashMap.put("_password1c",password1c)
     elif listener == "btn_back_set": 
         hashMap.put("BackScreen","")
