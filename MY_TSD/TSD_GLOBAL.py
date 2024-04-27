@@ -94,6 +94,8 @@ def connect(hashMap,_files=None,_data=None):
 # Функция выбор операции
 def type_of_operation(hashMap,_files=None,_data=None):
     listener=hashMap.get("listener")
+    if listener==None or listener=="":
+         listener=hashMap.get("onClick")
     hashMap.put("toast",listener)
     if listener in ["btn_get","btn_put","btn_inv"]:
         setconst("typeofoperation",listener)
