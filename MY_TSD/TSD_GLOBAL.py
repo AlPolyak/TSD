@@ -103,10 +103,10 @@ def type_of_operation(hashMap,_files=None,_data=None):
         # если документ результат из базы ТСД пустой, то переходим к запросу списка документов
         # иначе переходим на экран сканирования, там возможно завершение документа
         if md != None:
-            docresult=md["docresult"]
+            docresult=str(md["docresult"])
             hashMap.put("docresult",docresult)
-            hashMap.put("doc",md["doc"])
-            if docresult==None or docresult=="":
+            hashMap.put("doc",str(md["doc"]))
+            if docresult!=None and docresult!="":
                 hashMap.put("ShowScreen","Сканирование")
                 return hashMap
         getlistdoc(hashMap,_files=None,_data=None)
@@ -140,9 +140,10 @@ def getlistdoc(hashMap,_files=None,_data=None):
             screenmessage(hashMap,"Ошибка getlistdoc: "+texterr,"Ошибка в функции 1С")
         else:
             # запишем документ результат в базу ТСД
-            docresult=hashMap.get("docresult")
+            docresult=str(hashMap.get("docresult"))
             if docresult != "":
                 # значит не по документу
+                hashMap.put("_tabproducts","") # не по документу
                 Docs.insert({"doc":"", "docresult":docresult, "_id":_typeofoperation}, upsert=True)
                 # признак документ результат изменен и не записан в 1с
                 hashMap.put("Изменен","нет")
@@ -153,7 +154,7 @@ def selecteddoc(hashMap,_files=None,_data=None):
     hashMap.put("screenerr","Выбор документа")
     hashMap.put("func1C","ВыбранДокумент")
     names_put=["_idtsd","_typeofoperation","_ТСД_Настройки","selected_card_key"]
-    names_get=["ТекстОшибки","ShowScreen","_ТСД_Настройки","cardsofproduct","docresult","_tabproducts"]
+    names_get=["ТекстОшибки","ShowScreen","toast","_ТСД_Настройки","cardsofproduct","docresult","_tabproducts"]
     hashMap=callfunc1C(hashMap,names_put,names_get) 
     err=hashMap.get("errhttp")
     if err=="False":
@@ -162,8 +163,8 @@ def selecteddoc(hashMap,_files=None,_data=None):
             screenmessage(hashMap,"Ошибка selecteddoc: "+texterr,"Ошибка в функции 1С")
         else:
             # запишем документ результат в базу ТСД
-            doc=hashMap.get("_tabproducts")
-            docresult=hashMap.get("docresult")
+            doc=str(hashMap.get("_tabproducts"))
+            docresult=str(hashMap.get("docresult"))
             _typeofoperation=hashMap.get("_typeofoperation")
             if docresult != "":
                 Docs.insert({"doc":doc, "docresult":docresult, "_id":_typeofoperation}, upsert=True)  
@@ -446,9 +447,7 @@ def plus1(hashMap,prod,qnt,settings,showerr=True):
         hashMap.put("Изменен","да")
         hashMap.put("docresult",json.dumps(docresult,ensure_ascii=False))
         # попробуем сохранить в 1с
-        ok=savein1c(hashMap,showerr)
-        if ok:
-            hashMap.put("Изменен","нет")
+        savein1c(hashMap,showerr)
     except Exception as er :
         hashMap=screenmessage(hashMap,"Ошибка в функции plus1:"+str(er))  
     hashMap.put("ShowScreen","Сканирование")
@@ -456,9 +455,11 @@ def plus1(hashMap,prod,qnt,settings,showerr=True):
 
 def savein1c(hashMap,showerr=True):
     # запишем документ результат в базу ТСД
-    docresult=hashMap.get("docresult")
+    docresult=str(hashMap.get("docresult"))
+    doc=str(hashMap.get("_tabproducts"))
+    _typeofoperation=hashMap.get("_typeofoperation")
     if docresult != "":
-        db.put("docresult",docresult,True) 
+        Docs.insert({"doc":doc, "docresult":docresult, "_id":_typeofoperation}, upsert=True) 
     # требуется онлайн
     hashMap.put("func1C","СохранитьДокумент")
     names_put=["_idtsd","docresult","listener","_typeofoperation","_ТСД_Настройки"]
@@ -475,6 +476,7 @@ def savein1c(hashMap,showerr=True):
             return False      
         else:
             # все хорошо
+            hashMap.put("Изменен","нет")
             return True 
     # ошибка соединения http
     return False     
@@ -492,7 +494,7 @@ def closedoc(hashMap,_files=None,_data=None):
     # попробуем закрыть документ в 1С
     hashMap.put("func1C","ЗакрытьДокумент")
     names_put=["_idtsd","docresult","_typeofoperation","Изменен"]
-    names_get=["ТекстОшибки"]
+    names_get=["ТекстОшибки","toast"]
     hashMap=callfunc1C(hashMap,names_put,names_get) 
     err=hashMap.get("errhttp")
     if err=="False":
@@ -503,7 +505,12 @@ def closedoc(hashMap,_files=None,_data=None):
             screenmessage(hashMap,"Ошибка ЗакрытьДокумент: "+texterr,"Ошибка в функции 1С")
         else:
             # все хорошо
+            # удалим из тсд
+            Docs.insert({"doc":"", "docresult":"", "_id":_typeofoperation}, upsert=True) 
+            hashMap.put("docresult","")
+            hashMap.put("_tabproducts","")
             hashMap.put("toast","Документ закрыт в 1С")
+            hashMap.put("Изменен","нет")
     # ошибка соединения http      
     return hashMap
     
