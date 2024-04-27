@@ -74,6 +74,7 @@ def set_name_tsd(hashMap,_files=None,_data=None):
 
 # Функция подключение к http сервису 1С
 def connect(hashMap,_files=None,_data=None):
+    hashMap.put("screenerr","Подключение")
     hashMap.put("func1C","Подключение")
     names_put=["_idtsd","_nametsd","DEVICE_MODEL"]
     names_get=["ТекстОшибки","ShowScreen"]
@@ -95,23 +96,34 @@ def type_of_operation(hashMap,_files=None,_data=None):
         hashMap.put("_typeofoperation",listener)
         #В зависимости от выбранного типа операции получим doc и docresult из базы ТСД
         md=Docs.get("_typeofoperation")
+        # если документ результат из базы ТСД пустой, то переходим к запросу списка документов
+        # иначе переходим на экран сканирования, там возможно завершение документа
         if md != None:
-            hashMap.put("cardocresult",md["docresult"])
+            docresult=md["docresult"]
+            hashMap.put("cardocresult",docresult)
             hashMap.put("cardoc",md["doc"])
-    elif listener=="btn_ret":
-        setconst("typeofoperation","")
-        hashMap.put("_typeofoperation","")
-        hashMap.put("ShowScreen","Подключение")
+            if docresult==None or docresult="":
+                hashMap.put("ShowScreen","Сканирование")
+                return hashMap
+        getlistdoc(hashMap,_files=None,_data=None)
+   # elif listener=="btn_ret":
+   #     setconst("typeofoperation","")
+   #     hashMap.put("_typeofoperation","")
+   #     hashMap.put("ShowScreen","Подключение")
     else:
         hashMap.put("_typeofoperation","")
     return hashMap
 
 # Функция получить список документов 1С
 def getlistdoc(hashMap,_files=None,_data=None):
-    if hashMap.get("_typeofoperation")=="":
-        return hashMap
-    # если документ результат из базы ТСД пустой, то переходим к запросу списка документов
-    # иначе переходим на экран сканирования, там возможно завершение документа
+    if hashMap.get("_status_connect")=="Offline":
+        # еще не было подключения
+        # подключимся и запустим таймер
+        connect(hashMap,_files=None,_data=None)
+        if hashMap.get("errhttp"):
+            hashMap.put("ShowScreen","Подключение")
+            return hashMap
+    if hashMap.get("_typeofoperation")=="":    
     hashMap.put("screenerr","Выбор операции")
     hashMap.put("func1C","ПолучитьСписок")
     names_put=["_idtsd","onClick","listener","_typeofoperation","_ТСД_Настройки"]
