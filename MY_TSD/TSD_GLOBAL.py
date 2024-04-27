@@ -1,5 +1,9 @@
 from pysimplebase import SimpleBase
 import json
+from pelicandb import Pelican,DBSession,feed
+import os
+from pathlib import Path
+import os
 
 #from ru.travelfood.simple_ui import NoSQL as noClass
 from java import jclass
@@ -10,27 +14,36 @@ from requests.auth import HTTPBasicAuth
 
 noClass = jclass("ru.travelfood.simple_ui.NoSQL")
 db = noClass("dbtsd")
+#PELICAN
+dbp = Pelican("samples_db1",path=os.path.dirname(Path(__file__).parent))
 
 #https://api.github.com/repos/AlPolyak/TSD/contents/MY_TSD/TSD_GLOBAL.ui
 # Функция запускается при старте программы ищет и устанавливает ID
 def init_on_start(hashMap,_files=None,_data=None):
-    result = db.get("idtsd")
-    if not result:
-        _idtsd=str(uuid.uuid4())
-        db.put("idtsd",_idtsd,True)
-        hashMap.put("_idtsd",_idtsd)
-    else:
-        hashMap.put("_idtsd",result)
-    result = db.get("nametsd")
+    #PELICAN
+    dbp["settings"].insert({"value":db.get("idtsd"),"_id":"idtsd"},upsert=True)
+    dbp["settings"].insert({"value":db.get("nametsd"),"_id":"nametsd"},upsert=True)
+    dbp["settings"].insert({"value":db.get("IP"),"_id":"IP"},upsert=True)
+    dbp["settings"].insert({"value":db.get("login1c"),"_id":"login1c"},upsert=True)
+    dbp["settings"].insert({"value":db.get("password1c"),"_id":"password1c"},upsert=True)
+    
+    result = dbp.get("idtsd")
+#    if not result:
+#        _idtsd=str(uuid.uuid4())
+#        db.put("idtsd",_idtsd,True)
+#        hashMap.put("_idtsd",_idtsd)
+#    else:
+        hashMap.put("_idtsd",result["value"])
+    result = dbp["settings"].get("nametsd")
     if not result:
         _nametsd="ТСД 1"
         db.put("nametsd",_nametsd,True)
         hashMap.put("_nametsd",_nametsd)
     else:
-        hashMap.put("_nametsd",result)
-    hashMap.put("_IP",str(db.get("IP")))
-    hashMap.put("_login1c",str(db.get("login1c")))
-    hashMap.put("_password1c",str(db.get("password1c")))
+        hashMap.put("_nametsd",result["value"])
+    hashMap.put("_IP",str(dbp["settings"].get("IP")["value"]))
+    hashMap.put("_login1c",str(dbp["settings"].get("login1c")["value"]))
+    hashMap.put("_password1c",str(dbp["settings"].get("password1c")["value"]))
     hashMap.put("_status_connect","Offline")
     return hashMap
 
