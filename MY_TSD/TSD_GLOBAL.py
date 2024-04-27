@@ -112,6 +112,7 @@ def type_of_operation(hashMap,_files=None,_data=None):
             hashMap.put("ShowScreen","Подключение")
         else:
             hashMap.put("ShowScreen","Выбор документа")
+            getlistdoc(hashMap,None,None)
     elif listener=="btn_set":
         setconst("typeofoperation","")
         hashMap.put("_typeofoperation","")
