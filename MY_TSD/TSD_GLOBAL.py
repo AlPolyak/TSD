@@ -4,7 +4,7 @@ import os
 from pathlib import Path
 import os
 
-from java import jclass
+#from java import jclass
 import uuid
 import requests
 from requests import post
