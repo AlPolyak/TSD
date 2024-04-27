@@ -109,7 +109,10 @@ def type_of_operation(hashMap,_files=None,_data=None):
             if docresult!=None and docresult!="":
                 hashMap.put("ShowScreen","Сканирование")
                 return hashMap
-        hashMap.put("ShowScreen","Выбор документа")
+        if hashMap.get("_status_connect")=="Offline":
+            hashMap.put("ShowScreen","Подключение")
+        else:
+            hashMap.put("ShowScreen","Выбор документа")
     elif listener=="btn_set":
         setconst("typeofoperation","")
         hashMap.put("_typeofoperation","")
@@ -121,13 +124,6 @@ def type_of_operation(hashMap,_files=None,_data=None):
 
 # Функция получить список документов 1С
 def getlistdoc(hashMap,_files=None,_data=None):
-    if hashMap.get("_status_connect")=="Offline":
-        # еще не было подключения
-        # подключимся и запустим таймер
-        connect(hashMap,_files=None,_data=None)
-        if hashMap.get("errhttp"):
-            hashMap.put("ShowScreen","Подключение")
-            return hashMap
     hashMap.put("screenerr","Выбор операции")
     hashMap.put("func1C","ПолучитьСписок")
     names_put=["_idtsd","onClick","listener","_typeofoperation","_ТСД_Настройки"]
