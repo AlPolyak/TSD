@@ -119,8 +119,8 @@ def type_of_operation(hashMap,_files=None,_data=None):
                 return hashMap
         if hashMap.get("_status_connect")=="Offline":
             #hashMap.put("ShowScreen","Подключение")
-            connect(hashMap,None,None)
-        getlistdoc(hashMap,None,None)
+            hashMap=connect(hashMap,None,None)
+        hashMap=getlistdoc(hashMap,None,None)
         
     elif listener=="btn_set":
         setconst("typeofoperation","")
