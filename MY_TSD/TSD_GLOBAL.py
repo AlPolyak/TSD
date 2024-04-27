@@ -104,8 +104,8 @@ def type_of_operation(hashMap,_files=None,_data=None):
         # иначе переходим на экран сканирования, там возможно завершение документа
         if md != None:
             docresult=md["docresult"]
-            hashMap.put("cardocresult",docresult)
-            hashMap.put("cardoc",md["doc"])
+            hashMap.put("docresult",docresult)
+            hashMap.put("doc",md["doc"])
             if docresult==None or docresult=="":
                 hashMap.put("ShowScreen","Сканирование")
                 return hashMap
@@ -131,7 +131,7 @@ def getlistdoc(hashMap,_files=None,_data=None):
     hashMap.put("screenerr","Выбор операции")
     hashMap.put("func1C","ПолучитьСписок")
     names_put=["_idtsd","onClick","listener","_typeofoperation","_ТСД_Настройки"]
-    names_get=["ТекстОшибки","ShowScreen","_ТСД_Настройки","cards","docresult"]
+    names_get=["ТекстОшибки","ShowScreen","toast","_ТСД_Настройки","cards","docresult"]
     hashMap=callfunc1C(hashMap,names_put,names_get) 
     err=hashMap.get("errhttp")
     if err=="False":
@@ -142,8 +142,8 @@ def getlistdoc(hashMap,_files=None,_data=None):
             # запишем документ результат в базу ТСД
             docresult=hashMap.get("docresult")
             if docresult != "":
-                Docs.insert({"doc":doc, "docresult":docresult, "_id":_typeofoperation}, upsert=True)
-                db.put("docresult",docresult,True)
+                # значит не по документу
+                Docs.insert({"doc":"", "docresult":docresult, "_id":_typeofoperation}, upsert=True)
                 # признак документ результат изменен и не записан в 1с
                 hashMap.put("Изменен","нет")
     return hashMap
@@ -162,9 +162,11 @@ def selecteddoc(hashMap,_files=None,_data=None):
             screenmessage(hashMap,"Ошибка selecteddoc: "+texterr,"Ошибка в функции 1С")
         else:
             # запишем документ результат в базу ТСД
+            doc=hashMap.get("_tabproducts")
             docresult=hashMap.get("docresult")
+            _typeofoperation=hashMap.get("_typeofoperation")
             if docresult != "":
-                db.put("docresult",docresult,True)   
+                Docs.insert({"doc":doc, "docresult":docresult, "_id":_typeofoperation}, upsert=True)  
                 # признак документ результат изменен и не записан в 1с
                 hashMap.put("Изменен","нет")
     return hashMap
@@ -177,9 +179,10 @@ def Scanning(hashMap,_files=None,_data=None):
     if settings["ПоДокументу"]=="true":
         # надо попытаться найти шк в табличной части _tabproducts
         _tabproducts=json.loads(hashMap.get("_tabproducts")) 
+        stocks=_tabproducts["_tabproducts"]
         # (Массив структур) *key;*Номенклатура;*ЕдиницаИзмерения;*prodid;*characid;
         # *typeunit;*unitid;*Количество;*Факт;*Цена;*Сумма;*СуммаФакт;*barcodes(Массив);
-        for prod in _tabproducts:
+        for prod in stocks:
             namecol=prod["barcodes"]
             if barcode in prod[namecol]:
                 # нашли строку в тч документа, передадим ее в процедуру ввода количества
@@ -190,7 +193,7 @@ def Scanning(hashMap,_files=None,_data=None):
                 else:
                     # просто добавим 1
                     plus1(hashMap,prod,1,settings,False)
-                    hashMap.put("toast","Кол. +1 " + _tabproducts[Номенклатура])
+                    hashMap.put("toast","Кол. +1 " + stocks[Номенклатура])
                     return hashMap
         else:
             hashMap.put("toast","Номенклатура со ШК:"+barcode+" в документе не найдена")
