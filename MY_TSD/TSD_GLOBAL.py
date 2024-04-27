@@ -120,8 +120,8 @@ def type_of_operation(hashMap,_files=None,_data=None):
         if hashMap.get("_status_connect")=="Offline":
             #hashMap.put("ShowScreen","Подключение")
             connect(hashMap,_files,_data)
-        hashMap.put("ShowScreen","Выбор документа")
         getlistdoc(hashMap,_files,_files)
+        hashMap.put("ShowScreen","Выбор документа")
     elif listener=="btn_set":
         setconst("typeofoperation","")
         hashMap.put("_typeofoperation","")
@@ -155,7 +155,6 @@ def getlistdoc(hashMap,_files=None,_data=None):
                 Docs.insert({"doc":"", "docresult":docresult, "_id":_typeofoperation}, upsert=True)
                 # признак документ результат изменен и не записан в 1с
                 hashMap.put("Изменен","нет")
-            hashMap.put("toast","cards")
             hashMap.put("RefreshScreen","")
     return hashMap
 
