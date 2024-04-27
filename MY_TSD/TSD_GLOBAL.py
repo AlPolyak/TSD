@@ -97,6 +97,15 @@ def type_of_operation(hashMap,_files=None,_data=None):
     if listener in ["btn_get","btn_put","btn_inv"]:
         setconst("typeofoperation",listener)
         hashMap.put("_typeofoperation",listener)
+        if _typeofoperation=="btn_get":
+            captionscr="Приемка"
+        elif _typeofoperation=="btn_put":
+            captionscr="Отгрузка"
+        elif _typeofoperation=="btn_inv":
+            captionscr="Инвент."
+        else:
+            captionscr=""
+        hashMap.put("typeopstr",captionscr)        
         #В зависимости от выбранного типа операции получим doc и docresult из базы ТСД
         md=Docs.get("_typeofoperation")
         # если документ результат из базы ТСД пустой, то переходим к запросу списка документов
@@ -109,10 +118,10 @@ def type_of_operation(hashMap,_files=None,_data=None):
                 hashMap.put("ShowScreen","Сканирование")
                 return hashMap
         if hashMap.get("_status_connect")=="Offline":
-            hashMap.put("ShowScreen","Подключение")
-        else:
-            hashMap.put("ShowScreen","Выбор документа")
-            getlistdoc(hashMap,None,None)
+            #hashMap.put("ShowScreen","Подключение")
+            connect(hashMap,_files,_data)
+        hashMap.put("ShowScreen","Выбор документа")
+        getlistdoc(hashMap,_files,_files)
     elif listener=="btn_set":
         setconst("typeofoperation","")
         hashMap.put("_typeofoperation","")
@@ -125,15 +134,8 @@ def type_of_operation(hashMap,_files=None,_data=None):
 # Функция получить список документов 1С
 def getlistdoc(hashMap,_files=None,_data=None):
     _typeofoperation=hashMap.get("_typeofoperation")
-    if _typeofoperation=="btn_get":
-        captionscr="Приемка"
-    elif _typeofoperation=="btn_put":
-        captionscr="Отгрузка"
-    elif _typeofoperation=="btn_inv":
-        captionscr="Инвент."
-    else:
-        captionscr=""
-    hashMap.put("SetTitle",captionscr+" \[Выбор документа\]")
+    typeopstr=hashMap.get("typeopstr")
+    hashMap.put("SetTitle",typeopstr+" [Выбор документа]")
     hashMap.put("screenerr","Выбор операции")
     hashMap.put("func1C","ПолучитьСписок")
     names_put=["_idtsd","onClick","listener","_typeofoperation","_ТСД_Настройки"]
@@ -524,6 +526,8 @@ def closedoc(hashMap,_files=None,_data=None):
     
 # показ на экране документа результата
 def showdoc(hashMap,_files=None,_data=None):
+    typeopstr=hashMap.get("typeopstr")
+    hashMap.put("SetTitle",typeopstr+" [Документ результат]")
     docresult=json.loads(hashMap.get("docresult"))
     j = { "customcards":         {
         "options":{
