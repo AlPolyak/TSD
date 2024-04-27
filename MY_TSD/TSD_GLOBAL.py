@@ -26,7 +26,7 @@ def getconst(name):
     if res==None:
         return ""
     else:
-        return res["value"]
+        return str(res["value"])
 
 #https://api.github.com/repos/AlPolyak/TSD/contents/MY_TSD/TSD_GLOBAL.ui
 # Функция запускается при старте программы ищет и устанавливает ID
