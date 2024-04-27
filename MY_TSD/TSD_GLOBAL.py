@@ -97,26 +97,26 @@ def type_of_operation(hashMap,_files=None,_data=None):
     if listener in ["btn_get","btn_put","btn_inv"]:
         setconst("typeofoperation",listener)
         hashMap.put("_typeofoperation",listener)
-        if listener=="btn_get":
-            captionscr="Приемка"
-        elif listener=="btn_put":
-            captionscr="Отгрузка"
-        elif listener=="btn_inv":
-            captionscr="Инвент."
-        else:
-            captionscr=""
-        hashMap.put("typeopstr",captionscr)        
+        #if listener=="btn_get":
+        #    captionscr="Приемка"
+        #elif listener=="btn_put":
+        #    captionscr="Отгрузка"
+        #elif listener=="btn_inv":
+        #    captionscr="Инвент."
+        #else:
+        #    captionscr=""
+        #hashMap.put("typeopstr",captionscr)        
         #В зависимости от выбранного типа операции получим doc и docresult из базы ТСД
-        md=Docs.get("listener")
+        #md=Docs.get("listener")
         # если документ результат из базы ТСД пустой, то переходим к запросу списка документов
         # иначе переходим на экран сканирования, там возможно завершение документа
-        if md != None:
-            docresult=str(md["docresult"])
-            hashMap.put("docresult",docresult)
-            hashMap.put("doc",str(md["doc"]))
-            if docresult!=None and docresult!="":
-                hashMap.put("ShowScreen","Сканирование")
-                return hashMap
+        #if md != None:
+        #    docresult=str(md["docresult"])
+        #    hashMap.put("docresult",docresult)
+        #    hashMap.put("doc",str(md["doc"]))
+        #    if docresult!=None and docresult!="":
+        #        hashMap.put("ShowScreen","Сканирование")
+        #        return hashMap
         if hashMap.get("_status_connect")=="Offline":
             hashMap.put("ShowScreen","Подключение")
             #hashMap=connect(hashMap,None,None)
