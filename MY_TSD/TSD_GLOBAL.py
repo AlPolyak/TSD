@@ -1,19 +1,15 @@
-from pysimplebase import SimpleBase
 import json
 from pelicandb import Pelican,DBSession,feed
 import os
 from pathlib import Path
 import os
 
-#from ru.travelfood.simple_ui import NoSQL as noClass
 from java import jclass
 import uuid
 import requests
 from requests import post
 from requests.auth import HTTPBasicAuth
 
-noClass = jclass("ru.travelfood.simple_ui.NoSQL")
-db = noClass("dbtsd")
 #PELICAN
 dbp = Pelican("samples_db1",path=os.path.dirname(Path(__file__).parent))
 Settings=dbp["settings"]
@@ -34,14 +30,7 @@ def getconst(name):
 
 #https://api.github.com/repos/AlPolyak/TSD/contents/MY_TSD/TSD_GLOBAL.ui
 # Функция запускается при старте программы ищет и устанавливает ID
-def init_on_start(hashMap,_files=None,_data=None):
-    #PELICAN
-   # dbp["settings"].insert({"value":db.get("idtsd"),"_id":"idtsd"},upsert=True)
-   # dbp["settings"].insert({"value":db.get("nametsd"),"_id":"nametsd"},upsert=True)
-   # dbp["settings"].insert({"value":db.get("IP"),"_id":"IP"},upsert=True)
-   # dbp["settings"].insert({"value":db.get("login1c"),"_id":"login1c"},upsert=True)
-   # dbp["settings"].insert({"value":db.get("password1c"),"_id":"password1c"},upsert=True)
-    
+def init_on_start(hashMap,_files=None,_data=None):    
     _idtsd = getconst("idtsd")
     if _idtsd=="":
         _idtsd=str(uuid.uuid4())
@@ -102,10 +91,15 @@ def connect(hashMap,_files=None,_data=None):
 def type_of_operation(hashMap,_files=None,_data=None):
     listener=hashMap.get("listener")
     if listener in ["btn_get","btn_put","btn_inv"]:
-        db.put("typeofoperation",listener,True)
+        setconst("typeofoperation",listener)
         hashMap.put("_typeofoperation",listener)
+        #В зависимости от выбранного типа операции получим doc и docresult из базы ТСД
+        md=Docs.get("_typeofoperation")
+        if md != None:
+            hashMap.put("cardocresult",md["docresult"])
+            hashMap.put("cardoc",md["doc"])
     elif listener=="btn_ret":
-        db.put("typeofoperation","",True)
+        setconst("typeofoperation","")
         hashMap.put("_typeofoperation","")
         hashMap.put("ShowScreen","Подключение")
     else:
@@ -116,6 +110,8 @@ def type_of_operation(hashMap,_files=None,_data=None):
 def getlistdoc(hashMap,_files=None,_data=None):
     if hashMap.get("_typeofoperation")=="":
         return hashMap
+    # если документ результат из базы ТСД пустой, то переходим к запросу списка документов
+    # иначе переходим на экран сканирования, там возможно завершение документа
     hashMap.put("screenerr","Выбор операции")
     hashMap.put("func1C","ПолучитьСписок")
     names_put=["_idtsd","onClick","listener","_typeofoperation","_ТСД_Настройки"]
@@ -130,6 +126,7 @@ def getlistdoc(hashMap,_files=None,_data=None):
             # запишем документ результат в базу ТСД
             docresult=hashMap.get("docresult")
             if docresult != "":
+                Docs.insert({"doc":doc, "docresult":docresult, "_id":_typeofoperation}, upsert=True)
                 db.put("docresult",docresult,True)
                 # признак документ результат изменен и не записан в 1с
                 hashMap.put("Изменен","нет")
@@ -231,21 +228,19 @@ def callfunc1C(hashMap,names_put,names_get,showerr=True, httptimeout=100):
             hashMap.put("errhttp","True")
             hashMap.put("ТекстОшибки","Не задана функция http сервиса")
             return hashMap
-        noClass = jclass("ru.travelfood.simple_ui.NoSQL")
-        db = noClass("dbtsd")
-        IP = db.get("IP")
+        IP = getconst("IP")
         if IP == None :
             hashMap.put("errhttp","True")
             hashMap.put("ТекстОшибки","Не задан IP http сервиса")
             return hashMap
         url = "http://"+IP+"/UNF/hs/simpleuiTSD/set_input_direct/"+func1C
         url = url.encode('UTF-8').decode() 
-        login1c = db.get("login1c")
+        login1c = getconst("login1c")
         if login1c == None :
             hashMap.put("errhttp","True")
             hashMap.put("ТекстОшибки","Не задан Login http сервиса");
             return hashMap
-        password1c = str(db.get("password1c"))
+        password1c = getconst("password1c")
         auth = HTTPBasicAuth(login1c.encode('UTF-8'), password1c.encode('UTF-8'))
         # подготовим параметры
         mp=[]
