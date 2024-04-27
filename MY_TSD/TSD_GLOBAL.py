@@ -81,7 +81,7 @@ def connect(hashMap,_files=None,_data=None):
     hashMap.put("screenerr","Подключение")
     hashMap.put("func1C","Подключение")
     names_put=["_idtsd","_nametsd","DEVICE_MODEL"]
-    names_get=["ТекстОшибки","ShowScreen"]
+    names_get=["ТекстОшибки","toast","Номенклатура"]
     hashMap=callfunc1C(hashMap,names_put,names_get) 
     err=hashMap.get("errhttp")
     if err=="False":
