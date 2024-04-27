@@ -94,6 +94,7 @@ def connect(hashMap,_files=None,_data=None):
 # Функция выбор операции
 def type_of_operation(hashMap,_files=None,_data=None):
     listener=hashMap.get("listener")
+    hashMap.put("toast",listener)
     if listener in ["btn_get","btn_put","btn_inv"]:
         setconst("typeofoperation",listener)
         hashMap.put("_typeofoperation",listener)
@@ -125,10 +126,12 @@ def type_of_operation(hashMap,_files=None,_data=None):
         #    hashMap=getlistdoc(hashMap,None,None)
         
     elif listener=="btn_set":
+        hashMap.put("toast","btn_set")
         setconst("typeofoperation","")
         hashMap.put("_typeofoperation","")
         hashMap.put("ShowScreen","Настройки")
     else:
+        hashMap.put("toast","else")
         setconst("typeofoperation","")
         hashMap.put("_typeofoperation","")
     return hashMap
