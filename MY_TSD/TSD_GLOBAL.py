@@ -30,24 +30,27 @@ def getconst(name):
 
 #https://api.github.com/repos/AlPolyak/TSD/contents/MY_TSD/TSD_GLOBAL.ui
 # Функция запускается при старте программы ищет и устанавливает ID
-def init_on_start(hashMap,_files=None,_data=None):    
-    _idtsd = getconst("idtsd")
-    if _idtsd=="":
-        _idtsd=str(uuid.uuid4())
-        setconst("idtsd",_idtsd)
-    hashMap.put("_idtsd",_idtsd)
-    
-    _nametsd = getconst("nametsd")
-    if _nametsd=="":
-        _nametsd="ТСД 1"
-        setconst("nametsd",_nametsd)
-    hashMap.put("_nametsd",_nametsd)
-    
-    hashMap.put("_IP",getconst("IP"))
-    hashMap.put("_login1c",getconst("login1c"))
-    hashMap.put("_password1c",getconst("password1c"))
-    hashMap.put("_status_connect","Offline")
-    hashMap.put("toast","Offline")
+def init_on_start(hashMap,_files=None,_data=None): 
+    try:
+        _idtsd = getconst("idtsd")
+        if _idtsd=="":
+            _idtsd=str(uuid.uuid4())
+            setconst("idtsd",_idtsd)
+        hashMap.put("_idtsd",_idtsd)
+        
+        _nametsd = getconst("nametsd")
+        if _nametsd=="":
+            _nametsd="ТСД 1"
+            setconst("nametsd",_nametsd)
+        hashMap.put("_nametsd",_nametsd)
+        
+        hashMap.put("_IP",getconst("IP"))
+        hashMap.put("_login1c",getconst("login1c"))
+        hashMap.put("_password1c",getconst("password1c"))
+        hashMap.put("_status_connect","Offline")
+        hashMap.put("toast","Offline")
+        except Exception as er :
+            ErrorMessage="Ошибка "+ str(er)
     return hashMap
 
 # Функция запускается при вводе имени тсд
