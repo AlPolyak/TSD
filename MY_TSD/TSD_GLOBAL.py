@@ -16,6 +16,21 @@ noClass = jclass("ru.travelfood.simple_ui.NoSQL")
 db = noClass("dbtsd")
 #PELICAN
 dbp = Pelican("samples_db1",path=os.path.dirname(Path(__file__).parent))
+Settings=dbp["settings"]
+Docs=dbp["docs"]
+
+# запись константы
+def setconst(name,value):
+    Settings.insert({"value":value,"_id":name},upsert=True)
+    return
+
+# Чтение константы
+def getconst(name):
+    res=Settings.get(name)
+    if res=None:
+        return ""
+    else:
+        return res["value"]
 
 #https://api.github.com/repos/AlPolyak/TSD/contents/MY_TSD/TSD_GLOBAL.ui
 # Функция запускается при старте программы ищет и устанавливает ID
@@ -27,23 +42,21 @@ def init_on_start(hashMap,_files=None,_data=None):
    # dbp["settings"].insert({"value":db.get("login1c"),"_id":"login1c"},upsert=True)
    # dbp["settings"].insert({"value":db.get("password1c"),"_id":"password1c"},upsert=True)
     
-    result = dbp.get("idtsd")
-    if not result:
+    _idtsd = getconst("idtsd")
+    if _idtsd=="":
         _idtsd=str(uuid.uuid4())
-        dbp["settings"].insert({"value":_idtsd,"_id":"idtsd"},upsert=True)
-        hashMap.put("_idtsd",_idtsd)
-    else:
-        hashMap.put("_idtsd",result["value"])
-    result = dbp["settings"].get("nametsd")
-    if not result:
+        setconst("idtsd",_idtsd)
+    hashMap.put("_idtsd",_idtsd)
+    
+    _nametsd = getconst("nametsd")
+    if _nametsd=="":
         _nametsd="ТСД 1"
-        dbp["settings"].insert({"value":_nametsd,"_id":"nametsd"},upsert=True)
-        hashMap.put("_nametsd",_nametsd)
-    else:
-        hashMap.put("_nametsd",result["value"])
-    hashMap.put("_IP",str(dbp["settings"].get("IP")["value"]))
-    hashMap.put("_login1c",str(dbp["settings"].get("login1c")["value"]))
-    hashMap.put("_password1c",str(dbp["settings"].get("password1c")["value"]))
+        setconst("nametsd",_nametsd)
+    hashMap.put("_nametsd",_nametsd)
+    
+    hashMap.put("_IP",getconst("IP"))
+    hashMap.put("_login1c",getconst("login1c"))
+    hashMap.put("_password1c",getconst("password1c"))
     hashMap.put("_status_connect","Offline")
     return hashMap
 
@@ -52,19 +65,19 @@ def set_name_tsd(hashMap,_files=None,_data=None):
     listener=hashMap.get("listener")
     if listener == "ntsd":
         ntsd=hashMap.get("ntsd")
-        dbp["settings"].insert({"value":ntsd,"_id":"nametsd"},upsert=True)
+        setconst("nametsd",ntsd)
         hashMap.put("_nametsd",ntsd)
     elif listener == "IP_field":
         IP=hashMap.get(listener)
-        dbp["settings"].insert({"value":IP,"_id":"IP"},upsert=True)
+        setconst("IP",IP)
         hashMap.put("_IP",IP)
     elif listener == "login1c_field":
         login1c=hashMap.get(listener)
-        dbp["settings"].insert({"value":login1c,"_id":"login1c"},upsert=True)
+        setconst("login1c",login1c)
         hashMap.put("_login1c",login1c)
     elif listener == "password1c_field":
         password1c=hashMap.get(listener)
-        dbp["settings"].insert({"value":password1c,"_id":"password1c"},upsert=True)
+        setconst("password1c",password1c)
         hashMap.put("_password1c",password1c)
     elif listener == "btn_back_set": 
         hashMap.put("BackScreen","")
