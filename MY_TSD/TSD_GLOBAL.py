@@ -223,6 +223,8 @@ def Scanning(hashMap,_files=None,_data=None):
                     # нашли строку в тч документа, передадим ее в процедуру ввода количества
                     hashMap.put("_curprod",json.dumps(prod,ensure_ascii=False))
                     if settings["ВводКоличества"]=="true":
+                        typeopstr=hashMap.get("typeopstr")
+                        hashMap.put("SetTitle",typeopstr+" [Ввод количества]")
                         hashMap.put("ShowScreen","Ввод количества")
                         return hashMap
                     else:
@@ -255,6 +257,8 @@ def Scanning(hashMap,_files=None,_data=None):
                             # Если найдена одна, то если есть настройка - ввод количества,
                             # иначе добавление количества факт в накладную        
                             if settings["ВводКоличества"]=="true":
+                                typeopstr=hashMap.get("typeopstr")
+                                hashMap.put("SetTitle",typeopstr+" [Ввод количества]")
                                 hashMap.put("ShowScreen","Ввод количества")
                                 return hashMap
                             else:
