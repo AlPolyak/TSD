@@ -197,65 +197,68 @@ def selecteddoc(hashMap,_files=None,_data=None):
 # Функция при сканировании
 #В зависимости от режима ПоДокументу ищем в документе или в базе 
 def Scanning(hashMap,_files=None,_data=None):
-    barcode=hashMap.get("barcode")
-    settings=json.loads(hashMap.get("_ТСД_Настройки"))
-    if settings["ПоДокументу"]=="true":
-        # надо попытаться найти шк в табличной части _docsource
-        _docsource=json.loads(hashMap.get("_docsource")) 
-        stocks=_docsource["stocks"]
-        # (Массив структур) *key;*Номенклатура;*ЕдиницаИзмерения;*prodid;*characid;
-        # *typeunit;*unitid;*Количество;*Факт;*Цена;*Сумма;*СуммаФакт;*barcodes(Массив);
-        for prod in stocks:
-            namecol=prod["barcodes"]
-            if barcode in prod[namecol]:
-                # нашли строку в тч документа, передадим ее в процедуру ввода количества
-                hashMap.put("_curprod",json.dumps(prod,ensure_ascii=False))
-                if settings["ВводКоличества"]=="true":
-                    hashMap.put("ShowScreen","Ввод количества")
-                    return hashMap
-                else:
-                    # просто добавим 1
-                    plus1(hashMap,prod,1,settings,False)
-                    hashMap.put("toast","Кол. +1 " + stocks[Номенклатура])
-                    return hashMap
-        else:
-            hashMap.put("toast","Номенклатура со ШК:"+barcode+" в документе не найдена")
-    if settings["ДобавлятьСтроки"]=="true":
-        # не нашли, ищем в базе 
-        hashMap.put("func1C","ПоискНоменклатуры")
-        names_get=["Номенклатура"]
-        names_put=["barcode"]
-        hashMap=callfunc1C(hashMap,names_put,names_get) 
-        err=hashMap.get("errhttp")
-        if err=="False":
-            texterr=hashMap.get("ТекстОшибки")
-            if str(texterr) != "":
-                screenmessage(hashMap,"Ошибка поиска Номенклатуры: "+texterr,"Ошибка в функции 1С")
-            else:
-                # получаем массив номенклатуры
-                sprods=json.loads(hashMap.get("Номенклатура"))
-                if not sprods:
-                    hashMap=screenmessage(hashMap,"Не получена номенклатура по ШК:"+barcode) 
-                else:
-                    retcode=sprods["КодЗавершения"] 
-                    if retcode==0:
-                        prod=sprods["Номенклатура"][0]
-                        # Если найдена одна, то если есть настройка - ввод количества,
-                        # иначе добавление количества факт в накладную        
-                        if settings["ВводКоличества"]=="true":
-                            hashMap.put("ShowScreen","Ввод количества")
-                            return hashMap
-                        else:
-                            # просто добавим 1
-                            plus1(hashMap,prod,1,settings,False)
-                            hashMap.put("toast","Кол. +1 " + prod["Номенклатура"])
-                    elif retcode==3:
-                        # Если найдено несколько номенклатур, то показать выбор    
-                        hashMap.put("toast",sprods["ТекстОшибки"])
-                        hashMap=cardslist(hashMap,sprods["Номенклатура"])
-                        hashMap.put("ShowScreen","Выбор номенклатуры")
+    try:
+        barcode=hashMap.get("barcode")
+        settings=json.loads(hashMap.get("_ТСД_Настройки"))
+        if settings["ПоДокументу"]=="true":
+            # надо попытаться найти шк в табличной части _docsource
+            _docsource=json.loads(hashMap.get("_docsource")) 
+            stocks=_docsource["stocks"]
+            # (Массив структур) *key;*Номенклатура;*ЕдиницаИзмерения;*prodid;*characid;
+            # *typeunit;*unitid;*Количество;*Факт;*Цена;*Сумма;*СуммаФакт;*barcodes(Массив);
+            for prod in stocks:
+                namecol=prod["barcodes"]
+                if barcode in prod[namecol]:
+                    # нашли строку в тч документа, передадим ее в процедуру ввода количества
+                    hashMap.put("_curprod",json.dumps(prod,ensure_ascii=False))
+                    if settings["ВводКоличества"]=="true":
+                        hashMap.put("ShowScreen","Ввод количества")
+                        return hashMap
                     else:
-                        hashMap.put("toast",sprods["ТекстОшибки"])
+                        # просто добавим 1
+                        plus1(hashMap,prod,1,settings,False)
+                        hashMap.put("toast","Кол. +1 " + stocks[Номенклатура])
+                        return hashMap
+            else:
+                hashMap.put("toast","Номенклатура со ШК:"+barcode+" в документе не найдена")
+        if settings["ДобавлятьСтроки"]=="true":
+            # не нашли, ищем в базе 
+            hashMap.put("func1C","ПоискНоменклатуры")
+            names_get=["Номенклатура"]
+            names_put=["barcode"]
+            hashMap=callfunc1C(hashMap,names_put,names_get) 
+            err=hashMap.get("errhttp")
+            if err=="False":
+                texterr=hashMap.get("ТекстОшибки")
+                if str(texterr) != "":
+                    screenmessage(hashMap,"Ошибка поиска Номенклатуры: "+texterr,"Ошибка в функции 1С")
+                else:
+                    # получаем массив номенклатуры
+                    sprods=json.loads(hashMap.get("Номенклатура"))
+                    if not sprods:
+                        hashMap=screenmessage(hashMap,"Не получена номенклатура по ШК:"+barcode) 
+                    else:
+                        retcode=sprods["КодЗавершения"] 
+                        if retcode==0:
+                            prod=sprods["Номенклатура"][0]
+                            # Если найдена одна, то если есть настройка - ввод количества,
+                            # иначе добавление количества факт в накладную        
+                            if settings["ВводКоличества"]=="true":
+                                hashMap.put("ShowScreen","Ввод количества")
+                                return hashMap
+                            else:
+                                # просто добавим 1
+                                plus1(hashMap,prod,1,settings,False)
+                                hashMap.put("toast","Кол. +1 " + prod["Номенклатура"])
+                        elif retcode==3:
+                            # Если найдено несколько номенклатур, то показать выбор    
+                            hashMap.put("toast",sprods["ТекстОшибки"])
+                            hashMap=cardslist(hashMap,sprods["Номенклатура"])
+                            hashMap.put("ShowScreen","Выбор номенклатуры")
+                        else:
+                            hashMap.put("toast",sprods["ТекстОшибки"])
+    except Exception as er :
+        hashMap=screenmessage(hashMap,"Ошибка при сканировании, "+ str(er)) 
     return hashMap
 
 # Функция вызов функции http сервиса 1С
