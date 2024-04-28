@@ -182,6 +182,7 @@ def selecteddoc(hashMap,_files=None,_data=None):
                 docsource=str(hashMap.get("_docsource"))
                 docresult=str(hashMap.get("docresult"))
                 cardsofproduct=str(hashMap.get("cardsofproduct"))
+                hashMap=screenmessage(hashMap,cardsofproduct,"Ошибка в функции 1С")
                 _typeofoperation=hashMap.get("_typeofoperation")
                 if docresult != "":
                     # если выбран документ, то в 1С обязательно создается документ результат
