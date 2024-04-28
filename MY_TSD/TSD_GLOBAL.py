@@ -191,7 +191,7 @@ def selecteddoc(hashMap,_files=None,_data=None):
                 hashMap.put("Изменен","нет")
                 # ("ShowScreen","Сканирование") устанавливается в 1С
             else:
-                screenmessage(hashMap,"Ошибка выбора документа: не получен документ результат из 1С,"Ошибка в функции 1С")
+                screenmessage(hashMap,"Ошибка выбора документа: не получен документ результат из 1С","Ошибка в функции 1С")
     return hashMap
 
 # Функция при сканировании
