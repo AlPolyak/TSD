@@ -202,8 +202,15 @@ def Scanning(hashMap,_files=None,_data=None):
         settings=json.loads(hashMap.get("_ТСД_Настройки"))
         if settings["ПоДокументу"]=="true":
             # надо попытаться найти шк в табличной части _docsource
-            _docsource=json.loads(hashMap.get("_docsource")) 
+            strdoc=str(hashMap.get("_docsource"))
+            if strdoc=="":
+                hashMap=screenmessage(hashMap,"Ошибка : не найден документ источник","Ошибка в функции сканирование")    
+                return hashMap
+            _docsource=json.loads(strdoc) 
             stocks=_docsource["stocks"]
+            if strdoc==None:
+                hashMap=screenmessage(hashMap,"Ошибка : не найдена табличная часть документа источника","Ошибка в функции сканирование")    
+                return hashMap
             # (Массив структур) *key;*Номенклатура;*ЕдиницаИзмерения;*prodid;*characid;
             # *typeunit;*unitid;*Количество;*Факт;*Цена;*Сумма;*СуммаФакт;*barcodes(Массив);
             for prod in stocks:
@@ -231,7 +238,7 @@ def Scanning(hashMap,_files=None,_data=None):
             if err=="False":
                 texterr=hashMap.get("ТекстОшибки")
                 if str(texterr) != "":
-                    screenmessage(hashMap,"Ошибка поиска Номенклатуры: "+texterr,"Ошибка в функции 1С")
+                    hashMap=screenmessage(hashMap,"Ошибка поиска Номенклатуры: "+texterr,"Ошибка в функции 1С")
                 else:
                     # получаем массив номенклатуры
                     sprods=json.loads(hashMap.get("Номенклатура"))
