@@ -43,7 +43,7 @@ def init_on_start(hashMap,_files=None,_data=None):
             _nametsd="ТСД 1"
             setconst("nametsd",_nametsd)
         hashMap.put("_nametsd",_nametsd)
-        
+
         hashMap.put("_IP",getconst("IP"))
         hashMap.put("_login1c",getconst("login1c"))
         hashMap.put("_password1c",getconst("password1c"))
@@ -114,8 +114,9 @@ def type_of_operation(hashMap,_files=None,_data=None):
         # иначе переходим на экран сканирования, там возможно завершение документа
         if md != None:
             docresult=str(md["docresult"])
-            hashMap.put("docresult",docresult)
-            hashMap.put("_docsource",str(md["docsource"]))
+            hashMap.put("docresult",docresult) # документ результат
+            hashMap.put("_docsource",str(md["docsource"])) # документ источник
+            hashMap.put("cardsofproduct",str(md["cardsofproduct"])) # список карточек ТЧ документа источника
             if docresult!=None and docresult!="":
                 hashMap.put("ShowScreen","Сканирование")
                 return hashMap
@@ -155,7 +156,10 @@ def getlistdoc(hashMap,_files=None,_data=None):
             if docresult != "":
                 # значит не по документу
                 hashMap.put("_docsource","") # не по документу
-                Docs.insert({"docsource":"", "docresult":docresult, "_id":_typeofoperation}, upsert=True)
+                Docs.insert({"docsource":"",
+                             "docresult":docresult,
+                             "cardsofproduct":"",
+                             "_id":_typeofoperation}, upsert=True)
                 # признак документ результат изменен и не записан в 1с
                 hashMap.put("Изменен","нет")
     return hashMap
@@ -179,9 +183,13 @@ def selecteddoc(hashMap,_files=None,_data=None):
             _typeofoperation=hashMap.get("_typeofoperation")
             if docresult != "":
                 # если выбран документ, то в 1С обязательно создается документ результат
-                Docs.insert({"docsource":docsource, "docresult":docresult, "_id":_typeofoperation}, upsert=True)  
+                Docs.insert({"docsource":docsource,
+                             "docresult":docresult,
+                             "cardsofproduct":cardsofproduct,
+                             "_id":_typeofoperation}, upsert=True)  
                 # признак документ результат изменен и не записан в 1с
                 hashMap.put("Изменен","нет")
+                # ("ShowScreen","Сканирование") устанавливается в 1С
             else:
                 screenmessage(hashMap,"Ошибка выбора документа: не получен документ результат из 1С,"Ошибка в функции 1С")
     return hashMap
