@@ -166,32 +166,35 @@ def getlistdoc(hashMap,_files=None,_data=None):
 
 # Функция получить выбранный документ 1С
 def selecteddoc(hashMap,_files=None,_data=None):
-    hashMap.put("screenerr","Выбор документа")
-    hashMap.put("func1C","ВыбранДокумент")
-    names_put=["_idtsd","_typeofoperation","_ТСД_Настройки","selected_card_key"]
-    names_get=["ТекстОшибки","ShowScreen","toast","_ТСД_Настройки","cardsofproduct","docresult","_docsource"]
-    hashMap=callfunc1C(hashMap,names_put,names_get) 
-    err=hashMap.get("errhttp")
-    if err=="False":
-        texterr=hashMap.get("ТекстОшибки")
-        if str(texterr) != "":
-            screenmessage(hashMap,"Ошибка выбора документа: "+texterr,"Ошибка в функции 1С")
-        else:
-            # запишем документы в базу ТСД
-            docsource=str(hashMap.get("_docsource"))
-            docresult=str(hashMap.get("docresult"))
-            _typeofoperation=hashMap.get("_typeofoperation")
-            if docresult != "":
-                # если выбран документ, то в 1С обязательно создается документ результат
-                Docs.insert({"docsource":docsource,
-                             "docresult":docresult,
-                             "cardsofproduct":cardsofproduct,
-                             "_id":_typeofoperation}, upsert=True)  
-                # признак документ результат изменен и не записан в 1с
-                hashMap.put("Изменен","нет")
-                # ("ShowScreen","Сканирование") устанавливается в 1С
+    try:
+        hashMap.put("screenerr","Выбор документа")
+        hashMap.put("func1C","ВыбранДокумент")
+        names_put=["_idtsd","_typeofoperation","_ТСД_Настройки","selected_card_key"]
+        names_get=["ТекстОшибки","ShowScreen","toast","_ТСД_Настройки","cardsofproduct","docresult","_docsource"]
+        hashMap=callfunc1C(hashMap,names_put,names_get) 
+        err=hashMap.get("errhttp")
+        if err=="False":
+            texterr=hashMap.get("ТекстОшибки")
+            if str(texterr) != "":
+                screenmessage(hashMap,"Ошибка выбора документа: "+texterr,"Ошибка в функции 1С")
             else:
-                screenmessage(hashMap,"Ошибка выбора документа: не получен документ результат из 1С","Ошибка в функции 1С")
+                # запишем документы в базу ТСД
+                docsource=str(hashMap.get("_docsource"))
+                docresult=str(hashMap.get("docresult"))
+                _typeofoperation=hashMap.get("_typeofoperation")
+                if docresult != "":
+                    # если выбран документ, то в 1С обязательно создается документ результат
+                    Docs.insert({"docsource":docsource,
+                                 "docresult":docresult,
+                                 "cardsofproduct":cardsofproduct,
+                                 "_id":_typeofoperation}, upsert=True)  
+                    # признак документ результат изменен и не записан в 1с
+                    hashMap.put("Изменен","нет")
+                    # ("ShowScreen","Сканирование") устанавливается в 1С
+                else:
+                    hashMap=screenmessage(hashMap,"Ошибка выбора документа: не получен документ результат из 1С","Ошибка в функции 1С")
+    except Exception as er :
+        hashMap=screenmessage(hashMap,"Ошибка при выборе документа, "+ str(er))     
     return hashMap
 
 # Функция при сканировании
