@@ -181,6 +181,7 @@ def selecteddoc(hashMap,_files=None,_data=None):
                 # запишем документы в базу ТСД
                 docsource=str(hashMap.get("_docsource"))
                 docresult=str(hashMap.get("docresult"))
+                cardsofproduct=str(hashMap.get("cardsofproduct"))
                 _typeofoperation=hashMap.get("_typeofoperation")
                 if docresult != "":
                     # если выбран документ, то в 1С обязательно создается документ результат
