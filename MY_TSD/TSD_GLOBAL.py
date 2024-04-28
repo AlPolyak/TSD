@@ -256,22 +256,19 @@ def callfunc1C(hashMap,names_put,names_get,showerr=True, httptimeout=100):
     try:
         ErrorMessage = ""
         hashMap.put("ТекстОшибки","")
-        hashMap.put("errhttp","False")
+        hashMap.put("errhttp","True")
         func1C=hashMap.get("func1C")   
         if not func1C:
-            hashMap.put("errhttp","True")
             hashMap.put("ТекстОшибки","Не задана функция http сервиса")
             return hashMap
         IP = getconst("IP")
         if IP == None :
-            hashMap.put("errhttp","True")
             hashMap.put("ТекстОшибки","Не задан IP http сервиса")
             return hashMap
         url = "http://"+IP+"/UNF/hs/simpleuiTSD/set_input_direct/"+func1C
         url = url.encode('UTF-8').decode() 
         login1c = getconst("login1c")
         if login1c == None :
-            hashMap.put("errhttp","True")
             hashMap.put("ТекстОшибки","Не задан Login http сервиса");
             return hashMap
         password1c = getconst("password1c")
@@ -298,6 +295,7 @@ def callfunc1C(hashMap,names_put,names_get,showerr=True, httptimeout=100):
                         if name in names_get:
                             hashMap.put(name,el["value"])
                     hashMap.put("_status_connect","<font color=""#006400"">Online</font>")
+                    hashMap.put("errhttp","False")
                 except Exception as er :
                     ErrorMessage="Ошибка при получении результата HTTP запроса:"+ret.text +' '+ str(er)
             elif ret.status_code == 401 :
@@ -309,8 +307,7 @@ def callfunc1C(hashMap,names_put,names_get,showerr=True, httptimeout=100):
     except Exception as er :
         ErrorMessage="Ошибка подключения к http сервису 1С при выполнении функции: "+func1C+", "+ str(er)
     hashMap.put("ErrorMessage",ErrorMessage) 
-    if ErrorMessage != "":
-        hashMap.put("errhttp","True") 
+    if ErrorMessage != "": 
         if showerr:
             hashMap=screenmessage(hashMap,"Ошибка в функции post:"+ErrorMessage)       
     return hashMap
