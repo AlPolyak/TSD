@@ -223,6 +223,7 @@ def Scanning(hashMap,_files=None,_data=None):
                     # нашли строку в тч документа, передадим ее в процедуру ввода количества
                     hashMap.put("_curprod",json.dumps(prod,ensure_ascii=False))
                     if settings["ВводКоличества"]=="true":
+                        # Заголовок экрана
                         typeopstr=hashMap.get("typeopstr")
                         hashMap.put("SetTitle",typeopstr+" [Ввод количества]")
                         hashMap.put("ShowScreen","Ввод количества")
@@ -485,6 +486,10 @@ def plus1(hashMap,prod,qnt,settings,showerr=True):
         hashMap.put("docresult",json.dumps(docresult,ensure_ascii=False))
         # попробуем сохранить в 1с
         savein1c(hashMap,showerr)
+        if settings["ПоДокументу"]="true":
+            # сформируем новый список строк документа источника с учетом введенного количествa
+            # переформируем cardsofproduct
+            
     except Exception as er :
         hashMap=screenmessage(hashMap,"Ошибка в функции добавления количества:"+str(er))  
     hashMap.put("ShowScreen","Сканирование")
