@@ -48,6 +48,8 @@ def init_on_start(hashMap,_files=None,_data=None):
         hashMap.put("_login1c",getconst("login1c"))
         hashMap.put("_password1c",getconst("password1c"))
         hashMap.put("_status_connect","Offline")
+        hashMap.put("_was_connect","false")
+        hashMap.put("_bool_connect","false")
     except Exception as er :
         ErrorMessage="Ошибка "+ str(er)
     return hashMap
@@ -82,13 +84,17 @@ def connect(hashMap,_files=None,_data=None):
     names_put=["_idtsd","_nametsd","DEVICE_MODEL"]
     names_get=["ТекстОшибки","toast","Номенклатура"]
     hashMap=callfunc1C(hashMap,names_put,names_get) 
-    err=hashMap.get("errhttp")
-    if err=="False":
+    noerr=hashMap.get("_bool_connect")
+    if noerr=="true":
         texterr=hashMap.get("ТекстОшибки")
-        if str(texterr) != "":
+        if str(texterr) != "": # для connect запускаем таймер и при ошибке 1с
+            if  hashMap.get("_was_connect")=="false":
+                hashMap.put("StartTimer","{\"handler\":[{\"event\": \"\",\"action\":\"run\",\"listener\":\"\",\"type\":\"python\",\"method\":\"connect\",\"postExecute\":\"\",\"alias\":\"\"}],\"period\":15000}")
+                hashMap.put("StartTimers","")
             screenmessage(hashMap,"Ошибка подключения к 1С: "+texterr,"Ошибка в функции 1С")
-        hashMap.put("StartTimer","{\"handler\":[{\"event\": \"\",\"action\":\"run\",\"listener\":\"\",\"type\":\"python\",\"method\":\"testhttp\",\"postExecute\":\"\",\"alias\":\"\"}],\"period\":15000}")
-        hashMap.put("StartTimers","")
+        else: # все хорошо
+            hashMap.put("_was_connect","true")
+            hashMap.put("StopTimers","")
     return hashMap
 
 # Функция выбор операции
@@ -107,7 +113,10 @@ def type_of_operation(hashMap,_files=None,_data=None):
             captionscr="Инвент."
         else:
             captionscr=""
-        hashMap.put("typeopstr",captionscr)        
+        hashMap.put("typeopstr",captionscr)     
+        # Проверим соединение с 1С, если не было запустим подключение
+        if hashMap.get("_was_connect")=="false":
+            connect(hashMap,_files,_data)
         #В зависимости от выбранного типа операции получим docsource и docresult из базы ТСД
         md=Docs.get("listener")
         # если документ результат из базы ТСД пустой, то переходим к запросу списка документов
@@ -145,8 +154,8 @@ def getlistdoc(hashMap,_files=None,_data=None):
     names_put=["_idtsd","_typeofoperation","_ТСД_Настройки"]
     names_get=["ТекстОшибки","ShowScreen","toast","_ТСД_Настройки","cards","docresult"]
     hashMap=callfunc1C(hashMap,names_put,names_get) 
-    err=hashMap.get("errhttp")
-    if err=="False":
+    noerr=hashMap.get("_bool_connect")
+    if noerr=="true":
         texterr=hashMap.get("ТекстОшибки")
         if str(texterr) != "":
             screenmessage(hashMap,"Ошибка при получении списка документов: "+texterr,"Ошибка в функции 1С")
@@ -172,8 +181,8 @@ def selecteddoc(hashMap,_files=None,_data=None):
         names_put=["_idtsd","_typeofoperation","_ТСД_Настройки","selected_card_key"]
         names_get=["ТекстОшибки","ShowScreen","toast","_ТСД_Настройки","cardsofproduct","docresult","_docsource"]
         hashMap=callfunc1C(hashMap,names_put,names_get) 
-        err=hashMap.get("errhttp")
-        if err=="False":
+        noerr=hashMap.get("_bool_connect")
+        if noerr=="true":
             texterr=hashMap.get("ТекстОшибки")
             if str(texterr) != "":
                 screenmessage(hashMap,"Ошибка выбора документа: "+texterr,"Ошибка в функции 1С")
@@ -241,8 +250,8 @@ def Scanning(hashMap,_files=None,_data=None):
             names_get=["Номенклатура"]
             names_put=["barcode"]
             hashMap=callfunc1C(hashMap,names_put,names_get) 
-            err=hashMap.get("errhttp")
-            if err=="False":
+            noerr=hashMap.get("_bool_connect")
+            if noerr=="true":
                 texterr=hashMap.get("ТекстОшибки")
                 if str(texterr) != "":
                     hashMap=screenmessage(hashMap,"Ошибка поиска Номенклатуры: "+texterr,"Ошибка в функции 1С")
@@ -280,10 +289,10 @@ def Scanning(hashMap,_files=None,_data=None):
 # Функция вызов функции http сервиса 1С
 def callfunc1C(hashMap,names_put,names_get,showerr=True, httptimeout=100):
     hashMap.put("_status_connect","<font color=""red"">Offline</font>")
+    hashMap.put("_bool_connect","false")
     try:
         ErrorMessage = ""
         hashMap.put("ТекстОшибки","")
-        hashMap.put("errhttp","True")
         func1C=hashMap.get("func1C")   
         if not func1C:
             hashMap.put("ТекстОшибки","Не задана функция http сервиса")
@@ -322,7 +331,7 @@ def callfunc1C(hashMap,names_put,names_get,showerr=True, httptimeout=100):
                         if name in names_get:
                             hashMap.put(name,el["value"])
                     hashMap.put("_status_connect","<font color=""#006400"">Online</font>")
-                    hashMap.put("errhttp","False")
+                    hashMap.put("_bool_connect","true")
                 except Exception as er :
                     ErrorMessage="Ошибка при получении результата HTTP запроса:"+ret.text +' '+ str(er)
             elif ret.status_code == 401 :
@@ -336,7 +345,15 @@ def callfunc1C(hashMap,names_put,names_get,showerr=True, httptimeout=100):
     hashMap.put("ErrorMessage",ErrorMessage) 
     if ErrorMessage != "": 
         if showerr:
-            hashMap=screenmessage(hashMap,"Ошибка в функции post:"+ErrorMessage)       
+            hashMap=screenmessage(hashMap,"Ошибка в функции post:"+ErrorMessage) 
+    if hashMap.get("_bool_connect")=="false":
+        if  hashMap.get("_was_connect")=="false":
+            hashMap.put("StartTimer","{\"handler\":[{\"event\": \"\",\"action\":\"run\",\"listener\":\"\",\"type\":\"python\",\"method\":\"connect\",\"postExecute\":\"\",\"alias\":\"\"}],\"period\":15000}")
+        else:
+            hashMap.put("StartTimer","{\"handler\":[{\"event\": \"\",\"action\":\"run\",\"listener\":\"\",\"type\":\"python\",\"method\":\"testhttp\",\"postExecute\":\"\",\"alias\":\"\"}],\"period\":15000}")
+        hashMap.put("StartTimers","")
+    else:
+        hashMap.put("StopTimers","")
     return hashMap
 
 def screenmessage(hashMap,mess,cap_mess=None):
@@ -486,7 +503,7 @@ def plus1(hashMap,prod,qnt,settings,showerr=True):
         hashMap.put("docresult",json.dumps(docresult,ensure_ascii=False))
         # попробуем сохранить в 1с
         savein1c(hashMap,showerr)
-        if settings["ПоДокументу"]="true":
+       # if settings["ПоДокументу"]=="true":
             # сформируем новый список строк документа источника с учетом введенного количествa
             # переформируем cardsofproduct
             
@@ -507,8 +524,8 @@ def savein1c(hashMap,showerr=True):
     names_put=["_idtsd","docresult","listener","_typeofoperation","_ТСД_Настройки"]
     names_get=["ТекстОшибки"]
     hashMap=callfunc1C(hashMap,names_put,names_get) 
-    err=hashMap.get("errhttp")
-    if err=="False":
+    noerr=hashMap.get("_bool_connect")
+    if noerr=="true":
         # нет ошибки соединения, проверим ошибку 1С
         texterr=hashMap.get("ТекстОшибки")
         if str(texterr) != "":
@@ -538,8 +555,8 @@ def closedoc(hashMap,_files=None,_data=None):
     names_put=["_idtsd","docresult","_typeofoperation","Изменен"]
     names_get=["ТекстОшибки","toast"]
     hashMap=callfunc1C(hashMap,names_put,names_get) 
-    err=hashMap.get("errhttp")
-    if err=="False":
+    noerr=hashMap.get("_bool_connect")
+    if noerr=="true":
         # нет ошибки соединения, проверим ошибку 1С
         texterr=hashMap.get("ТекстОшибки")
         if str(texterr) != "":
@@ -630,7 +647,20 @@ def showdoc(hashMap,_files=None,_data=None):
     return hashMap    
 
 def testhttp(hashMap,_files=None,_data=None):
+    # надо очистить hashMap
+    l =[]
+    it = hashMap.entrySet().iterator()
+    while it.hasNext(): 
+        pair = it.next()
+        l.append(pair.getKey())
+       
+    hashMap.put('toast',';'.join(l))
+    
+   # hashMap.remove('_StackAddMode') 
+    hashMap.put("_StackAddMode","") 
     hashMap.put("func1C","ТестСвязи")
+    # восстановим из базы ТСД _idtsd
+    hashMap.put("_idtsd",getconst("idtsd"))       
     names_put=["_idtsd"]
     names_get=["ТекстОшибки"]
     hashMap=callfunc1C(hashMap,names_put,names_get,False,10) 
