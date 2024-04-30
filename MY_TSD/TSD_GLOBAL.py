@@ -51,7 +51,9 @@ def init_on_start(hashMap,_files=None,_data=None):
         hashMap.put("_was_connect","false")
         hashMap.put("_bool_connect","false")
         hashMap.put("Номенклатура","")
-        
+        hashMap.put("_indicator","▄")
+        hashMap.put("StartTimer","{\"handler\":[{\"event\": \"\",\"action\":\"runasync\",\"listener\":\"\",\"type\":\"python\",\"method\":\"connect\",\"postExecute\":\"[{\"action\": \"run\", \"type\": \"python\", \"method\": \"posttimer\"}]\",\"alias\":\"\"}],\"period\":15000}")
+        hashMap.put("StartTimers","")
     except Exception as er :
         ErrorMessage="Ошибка "+ str(er)
     return hashMap
@@ -81,24 +83,32 @@ def set_name_tsd(hashMap,_files=None,_data=None):
 
 # Функция подключение к http сервису 1С
 def connect(hashMap,_files=None,_data=None):
+    ind=hashMap.get("_indicator")
+    if ind=="▄":
+        ind="▀"
+    else:
+        ind="▄"
+    hashMap.put("_indicator",ind)
     hashMap.put("screenerr","Подключение")
     hashMap.put("func1C","Подключение")
     names_put=["_idtsd","_nametsd","DEVICE_MODEL"]
     names_get=["ТекстОшибки","toast"]
     hashMap=callfunc1C(hashMap,names_put,names_get) 
     noerr=hashMap.get("_bool_connect")
-    returnnames="_bool_connect,_was_connect,ТекстОшибки,toast,_status_connect"
+    returnnames="_bool_connect,_was_connect,ТекстОшибки,toast,_status_connect,_indicator"
     if noerr=="true":
         texterr=hashMap.get("ТекстОшибки")
         if str(texterr) != "": #  при ошибке 1с выводим сообщение
             if  hashMap.get("_was_connect")=="false":
                 hashMap.put("_bool_connect","false") # считаем что не подключено пререзапускаем таймер
-                hashMap.put("StartTimer","{\"handler\":[{\"event\": \"\",\"action\":\"runasync\",\"listener\":\"\",\"type\":\"python\",\"method\":\"connect\",\"postExecute\":\"[{\"action\": \"run\", \"type\": \"python\", \"method\": \"posttimer\"}]\",\"alias\":\"\"}],\"period\":15000}")
-                hashMap.put("StartTimers","")
             screenmessage(hashMap,"Ошибка подключения к 1С: "+texterr,"Ошибка в функции 1С")
-            returnnames=returnnames+",StartTimer,StartTimers,_message,_cap_message,screenerr,ShowScreen"
+            returnnames=returnnames+",_message,_cap_message,screenerr,ShowScreen"
         else: # все хорошо
+            hashMap.put("StopTimers","")
             hashMap.put("_was_connect","true") 
+            hashMap.put("StartTimer","{\"handler\":[{\"event\": \"\",\"action\":\"runasync\",\"listener\":\"\",\"type\":\"python\",\"method\":\"testhttp\",\"postExecute\":\"[{\"action\": \"run\", \"type\": \"python\", \"method\": \"posttimer\"}]\",\"alias\":\"\"}],\"period\":15000}")
+            hashMap.put("StartTimers","")
+            returnnames=returnnames+",StopTimers,StartTimer,StartTimers"
     hashMap=setasync(hashMap, returnnames)
     return hashMap
 
@@ -326,7 +336,7 @@ def callfunc1C(hashMap,names_put,names_get,showerr=True, httptimeout=100):
     try:
         ErrorMessage = ""
         hashMap.put("ТекстОшибки","")
-        func1C=hashMap.get("func1C")   
+        func1C=hashMap.get("func1C").encode('UTF-8')   
         if not func1C:
             hashMap.put("ТекстОшибки","Не задана функция http сервиса")
             return hashMap
@@ -371,7 +381,7 @@ def callfunc1C(hashMap,names_put,names_get,showerr=True, httptimeout=100):
                 ErrorMessage="Не корректный логин или пароль"
             else : 
                 ErrorMessage="Ошибка подключения к http сервису 1С: "+str(ret.status_code)
-        except Exception as er :
+        except Exception as er : # таймаут
             ErrorMessage="Ошибка подключения к http сервису 1С при выполнении функции: "+func1C+", "+ str(er)  
     except Exception as er :
         ErrorMessage="Ошибка подключения к http сервису 1С при выполнении функции: "+func1C+", "+ str(er)
@@ -383,16 +393,6 @@ def callfunc1C(hashMap,names_put,names_get,showerr=True, httptimeout=100):
     if _bool_connect != _bool_connectnew or _was_connect == "false":
         hashMap.put("_status_connect",_status_connect)
         hashMap.put("_bool_connect",_bool_connectnew)
-        if _bool_connectnew=="false":
-            # был online стал offline или не было подключения запускаем таймер
-            if _was_connect == "false":
-                hashMap.put("StartTimer","{\"handler\":[{\"event\": \"\",\"action\":\"runasync\",\"listener\":\"\",\"type\":\"python\",\"method\":\"connect\",\"postExecute\":\"[{\"action\": \"run\", \"type\": \"python\", \"method\": \"posttimer\"}]\",\"alias\":\"\"}],\"period\":15000}")
-            else:
-                hashMap.put("StartTimer","{\"handler\":[{\"event\": \"\",\"action\":\"runasync\",\"listener\":\"\",\"type\":\"python\",\"method\":\"testhttp\",\"postExecute\":\"[{\"action\": \"run\", \"type\": \"python\", \"method\": \"posttimer\"}]\",\"alias\":\"\"}],\"period\":15000}")
-            hashMap.put("StartTimers","")
-        else: 
-            # был offline стал online, подключено, останавливаем таймер
-            hashMap.put("StopTimers","")
     return hashMap
 
 def screenmessage(hashMap,mess,cap_mess=None):
@@ -686,6 +686,12 @@ def showdoc(hashMap,_files=None,_data=None):
     return hashMap    
 
 def testhttp(hashMap,_files=None,_data=None):
+    ind=hashMap.get("_indicator")
+    if ind=="▄":
+        ind="▀"
+    else:
+        ind="▄"
+    hashMap.put("_indicator",ind) 
     hashMap.put("func1C","ТестСвязи")
     # восстановим из базы ТСД _idtsd
     hashMap.put("_idtsd",getconst("idtsd"))       
@@ -693,7 +699,7 @@ def testhttp(hashMap,_files=None,_data=None):
     names_get=["ТекстОшибки"]
     hashMap=callfunc1C(hashMap,names_put,names_get,False,10) 
     hashMap.put("RefreshScreen","")
-    returnnames="_bool_connect,_was_connect,_status_connect,ТекстОшибки,toast,RefreshScreen"
+    returnnames="_bool_connect,_was_connect,_status_connect,ТекстОшибки,toast,RefreshScreen,_indicator"
     hashMap=setasync(hashMap, returnnames)
     return hashMap     
 
