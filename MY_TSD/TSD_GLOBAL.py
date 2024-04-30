@@ -128,7 +128,6 @@ def useasync(hashMap):
         return hashMap
     listnames=returnnames.split(",")
     for name in listnames:
-        hashMap.remove(name)
         hashMap.put(name,hashMap.get(name+"_async"))
         hashMap.remove(name+"_async")
     hashMap.remove("returnnames")
