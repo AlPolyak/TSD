@@ -52,8 +52,8 @@ def init_on_start(hashMap,_files=None,_data=None):
         hashMap.put("_bool_connect","false")
         hashMap.put("Номенклатура","")
         hashMap.put("_indicator","▄")
-        hashMap.put("StartTimer","{\"handler\":[{\"event\": \"\",\"action\":\"run\",\"listener\":\"\",\"type\":\"python\",\"method\":\"connect\",\"postExecute\":\"\",\"alias\":\"\"}],\"period\":15000}")
-#        hashMap.put("StartTimer","{\"handler\":[{\"event\": \"\",\"action\":\"runasync\",\"listener\":\"\",\"type\":\"python\",\"method\":\"connect\",\"postExecute\":\"[{\"action\": \"run\", \"type\": \"python\", \"method\": \"posttimer\"}]\",\"alias\":\"\"}],\"period\":15000}")
+#       hashMap.put("StartTimer","{\"handler\":[{\"event\": \"\",\"action\":\"run\",\"listener\":\"\",\"type\":\"python\",\"method\":\"connect\",\"postExecute\":\"\",\"alias\":\"\"}],\"period\":15000}")
+        hashMap.put("StartTimer","{\"handler\":[{\"event\": \"\",\"action\":\"runasync\",\"listener\":\"\",\"type\":\"python\",\"method\":\"connect\",\"postExecute\":\"[{\"action\": \"run\", \"type\": \"python\", \"method\": \"posttimer\"}]\",\"alias\":\"\"}],\"period\":15000}")
         hashMap.put("StartTimers","")
     except Exception as er :
         ErrorMessage="Ошибка "+ str(er)
@@ -712,4 +712,5 @@ def testhttp(hashMap,_files=None,_data=None):
 
 def posttimer(hashMap,_files=None,_data=None):
     hashMap=useasync(hashMap)
+    hashMap.put("toast","тамер финиш")
     return hashMap     
