@@ -140,6 +140,8 @@ def type_of_operation(hashMap,_files=None,_data=None):
         listener=hashMap.get("listener")
         if listener==None or listener=="":
              listener=hashMap.get("onClick")
+        if listener=="finishtimer":
+            return hashMap
         if listener in ["btn_get","btn_put","btn_inv"]:
             setconst("typeofoperation",listener)
             hashMap.put("_typeofoperation",listener)
@@ -171,8 +173,7 @@ def type_of_operation(hashMap,_files=None,_data=None):
                 hashMap.put("screenerr","Выбор операции")
                 screenmessage(hashMap,"Для дальнейшей работы тебуется подключение к базе 1С","Ошибка не связи с 1С")
             else:
-                hashMap=getlistdoc(hashMap,None,None)
-            
+                hashMap=getlistdoc(hashMap,None,None)    
         elif listener=="btn_set":
             hashMap.put("toast","btn_set")
             setconst("typeofoperation","")
