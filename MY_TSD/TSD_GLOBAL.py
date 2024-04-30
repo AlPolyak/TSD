@@ -52,6 +52,7 @@ def init_on_start(hashMap,_files=None,_data=None):
         hashMap.put("_bool_connect","false")
         hashMap.put("Номенклатура","")
         hashMap.put("_indicator","▄")
+#        hashMap.put("StartTimer","{\"handler\":[{\"event\": \"\",\"action\":\"runasync\",\"listener\":\"\",\"type\":\"python\",\"method\":\"connect\",\"postExecute\":\"\",\"alias\":\"\"}],\"period\":15000}")
         hashMap.put("StartTimer","{\"handler\":[{\"event\": \"\",\"action\":\"runasync\",\"listener\":\"\",\"type\":\"python\",\"method\":\"connect\",\"postExecute\":\"[{\"action\": \"run\", \"type\": \"python\", \"method\": \"posttimer\"}]\",\"alias\":\"\"}],\"period\":15000}")
         hashMap.put("StartTimers","")
     except Exception as er :
