@@ -681,7 +681,7 @@ def showdoc(hashMap,_files=None,_data=None):
 def testhttp(hashMap,_files=None,_data=None):
     ind=hashMap.get("_indicator")
     if ind=="<font color=""#009688"">▄</font>":
-        ind="<font color=""#FF9800"">▀</font>"
+        ind="<font color=""#26A69A"">▀</font>"
     else:
         ind="<font color=""#009688"">▄</font>"
     hashMap.put("_indicator",ind) 
@@ -702,6 +702,6 @@ def testhttp(hashMap,_files=None,_data=None):
 
 def posttimer(hashMap,_files=None,_data=None):
     hashMap=useasync(hashMap)
-    hashMap.put("toast",hashMap.get("current_screen_name"))
+   # hashMap.put("toast",hashMap.get("current_screen_name"))
    # hashMap.put("RefreshScreen","")
     return hashMap     
