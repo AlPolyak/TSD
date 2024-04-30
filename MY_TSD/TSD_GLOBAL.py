@@ -129,6 +129,7 @@ def useasync(hashMap):
 
 # Функция выбор операции
 def type_of_operation(hashMap,_files=None,_data=None):
+    hashMap.put("toast",str(hashMap.get("_bool_connect")))
     try:
         listener=hashMap.get("listener")
         if listener==None or listener=="":
