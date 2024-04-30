@@ -84,12 +84,6 @@ def set_name_tsd(hashMap,_files=None,_data=None):
 # Функция подключение к http сервису 1С
 def connect(hashMap,_files=None,_data=None):
     try:
-        ind=hashMap.get("_indicator")
-        if ind=="▄":
-            ind="▀"
-        else:
-            ind="▄"
-        hashMap.put("_indicator",ind)
         hashMap.put("screenerr","Подключение")
         hashMap.put("func1C","Подключение")
         names_put=["_idtsd","_nametsd","DEVICE_MODEL"]
@@ -686,14 +680,14 @@ def showdoc(hashMap,_files=None,_data=None):
 
 def testhttp(hashMap,_files=None,_data=None):
     ind=hashMap.get("_indicator")
-    if ind=="▄":
-        ind="▀"
+    if ind=="<font color=""#009688"">▄</font>":
+        ind="<font color=""#FF9800"">▀</font>"
     else:
-        ind="▄"
+        ind="<font color=""#009688"">▄</font>"
     hashMap.put("_indicator",ind) 
     if  hashMap.get("_was_connect")=="false":
         connect(hashMap,_files,_data)   
-        returnnames="_bool_connect,_was_connect,ТекстОшибки,toast,_status_connect,_indicator"
+        returnnames="_bool_connect,_was_connect,ТекстОшибки,_status_connect,_indicator"
     else:
         hashMap.put("func1C","ТестСвязи")
         # восстановим из базы ТСД _idtsd
