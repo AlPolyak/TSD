@@ -163,7 +163,6 @@ def type_of_operation(hashMap,_files=None,_data=None):
                     hashMap.put("ShowScreen","Сканирование")
                     return hashMap
             if hashMap.get("_bool_connect")=="false":
-                hashMap.put("toast",str(hashMap.get("_bool_connect")))
                 hashMap.put("screenerr","Выбор операции")
                 hashMap=screenmessage(hashMap,"Для дальнейшей работы тебуется подключение к базе 1С","Ошибка нет связи с 1С")
             else:
