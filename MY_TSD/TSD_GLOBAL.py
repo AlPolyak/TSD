@@ -84,6 +84,7 @@ def set_name_tsd(hashMap,_files=None,_data=None):
 
 # Функция подключение к http сервису 1С
 def connect(hashMap,_files=None,_data=None):
+    hashMap.put("toast","Подключение...")
     try:
         ind=hashMap.get("_indicator")
         if ind=="▄":
