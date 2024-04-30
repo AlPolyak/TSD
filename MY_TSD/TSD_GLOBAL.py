@@ -95,7 +95,7 @@ def connect(hashMap,_files=None,_data=None):
         hashMap.put("func1C","Подключение")
         names_put=["_idtsd","_nametsd","DEVICE_MODEL"]
         names_get=["ТекстОшибки","toast"]
-        #hashMap=callfunc1C(hashMap,names_put,names_get) 
+        hashMap=callfunc1C(hashMap,names_put,names_get) 
         noerr=hashMap.get("_bool_connect")
         returnnames="_bool_connect,_was_connect,ТекстОшибки,toast,_status_connect,_indicator"
         if noerr=="true":
@@ -343,7 +343,7 @@ def callfunc1C(hashMap,names_put,names_get,showerr=True, httptimeout=100):
     try:
         ErrorMessage = ""
         hashMap.put("ТекстОшибки","")
-        func1C=hashMap.get("func1C").encode('UTF-8')   
+        func1C=hashMap.get("func1C")   
         if not func1C:
             hashMap.put("ТекстОшибки","Не задана функция http сервиса")
             return hashMap
