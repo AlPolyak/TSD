@@ -53,7 +53,6 @@ def init_on_start(hashMap,_files=None,_data=None):
         hashMap.put("Номенклатура","")
         hashMap.put("_indicator","▄")
         hashMap.put("StartTimer","{\"handler\":[{\"event\": \"\",\"action\":\"run\",\"listener\":\"\",\"type\":\"python\",\"method\":\"testhttp\",\"postExecute\":\"\",\"alias\":\"\"}],\"period\":15000}")
-   #     hashMap.put("StartTimer","{\"handler\":[{\"event\": \"\",\"action\":\"runprogress\",\"listener\":\"\",\"type\":\"python\",\"method\":\"connect\",\"postExecute\":\"[{\"action\": \"run\", \"type\": \"python\", \"method\": \"posttimer\"}]\",\"alias\":\"\"}],\"period\":15000}")
         hashMap.put("StartTimers","")
     except Exception as er :
         ErrorMessage="Ошибка "+ str(er)
@@ -129,6 +128,7 @@ def useasync(hashMap):
         return hashMap
     listnames=returnnames.split(",")
     for name in listnames:
+        hashMap.remove(name)
         hashMap.put(name,hashMap.get(name+"_async"))
         hashMap.remove(name+"_async")
     hashMap.remove("returnnames")
