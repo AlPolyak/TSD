@@ -183,8 +183,8 @@ def type_of_operation(hashMap,_files=None,_data=None):
 # Функция получить список документов 1С
 def getlistdoc(hashMap,_files=None,_data=None):
     _typeofoperation=hashMap.get("_typeofoperation")
-    typeopstr=hashMap.get("typeopstr")
-    hashMap.put("SetTitle",typeopstr+" [Выбор документа]")
+#    typeopstr=hashMap.get("typeopstr")
+#    hashMap.put("SetTitle",typeopstr+" [Выбор документа]")
     hashMap.put("screenerr","Выбор операции")
     hashMap.put("func1C","ПолучитьСписок")
     names_put=["_idtsd","_typeofoperation","_ТСД_Настройки"]
@@ -269,8 +269,8 @@ def Scanning(hashMap,_files=None,_data=None):
                     hashMap.put("_curprod",json.dumps(prod,ensure_ascii=False))
                     if settings["ВводКоличества"]=="true":
                         # Заголовок экрана
-                        typeopstr=hashMap.get("typeopstr")
-                        hashMap.put("SetTitle",typeopstr+" [Ввод количества]")
+                      #  typeopstr=hashMap.get("typeopstr")
+                      #  hashMap.put("SetTitle",typeopstr+" [Ввод количества]")
                         hashMap.put("ShowScreen","Ввод количества")
                         return hashMap
                     else:
@@ -303,8 +303,7 @@ def Scanning(hashMap,_files=None,_data=None):
                             # Если найдена одна, то если есть настройка - ввод количества,
                             # иначе добавление количества факт в накладную        
                             if settings["ВводКоличества"]=="true":
-                                typeopstr=hashMap.get("typeopstr")
-                                hashMap.put("SetTitle",typeopstr+" [Ввод количества]")
+                              #  hashMap.put("SetTitle",hashMap.get("typeopstr")+" [Ввод количества]")
                                 hashMap.put("ShowScreen","Ввод количества")
                                 return hashMap
                             else:
