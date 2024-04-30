@@ -162,12 +162,11 @@ def type_of_operation(hashMap,_files=None,_data=None):
                 if docresult!=None and docresult!="":
                     hashMap.put("ShowScreen","Сканирование")
                     return hashMap
-            hashMap.put("toast",str(hashMap.get("_bool_connect")))
             if hashMap.get("_bool_connect")=="false":
+                hashMap.put("toast",str(hashMap.get("_bool_connect")))
                 hashMap.put("screenerr","Выбор операции")
-                screenmessage(hashMap,"Для дальнейшей работы тебуется подключение к базе 1С","Ошибка не связи с 1С")
+                hashMap=screenmessage(hashMap,"Для дальнейшей работы тебуется подключение к базе 1С","Ошибка не связи с 1С")
             else:
-                
                 hashMap=getlistdoc(hashMap,None,None)    
         elif listener=="btn_set":
             setconst("typeofoperation","")
@@ -178,7 +177,7 @@ def type_of_operation(hashMap,_files=None,_data=None):
             setconst("typeofoperation","")
             hashMap.put("_typeofoperation","")
     except Exception as er :
-        screenmessage(hashMap,"Ошибка при выборе операции: "+str(er),"Ошибка в функции PY")
+        hashMap=screenmessage(hashMap,"Ошибка при выборе операции: "+str(er),"Ошибка в функции PY")
     return hashMap
 
 # Функция получить список документов 1С
