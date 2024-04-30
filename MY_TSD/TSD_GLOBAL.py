@@ -381,7 +381,7 @@ def callfunc1C(hashMap,names_put,names_get,showerr=True, httptimeout=100):
     hashMap.put("ErrorMessage",ErrorMessage) 
     if ErrorMessage != "": 
         if showerr:
-            hashMap=screenmessage(hashMap,"Ошибка в функции post:"+ErrorMessage) 
+            hashMap=screenmessage(hashMap,"Ошибка в функции post:"+str(showerr)+" "+ErrorMessage) 
     _was_connect = hashMap.get("_was_connect")
     if _bool_connect != _bool_connectnew or _was_connect == "false":
         hashMap.put("_status_connect",_status_connect)
