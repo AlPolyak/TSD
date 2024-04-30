@@ -52,7 +52,7 @@ def init_on_start(hashMap,_files=None,_data=None):
         hashMap.put("_bool_connect","false")
         hashMap.put("Номенклатура","")
         hashMap.put("_indicator","▄")
-        hashMap.put("StartTimer","{\"handler\":[{\"event\": \"\",\"action\":\"run\",\"listener\":\"\",\"type\":\"python\",\"method\":\"connect\",\"postExecute\":\"\",\"alias\":\"\"}],\"period\":15000}")
+        hashMap.put("StartTimer","{\"handler\":[{\"event\": \"\",\"action\":\"run\",\"listener\":\"\",\"type\":\"python\",\"method\":\"testhttp\",\"postExecute\":\"\",\"alias\":\"\"}],\"period\":15000}")
    #     hashMap.put("StartTimer","{\"handler\":[{\"event\": \"\",\"action\":\"runprogress\",\"listener\":\"\",\"type\":\"python\",\"method\":\"connect\",\"postExecute\":\"[{\"action\": \"run\", \"type\": \"python\", \"method\": \"posttimer\"}]\",\"alias\":\"\"}],\"period\":15000}")
         hashMap.put("StartTimers","")
     except Exception as er :
@@ -98,7 +98,6 @@ def connect(hashMap,_files=None,_data=None):
         names_get=["ТекстОшибки","toast"]
         hashMap=callfunc1C(hashMap,names_put,names_get) 
         noerr=hashMap.get("_bool_connect")
-        returnnames="_bool_connect,_was_connect,ТекстОшибки,toast,_status_connect,_indicator"
         if noerr=="true":
             texterr=hashMap.get("ТекстОшибки")
             if str(texterr) != "": #  при ошибке 1с выводим сообщение
@@ -107,13 +106,7 @@ def connect(hashMap,_files=None,_data=None):
                     screenmessage(hashMap,"Ошибка подключения к 1С: "+texterr,"Ошибка в функции 1С")
                 returnnames=returnnames+",_message,_cap_message,screenerr,ShowScreen"
             else: # все хорошо
-                hashMap.put("StopTimers","")
                 hashMap.put("_was_connect","true") 
-                hashMap.put("StartTimer","{\"handler\":[{\"event\": \"\",\"action\":\"runasync\",\"listener\":\"\",\"type\":\"python\",\"method\":\"testhttp\",\"postExecute\":\"[{\"action\": \"run\", \"type\": \"python\", \"method\": \"posttimer\"}]\",\"alias\":\"\"}],\"period\":15000}")
-                hashMap.put("StartTimers","")
-                returnnames=returnnames+",StopTimers,StartTimer,StartTimers"
-        hashMap=setasync(hashMap, returnnames)
-        hashMap.put("SendIntent","finishtimer")
     except Exception as er :
         screenmessage(hashMap,"Ошибка подключения к 1С: "+str(er),"Ошибка в функции PY")
     return hashMap
@@ -701,14 +694,18 @@ def testhttp(hashMap,_files=None,_data=None):
     else:
         ind="▄"
     hashMap.put("_indicator",ind) 
-    hashMap.put("func1C","ТестСвязи")
-    # восстановим из базы ТСД _idtsd
-    hashMap.put("_idtsd",getconst("idtsd"))       
-    names_put=["_idtsd"]
-    names_get=["ТекстОшибки"]
-    hashMap=callfunc1C(hashMap,names_put,names_get,False,10) 
+    if  hashMap.get("_was_connect")=="false":
+        connect(hashMap,_files,_data)   
+        returnnames="_bool_connect,_was_connect,ТекстОшибки,toast,_status_connect,_indicator"
+    else:
+        hashMap.put("func1C","ТестСвязи")
+        # восстановим из базы ТСД _idtsd
+        hashMap.put("_idtsd",getconst("idtsd"))       
+        names_put=["_idtsd"]
+        names_get=["ТекстОшибки"]
+        hashMap=callfunc1C(hashMap,names_put,names_get,False,10) 
+        returnnames="_bool_connect,_was_connect,_status_connect,ТекстОшибки,toast,RefreshScreen,_indicator"
     hashMap.put("RefreshScreen","")
-    returnnames="_bool_connect,_was_connect,_status_connect,ТекстОшибки,toast,RefreshScreen,_indicator"
     hashMap=setasync(hashMap, returnnames)
     hashMap.put("SendIntent","finishtimer")
     return hashMap     
