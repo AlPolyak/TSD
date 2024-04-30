@@ -84,7 +84,6 @@ def set_name_tsd(hashMap,_files=None,_data=None):
 
 # Функция подключение к http сервису 1С
 def connect(hashMap,_files=None,_data=None):
-    hashMap.put("toast","Подключение...")
     try:
         ind=hashMap.get("_indicator")
         if ind=="▄":
@@ -104,7 +103,6 @@ def connect(hashMap,_files=None,_data=None):
                 if  hashMap.get("_was_connect")=="false":
                     hashMap.put("_bool_connect","false") # считаем что не подключено пререзапускаем таймер
                     screenmessage(hashMap,"Ошибка подключения к 1С: "+texterr,"Ошибка в функции 1С")
-                returnnames=returnnames+",_message,_cap_message,screenerr,ShowScreen"
             else: # все хорошо
                 hashMap.put("_was_connect","true") 
     except Exception as er :
@@ -711,6 +709,6 @@ def testhttp(hashMap,_files=None,_data=None):
 
 def posttimer(hashMap,_files=None,_data=None):
     hashMap=useasync(hashMap)
-    hashMap.put("toast",current_screen_name)
+    hashMap.put("toast",hashMap.get("current_screen_name"))
     hashMap.put("RefreshScreen","")
     return hashMap     
