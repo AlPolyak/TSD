@@ -93,7 +93,7 @@ def connect(hashMap,_files=None,_data=None):
         if str(texterr) != "": #  при ошибке 1с выводим сообщение
             if  hashMap.get("_was_connect")=="false":
                 hashMap.put("_bool_connect","false") # считаем что не подключено пререзапускаем таймер
-                hashMap.put("StartTimer","{\"handler\":[{\"event\": \"\",\"action\":\"run\",\"listener\":\"\",\"type\":\"python\",\"method\":\"connect\",\"postExecute\":\"\",\"alias\":\"\"}],\"period\":15000}")
+                hashMap.put("StartTimer","{\"handler\":[{\"event\": \"\",\"action\":\"runasync\",\"listener\":\"\",\"type\":\"python\",\"method\":\"connect\",\"postExecute\":\"[{\"action\": \"run\", \"type\": \"python\", \"method\": \"posttimer\"}]\",\"alias\":\"\"}],\"period\":15000}")
                 hashMap.put("StartTimers","")
             screenmessage(hashMap,"Ошибка подключения к 1С: "+texterr,"Ошибка в функции 1С")
             returnnames=returnnames+",StartTimer,StartTimers,_message,_cap_message,screenerr,ShowScreen"
@@ -123,6 +123,7 @@ def useasync(hashMap)
     listnames=returnvar.split(",")
     for name in listnames:
         hashMap.put(name,hashMap.get(name+"_async"))
+        hashMap.remove(name+"_async")
     hashMap.remove("returnnames")
     return hashMap
 
@@ -383,9 +384,9 @@ def callfunc1C(hashMap,names_put,names_get,showerr=True, httptimeout=100):
         if _bool_connectnew=="false":
             # был online стал offline или не было подключения запускаем таймер
             if _was_connect == "false":
-                hashMap.put("StartTimer","{\"handler\":[{\"event\": \"\",\"action\":\"run\",\"listener\":\"\",\"type\":\"python\",\"method\":\"connect\",\"postExecute\":\"\",\"alias\":\"\"}],\"period\":15000}")
+                hashMap.put("StartTimer","{\"handler\":[{\"event\": \"\",\"action\":\"runasync\",\"listener\":\"\",\"type\":\"python\",\"method\":\"connect\",\"postExecute\":\"[{\"action\": \"run\", \"type\": \"python\", \"method\": \"posttimer\"}]\",\"alias\":\"\"}],\"period\":15000}")
             else:
-                hashMap.put("StartTimer","{\"handler\":[{\"event\": \"\",\"action\":\"run\",\"listener\":\"\",\"type\":\"python\",\"method\":\"testhttp\",\"postExecute\":\"\",\"alias\":\"\"}],\"period\":15000}")
+                hashMap.put("StartTimer","{\"handler\":[{\"event\": \"\",\"action\":\"runasync\",\"listener\":\"\",\"type\":\"python\",\"method\":\"testhttp\",\"postExecute\":\"[{\"action\": \"run\", \"type\": \"python\", \"method\": \"posttimer\"}]\",\"alias\":\"\"}],\"period\":15000}")
             hashMap.put("StartTimers","")
         else: 
             # был offline стал online, подключено, останавливаем таймер
@@ -693,4 +694,7 @@ def testhttp(hashMap,_files=None,_data=None):
     returnnames="_bool_connect,_was_connect,_status_connect,ТекстОшибки,toast,RefreshScreen"
     hashMap=setasync(hashMap, returnnames)
     return hashMap     
-    
+
+def posttimer(hashMap,_files=None,_data=None):
+    hashMap=useasync(hashMap)
+    return hashMap     
