@@ -183,8 +183,6 @@ def type_of_operation(hashMap,_files=None,_data=None):
 # Функция получить список документов 1С
 def getlistdoc(hashMap,_files=None,_data=None):
     _typeofoperation=hashMap.get("_typeofoperation")
-#    typeopstr=hashMap.get("typeopstr")
-#    hashMap.put("SetTitle",typeopstr+" [Выбор документа]")
     hashMap.put("screenerr","Выбор операции")
     hashMap.put("func1C","ПолучитьСписок")
     names_put=["_idtsd","_typeofoperation","_ТСД_Настройки"]
@@ -268,9 +266,6 @@ def Scanning(hashMap,_files=None,_data=None):
                     # нашли строку в тч документа, передадим ее в процедуру ввода количества
                     hashMap.put("_curprod",json.dumps(prod,ensure_ascii=False))
                     if settings["ВводКоличества"]=="true":
-                        # Заголовок экрана
-                      #  typeopstr=hashMap.get("typeopstr")
-                      #  hashMap.put("SetTitle",typeopstr+" [Ввод количества]")
                         hashMap.put("ShowScreen","Ввод количества")
                         return hashMap
                     else:
@@ -303,7 +298,6 @@ def Scanning(hashMap,_files=None,_data=None):
                             # Если найдена одна, то если есть настройка - ввод количества,
                             # иначе добавление количества факт в накладную        
                             if settings["ВводКоличества"]=="true":
-                              #  hashMap.put("SetTitle",hashMap.get("typeopstr")+" [Ввод количества]")
                                 hashMap.put("ShowScreen","Ввод количества")
                                 return hashMap
                             else:
@@ -381,7 +375,6 @@ def callfunc1C(hashMap,names_put,names_get,showerr=True, httptimeout=100):
     if ErrorMessage != "": 
         if showerr==True:
             hashMap.put("ErrorMessage",ErrorMessage) 
-            #hashMap=screenmessage(hashMap,"Ошибка в функции post:"+ErrorMessage) 
     _was_connect = hashMap.get("_was_connect")
     if _bool_connect != _bool_connectnew or _was_connect == "false":
         hashMap.put("_status_connect",_status_connect)
