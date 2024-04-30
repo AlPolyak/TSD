@@ -705,7 +705,6 @@ def testhttp(hashMap,_files=None,_data=None):
         names_get=["ТекстОшибки"]
         hashMap=callfunc1C(hashMap,names_put,names_get,False,10) 
         returnnames="_bool_connect,_was_connect,_status_connect,ТекстОшибки,toast,RefreshScreen,_indicator"
-    hashMap.put("RefreshScreen","")
     hashMap=setasync(hashMap, returnnames)
     hashMap.put("SendIntent","finishtimer")
     return hashMap     
@@ -713,4 +712,5 @@ def testhttp(hashMap,_files=None,_data=None):
 def posttimer(hashMap,_files=None,_data=None):
     hashMap=useasync(hashMap)
     hashMap.put("toast",current_screen_name)
+    hashMap.put("RefreshScreen","")
     return hashMap     
