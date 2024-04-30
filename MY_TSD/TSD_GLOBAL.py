@@ -52,7 +52,7 @@ def init_on_start(hashMap,_files=None,_data=None):
         hashMap.put("_bool_connect","false")
         hashMap.put("Номенклатура","")
         hashMap.put("_indicator","▄")
-        hashMap.put("StartTimer","{\"handler\":[{\"event\": \"\",\"action\":\"run\",\"listener\":\"\",\"type\":\"python\",\"method\":\"testhttp\",\"postExecute\":\"\",\"alias\":\"\"}],\"period\":15000}")
+        hashMap.put("StartTimer","{\"handler\":[{\"event\": \"\",\"action\":\"run\",\"listener\":\"\",\"type\":\"python\",\"method\":\"testhttp\",\"postExecute\":\"\",\"alias\":\"\"}],\"period\":10000}")
         hashMap.put("StartTimers","")
     except Exception as er :
         ErrorMessage="Ошибка "+ str(er)
@@ -679,12 +679,6 @@ def showdoc(hashMap,_files=None,_data=None):
     return hashMap    
 
 def testhttp(hashMap,_files=None,_data=None):
-    ind=hashMap.get("_indicator")
-    if ind=="<font color=""#009688"">▄</font>":
-        ind="<font color=""#26A69A"">▀</font>"
-    else:
-        ind="<font color=""#009688"">▄</font>"
-    hashMap.put("_indicator",ind) 
     if  hashMap.get("_was_connect")=="false":
         connect(hashMap,_files,_data)   
         returnnames="_bool_connect,_was_connect,ТекстОшибки,_status_connect,_indicator"
@@ -696,12 +690,22 @@ def testhttp(hashMap,_files=None,_data=None):
         names_get=["ТекстОшибки"]
         hashMap=callfunc1C(hashMap,names_put,names_get,False,10) 
         returnnames="_bool_connect,_was_connect,_status_connect,ТекстОшибки,_indicator"
+    if hashMap.get("_bool_connect")=="false":
+        ind="<font color=""Red"">█</font>"
+    else:
+        ind=hashMap.get("_indicator")
+        if ind=="<font color=""#009688"">▄</font>":
+            ind="<font color=""#1DE9B6"">▀</font>"
+        else:
+            ind="<font color=""#009688"">▄</font>"
+    hashMap.put("_indicator",ind) 
     hashMap=setasync(hashMap, returnnames)
     hashMap.put("SendIntent","finishtimer")
     return hashMap     
 
 def posttimer(hashMap,_files=None,_data=None):
     hashMap=useasync(hashMap)
+    hashMap.remove("toast")
    # hashMap.put("toast",hashMap.get("current_screen_name"))
    # hashMap.put("RefreshScreen","")
     return hashMap     
