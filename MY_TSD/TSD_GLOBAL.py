@@ -108,7 +108,7 @@ def setasync(hashMap,returnnames):
         return hashMap
     returnnames=returnnames.replace(" ", "") 
     hashMap.put("returnnames",returnnames)
-    listnames=returnvar.split(",")
+    listnames=returnnames.split(",")
     for name in listnames:
         hashMap.put(name+"_async",hashMap.get(name)) 
     return hashMap
@@ -120,7 +120,7 @@ def useasync(hashMap):
     returnnames=hashMap.get("returnnames")
     if returnnames==None or returnnames=="":
         return hashMap
-    listnames=returnvar.split(",")
+    listnames=returnnames.split(",")
     for name in listnames:
         hashMap.put(name,hashMap.get(name+"_async"))
         hashMap.remove(name+"_async")
