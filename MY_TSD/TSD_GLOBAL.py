@@ -85,17 +85,17 @@ def set_name_tsd(hashMap,_files=None,_data=None):
 # Функция подключение к http сервису 1С
 def connect(hashMap,_files=None,_data=None):
     try:
-        #ind=hashMap.get("_indicator")
-        #if ind=="▄":
-        #    ind="▀"
-        #else:
-        #    ind="▄"
-        #hashMap.put("_indicator",ind)
+        ind=hashMap.get("_indicator")
+        if ind=="▄":
+            ind="▀"
+        else:
+            ind="▄"
+        hashMap.put("_indicator",ind)
         hashMap.put("screenerr","Подключение")
         hashMap.put("func1C","Подключение")
         names_put=["_idtsd","_nametsd","DEVICE_MODEL"]
         names_get=["ТекстОшибки","toast"]
-        hashMap=callfunc1C(hashMap,names_put,names_get) 
+        #hashMap=callfunc1C(hashMap,names_put,names_get) 
         noerr=hashMap.get("_bool_connect")
         returnnames="_bool_connect,_was_connect,ТекстОшибки,toast,_status_connect,_indicator"
         if noerr=="true":
