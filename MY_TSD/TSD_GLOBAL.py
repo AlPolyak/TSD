@@ -113,6 +113,7 @@ def connect(hashMap,_files=None,_data=None):
                 hashMap.put("StartTimers","")
                 returnnames=returnnames+",StopTimers,StartTimer,StartTimers"
         hashMap=setasync(hashMap, returnnames)
+        hashMap.put("SendIntent","finishtimer")
     except Exception as er :
         screenmessage(hashMap,"Ошибка подключения к 1С: "+str(er),"Ошибка в функции PY")
     return hashMap
