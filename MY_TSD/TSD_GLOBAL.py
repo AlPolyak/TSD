@@ -102,7 +102,7 @@ def connect(hashMap,_files=None,_data=None):
     hashMap=setasync(hashMap, returnnames)
     return hashMap
 
-def setasync(hashMap,returnnames)
+def setasync(hashMap,returnnames):
     hashMap.put("_StackAddMode","") 
     if returnnames==None or returnnames=="":
         return hashMap
@@ -113,7 +113,7 @@ def setasync(hashMap,returnnames)
         hashMap.put(name+"_async",hashMap.get(name)) 
     return hashMap
 
-def useasync(hashMap)
+def useasync(hashMap):
     if hashMap.get("_StackAddMode")==None:
         return hashMap
     hashMap.remove("_StackAddMode")
