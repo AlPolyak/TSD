@@ -84,33 +84,36 @@ def set_name_tsd(hashMap,_files=None,_data=None):
 
 # Функция подключение к http сервису 1С
 def connect(hashMap,_files=None,_data=None):
-    ind=hashMap.get("_indicator")
-    if ind=="▄":
-        ind="▀"
-    else:
-        ind="▄"
-    hashMap.put("_indicator",ind)
-    hashMap.put("screenerr","Подключение")
-    hashMap.put("func1C","Подключение")
-    names_put=["_idtsd","_nametsd","DEVICE_MODEL"]
-    names_get=["ТекстОшибки","toast"]
-    hashMap=callfunc1C(hashMap,names_put,names_get) 
-    noerr=hashMap.get("_bool_connect")
-    returnnames="_bool_connect,_was_connect,ТекстОшибки,toast,_status_connect,_indicator"
-    if noerr=="true":
-        texterr=hashMap.get("ТекстОшибки")
-        if str(texterr) != "": #  при ошибке 1с выводим сообщение
-            if  hashMap.get("_was_connect")=="false":
-                hashMap.put("_bool_connect","false") # считаем что не подключено пререзапускаем таймер
-            screenmessage(hashMap,"Ошибка подключения к 1С: "+texterr,"Ошибка в функции 1С")
-            returnnames=returnnames+",_message,_cap_message,screenerr,ShowScreen"
-        else: # все хорошо
-            hashMap.put("StopTimers","")
-            hashMap.put("_was_connect","true") 
-            hashMap.put("StartTimer","{\"handler\":[{\"event\": \"\",\"action\":\"runasync\",\"listener\":\"\",\"type\":\"python\",\"method\":\"testhttp\",\"postExecute\":\"[{\"action\": \"run\", \"type\": \"python\", \"method\": \"posttimer\"}]\",\"alias\":\"\"}],\"period\":15000}")
-            hashMap.put("StartTimers","")
-            returnnames=returnnames+",StopTimers,StartTimer,StartTimers"
-    hashMap=setasync(hashMap, returnnames)
+    try:
+        ind=hashMap.get("_indicator")
+        if ind=="▄":
+            ind="▀"
+        else:
+            ind="▄"
+        hashMap.put("_indicator",ind)
+        hashMap.put("screenerr","Подключение")
+        hashMap.put("func1C","Подключение")
+        names_put=["_idtsd","_nametsd","DEVICE_MODEL"]
+        names_get=["ТекстОшибки","toast"]
+        hashMap=callfunc1C(hashMap,names_put,names_get) 
+        noerr=hashMap.get("_bool_connect")
+        returnnames="_bool_connect,_was_connect,ТекстОшибки,toast,_status_connect,_indicator"
+        if noerr=="true":
+            texterr=hashMap.get("ТекстОшибки")
+            if str(texterr) != "": #  при ошибке 1с выводим сообщение
+                if  hashMap.get("_was_connect")=="false":
+                    hashMap.put("_bool_connect","false") # считаем что не подключено пререзапускаем таймер
+                    screenmessage(hashMap,"Ошибка подключения к 1С: "+texterr,"Ошибка в функции 1С")
+                returnnames=returnnames+",_message,_cap_message,screenerr,ShowScreen"
+            else: # все хорошо
+                hashMap.put("StopTimers","")
+                hashMap.put("_was_connect","true") 
+                hashMap.put("StartTimer","{\"handler\":[{\"event\": \"\",\"action\":\"runasync\",\"listener\":\"\",\"type\":\"python\",\"method\":\"testhttp\",\"postExecute\":\"[{\"action\": \"run\", \"type\": \"python\", \"method\": \"posttimer\"}]\",\"alias\":\"\"}],\"period\":15000}")
+                hashMap.put("StartTimers","")
+                returnnames=returnnames+",StopTimers,StartTimer,StartTimers"
+        hashMap=setasync(hashMap, returnnames)
+    except Exception as er :
+        screenmessage(hashMap,"Ошибка подключения к 1С: "+str(er),"Ошибка в функции PY")
     return hashMap
 
 def setasync(hashMap,returnnames):
@@ -140,51 +143,54 @@ def useasync(hashMap):
 
 # Функция выбор операции
 def type_of_operation(hashMap,_files=None,_data=None):
-    listener=hashMap.get("listener")
-    if listener==None or listener=="":
-         listener=hashMap.get("onClick")
-    if listener in ["btn_get","btn_put","btn_inv"]:
-        setconst("typeofoperation",listener)
-        hashMap.put("_typeofoperation",listener)
-        if listener=="btn_get":
-            captionscr="Приемка"
-        elif listener=="btn_put":
-            captionscr="Отгрузка"
-        elif listener=="btn_inv":
-            captionscr="Инвент."
+    try:
+        listener=hashMap.get("listener")
+        if listener==None or listener=="":
+             listener=hashMap.get("onClick")
+        if listener in ["btn_get","btn_put","btn_inv"]:
+            setconst("typeofoperation",listener)
+            hashMap.put("_typeofoperation",listener)
+            if listener=="btn_get":
+                captionscr="Приемка"
+            elif listener=="btn_put":
+                captionscr="Отгрузка"
+            elif listener=="btn_inv":
+                captionscr="Инвент."
+            else:
+                captionscr=""
+            hashMap.put("typeopstr",captionscr)     
+            # Проверим соединение с 1С, если не было запустим подключение
+            if hashMap.get("_was_connect")=="false":
+                connect(hashMap,_files,_data)
+            #В зависимости от выбранного типа операции получим docsource и docresult из базы ТСД
+            md=Docs.get("listener")
+            # если документ результат из базы ТСД пустой, то переходим к запросу списка документов
+            # иначе переходим на экран сканирования, там возможно завершение документа
+            if md != None:
+                docresult=str(md["docresult"])
+                hashMap.put("docresult",docresult) # документ результат
+                hashMap.put("_docsource",str(md["docsource"])) # документ источник
+                hashMap.put("cardsofproduct",str(md["cardsofproduct"])) # список карточек ТЧ документа источника
+                if docresult!=None and docresult!="":
+                    hashMap.put("ShowScreen","Сканирование")
+                    return hashMap
+            if hashMap.get("_bool_connect")=="false":
+                hashMap.put("screenerr","Выбор операции")
+                screenmessage(hashMap,"Для дальнейшей работы тебуется подключение к базе 1С","Ошибка не связи с 1С")
+            else:
+                hashMap=getlistdoc(hashMap,None,None)
+            
+        elif listener=="btn_set":
+            hashMap.put("toast","btn_set")
+            setconst("typeofoperation","")
+            hashMap.put("_typeofoperation","")
+            hashMap.put("ShowScreen","Настройки")
         else:
-            captionscr=""
-        hashMap.put("typeopstr",captionscr)     
-        # Проверим соединение с 1С, если не было запустим подключение
-        if hashMap.get("_was_connect")=="false":
-            connect(hashMap,_files,_data)
-        #В зависимости от выбранного типа операции получим docsource и docresult из базы ТСД
-        md=Docs.get("listener")
-        # если документ результат из базы ТСД пустой, то переходим к запросу списка документов
-        # иначе переходим на экран сканирования, там возможно завершение документа
-        if md != None:
-            docresult=str(md["docresult"])
-            hashMap.put("docresult",docresult) # документ результат
-            hashMap.put("_docsource",str(md["docsource"])) # документ источник
-            hashMap.put("cardsofproduct",str(md["cardsofproduct"])) # список карточек ТЧ документа источника
-            if docresult!=None and docresult!="":
-                hashMap.put("ShowScreen","Сканирование")
-                return hashMap
-        if hashMap.get("_bool_connect")=="false":
-            hashMap.put("screenerr","Выбор операции")
-            screenmessage(hashMap,"Для дальнейшей работы тебуется подключение к базе 1С","Ошибка не связи с 1С")
-        else:
-            hashMap=getlistdoc(hashMap,None,None)
-        
-    elif listener=="btn_set":
-        hashMap.put("toast","btn_set")
-        setconst("typeofoperation","")
-        hashMap.put("_typeofoperation","")
-        hashMap.put("ShowScreen","Настройки")
-    else:
-        hashMap.put("toast","else")
-        setconst("typeofoperation","")
-        hashMap.put("_typeofoperation","")
+            hashMap.put("toast","else")
+            setconst("typeofoperation","")
+            hashMap.put("_typeofoperation","")
+    except Exception as er :
+        screenmessage(hashMap,"Ошибка при выборе операции: "+str(er),"Ошибка в функции PY")
     return hashMap
 
 # Функция получить список документов 1С
