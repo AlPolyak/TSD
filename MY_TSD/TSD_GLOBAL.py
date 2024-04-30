@@ -174,7 +174,6 @@ def type_of_operation(hashMap,_files=None,_data=None):
             else:
                 hashMap=getlistdoc(hashMap,None,None)    
         elif listener=="btn_set":
-            hashMap.put("toast","btn_set")
             setconst("typeofoperation","")
             hashMap.put("_typeofoperation","")
             hashMap.put("ShowScreen","Настройки")
