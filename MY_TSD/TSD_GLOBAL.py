@@ -247,6 +247,10 @@ def Scanning(hashMap,_files=None,_data=None):
     try:
         barcode=hashMap.get("barcode")
         settings=json.loads(hashMap.get("_ТСД_Настройки"))
+        if settings["ЗаменятьКоличество"]=="true":
+            modeqtty="Режим ""Замена"""
+        else:
+            modeqtty="Режим ""Добавление"""
         if settings["ПоДокументу"]=="true":
             # надо попытаться найти шк в табличной части _docsource
             strdoc=str(hashMap.get("_docsource"))
@@ -255,7 +259,7 @@ def Scanning(hashMap,_files=None,_data=None):
                 return hashMap
             _docsource=json.loads(strdoc) 
             stocks=_docsource["stocks"]
-            if strdoc==None:
+            if stocks==None:
                 hashMap=screenmessage(hashMap,"Ошибка : не найдена табличная часть документа источника","Ошибка в функции сканирование")    
                 return hashMap
             # (Массив структур) *key;*Номенклатура;*ЕдиницаИзмерения;*prodid;*characid;
@@ -266,6 +270,10 @@ def Scanning(hashMap,_files=None,_data=None):
                     # нашли строку в тч документа, передадим ее в процедуру ввода количества
                     hashMap.put("_curprod",json.dumps(prod,ensure_ascii=False))
                     if settings["ВводКоличества"]=="true":
+                        # инициализируем количество из строки 
+                        hashMap.put("qttydoc",prod["Факт"])
+                        hashMap.put("qtty","1")
+                        hashMap.put("modeqtty",modeqtty)
                         hashMap.put("ShowScreen","Ввод количества")
                         return hashMap
                     else:
@@ -298,6 +306,9 @@ def Scanning(hashMap,_files=None,_data=None):
                             # Если найдена одна, то если есть настройка - ввод количества,
                             # иначе добавление количества факт в накладную        
                             if settings["ВводКоличества"]=="true":
+                                hashMap.put("qttydoc","0")
+                                hashMap.put("qtty","1")       
+                                hashMap.put("modeqtty",modeqtty)
                                 hashMap.put("ShowScreen","Ввод количества")
                                 return hashMap
                             else:
