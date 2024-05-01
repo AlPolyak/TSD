@@ -234,6 +234,7 @@ def selecteddoc(hashMap,_files=None,_data=None):
                                  "_id":_typeofoperation}, upsert=True)  
                     # признак документ результат изменен и не записан в 1с
                     hashMap.put("Изменен","нет")
+                    hashMap.put("namedoc",json.loads(docsource)["namedoc"])
                     # ("ShowScreen","Сканирование") устанавливается в 1С
                 else:
                     hashMap=screenmessage(hashMap,"Ошибка выбора документа: не получен документ результат из 1С","Ошибка в функции 1С")
