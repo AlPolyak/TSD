@@ -719,6 +719,6 @@ def testhttp(hashMap,_files=None,_data=None):
 
 def posttimer(hashMap,_files=None,_data=None):
     hashMap=useasync(hashMap)
-   # hashMap.put("toast",hashMap.get("current_screen_name"))
+    hashMap.put("toast",hashMap.get("current_screen_name"))
    # hashMap.put("RefreshScreen","")
     return hashMap     
