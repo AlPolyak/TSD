@@ -701,7 +701,7 @@ def testhttp(hashMap,_files=None,_data=None):
         names_put=["_idtsd"]
         names_get=["ТекстОшибки"]
         hashMap=callfunc1C(hashMap,names_put,names_get,False,10) 
-        returnnames="_bool_connect,_was_connect,_status_connect,ТекстОшибки,_indicator,toast"
+        returnnames="_bool_connect,_was_connect,_status_connect,ТекстОшибки,_indicator,toast,NoRefresh"
     if hashMap.get("_bool_connect")=="false":
         ind="<font color=""Red"">█</font>"
     else:
@@ -711,6 +711,7 @@ def testhttp(hashMap,_files=None,_data=None):
         else:
             ind="<font color=""#009688"">▄</font>"
     hashMap.put("_indicator",ind) 
+    hashMap.put("NoRefresh","")
     hashMap=setasync(hashMap, returnnames)
     hashMap.remove("toast")
     hashMap.put("SendIntent","finishtimer")
@@ -720,6 +721,7 @@ def posttimer(hashMap,_files=None,_data=None):
     hashMap=useasync(hashMap)
     if hashMap.get("current_screen_name")=="Ввод количества":
         hashMap.put("NoRefresh","")
+        hashMap.remove("RefreshScreen")
    # hashMap.put("toast",hashMap.get("current_screen_name"))
    # hashMap.put("RefreshScreen","")
     return hashMap     
