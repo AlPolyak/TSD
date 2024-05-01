@@ -275,7 +275,7 @@ def Scanning(hashMap,_files=None,_data=None):
                         ЕдиницаИзмерения=prod["ЕдиницаИзмерения"]
                         hashMap.put("unit",ЕдиницаИзмерения)
                         hashMap.put("namedoc",namedoc)
-                        hashMap.put("qttydoc",Str(prod["Факт"])+" "+ЕдиницаИзмерения)
+                        hashMap.put("qttydoc",str(prod["Факт"])+" "+ЕдиницаИзмерения)
                         hashMap.put("qtty","1")
                         hashMap.put("modeqtty",modeqtty)
                         hashMap.put("ShowScreen","Ввод количества")
@@ -314,7 +314,7 @@ def Scanning(hashMap,_files=None,_data=None):
                                 ЕдиницаИзмерения=prod["ЕдиницаИзмерения"]
                                 hashMap.put("unit",ЕдиницаИзмерения)
                                 hashMap.put("namedoc",namedoc)
-                                hashMap.put("qttydoc",Str(prod["Количество"])+" "+ЕдиницаИзмерения)
+                                hashMap.put("qttydoc",str(prod["Количество"])+" "+ЕдиницаИзмерения)
                                 hashMap.put("qtty","1")       
                                 hashMap.put("modeqtty",modeqtty)
                                 hashMap.put("ShowScreen","Ввод количества")
