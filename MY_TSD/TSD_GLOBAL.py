@@ -712,7 +712,7 @@ def testhttp(hashMap,_files=None,_data=None):
         else:
             ind="<font color=""#009688"">▄</font>"
     hashMap.put("_indicator",ind) 
-    hashMap.put("NoRefresh","")
+    #hashMap.put("NoRefresh","")
     hashMap=setasync(hashMap, returnnames)
     hashMap.remove("toast")
     hashMap.put("SendIntent","finishtimer")
@@ -720,8 +720,8 @@ def testhttp(hashMap,_files=None,_data=None):
 
 def posttimer(hashMap,_files=None,_data=None):
     hashMap=useasync(hashMap)
-    if hashMap.get("current_screen_name")=="Ввод количества":
-        hashMap.put("NoRefresh","")
+    #if hashMap.get("current_screen_name")=="Ввод количества":
+        #hashMap.put("NoRefresh","")
         #hashMap.remove("RefreshScreen")
    # hashMap.put("toast",hashMap.get("current_screen_name"))
    # hashMap.put("RefreshScreen","")
