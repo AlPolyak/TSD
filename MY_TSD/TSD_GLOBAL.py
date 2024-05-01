@@ -254,12 +254,11 @@ def Scanning(hashMap,_files=None,_data=None):
         if settings["ПоДокументу"]=="true":
             # надо попытаться найти шк в табличной части _docsource
             strdoc=str(hashMap.get("_docsource"))
-            hashMap=screenmessage(hashMap,strdoc,"")   
-            return hashMap
             if strdoc=="":
                 hashMap=screenmessage(hashMap,"Ошибка : не найден документ источник","Ошибка в функции сканирование")    
                 return hashMap
             _docsource=json.loads(strdoc) 
+            namedoc=_docsource["namedoc"]
             stocks=_docsource["stocks"]
             if stocks==None:
                 hashMap=screenmessage(hashMap,"Ошибка : не найдена табличная часть документа источника","Ошибка в функции сканирование")    
@@ -267,13 +266,16 @@ def Scanning(hashMap,_files=None,_data=None):
             # (Массив структур) *key;*Номенклатура;*ЕдиницаИзмерения;*prodid;*characid;
             # *typeunit;*unitid;*Количество;*Факт;*Цена;*Сумма;*СуммаФакт;*barcodes(Массив);
             for prod in stocks:
-                namecol=prod["barcodes"]
-                if barcode in prod[namecol]:
+                if barcode in prod["barcodes"]:
                     # нашли строку в тч документа, передадим ее в процедуру ввода количества
                     hashMap.put("_curprod",json.dumps(prod,ensure_ascii=False))
                     if settings["ВводКоличества"]=="true":
                         # инициализируем количество из строки 
-                        hashMap.put("qttydoc",prod["Факт"])
+                        hashMap.put("nameinputqtty",prod["Номенклатура"])
+                        ЕдиницаИзмерения=prod["ЕдиницаИзмерения"]
+                        hashMap.put("unit",ЕдиницаИзмерения)
+                        hashMap.put("namedoc",namedoc)
+                        hashMap.put("qttydoc",Str(prod["Факт"])+" "+ЕдиницаИзмерения)
                         hashMap.put("qtty","1")
                         hashMap.put("modeqtty",modeqtty)
                         hashMap.put("ShowScreen","Ввод количества")
@@ -308,7 +310,11 @@ def Scanning(hashMap,_files=None,_data=None):
                             # Если найдена одна, то если есть настройка - ввод количества,
                             # иначе добавление количества факт в накладную        
                             if settings["ВводКоличества"]=="true":
-                                hashMap.put("qttydoc","0")
+                                hashMap.put("nameinputqtty",prod["Номенклатура"])
+                                ЕдиницаИзмерения=prod["ЕдиницаИзмерения"]
+                                hashMap.put("unit",ЕдиницаИзмерения)
+                                hashMap.put("namedoc",namedoc)
+                                hashMap.put("qttydoc",Str(prod["Количество"])+" "+ЕдиницаИзмерения)                                hashMap.put("qttydoc","0")
                                 hashMap.put("qtty","1")       
                                 hashMap.put("modeqtty",modeqtty)
                                 hashMap.put("ShowScreen","Ввод количества")
