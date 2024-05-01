@@ -254,7 +254,8 @@ def Scanning(hashMap,_files=None,_data=None):
         if settings["ПоДокументу"]=="true":
             # надо попытаться найти шк в табличной части _docsource
             strdoc=str(hashMap.get("_docsource"))
-            hashMap=screenmessage(hashMap,strdoc,"")    
+            hashMap=screenmessage(hashMap,strdoc,"")   
+            return hashMap
             if strdoc=="":
                 hashMap=screenmessage(hashMap,"Ошибка : не найден документ источник","Ошибка в функции сканирование")    
                 return hashMap
