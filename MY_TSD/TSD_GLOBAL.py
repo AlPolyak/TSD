@@ -693,7 +693,7 @@ def showdoc(hashMap,_files=None,_data=None):
 def testhttp(hashMap,_files=None,_data=None):
     if  hashMap.get("_was_connect")=="false":
         connect(hashMap,_files,_data)   
-        returnnames="_bool_connect,_was_connect,ТекстОшибки,_status_connect,_indicator"
+        returnnames="_bool_connect,_was_connect,ТекстОшибки,_status_connect,_indicator,toast"
     else:
         hashMap.put("func1C","ТестСвязи")
         # восстановим из базы ТСД _idtsd
@@ -701,7 +701,7 @@ def testhttp(hashMap,_files=None,_data=None):
         names_put=["_idtsd"]
         names_get=["ТекстОшибки"]
         hashMap=callfunc1C(hashMap,names_put,names_get,False,10) 
-        returnnames="_bool_connect,_was_connect,_status_connect,ТекстОшибки,_indicator"
+        returnnames="_bool_connect,_was_connect,_status_connect,ТекстОшибки,_indicator,toast"
     if hashMap.get("_bool_connect")=="false":
         ind="<font color=""Red"">█</font>"
     else:
@@ -712,12 +712,13 @@ def testhttp(hashMap,_files=None,_data=None):
             ind="<font color=""#009688"">▄</font>"
     hashMap.put("_indicator",ind) 
     hashMap=setasync(hashMap, returnnames)
+    hashMap.remove("toast")
     hashMap.put("SendIntent","finishtimer")
+    hashMap.put("NoRefresh","")
     return hashMap     
 
 def posttimer(hashMap,_files=None,_data=None):
     hashMap=useasync(hashMap)
-    hashMap.remove("toast")
    # hashMap.put("toast",hashMap.get("current_screen_name"))
    # hashMap.put("RefreshScreen","")
     return hashMap     
