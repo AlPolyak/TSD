@@ -723,6 +723,6 @@ def posttimer(hashMap,_files=None,_data=None):
     if hashMap.get("current_screen_name")=="Ввод количества":
         hashMap.put("NoRefresh","")
         hashMap.remove("RefreshScreen")
-   # hashMap.put("toast",hashMap.get("current_screen_name"))
+    hashMap.put("toast",hashMap.get("current_screen_name"))
    # hashMap.put("RefreshScreen","")
     return hashMap     
