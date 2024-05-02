@@ -405,7 +405,8 @@ def screenmessage(hashMap,mess,cap_mess=None):
     hashMap.put("_message",str(mess))
     if cap_mess==None:
         cap_mess="" 
-    if hashMap.get("screenerr")=="" or hashMap.get("screenerr")==None:
+    screenerr=hashMap.get("screenerr")
+    if screenerr=="" or screenerr==None:
         hashMap.put("screenerr",parent_screen)
     hashMap.put("_cap_message",str(cap_mess))
     hashMap.put("ShowScreen","Сообщение")
@@ -691,6 +692,19 @@ def showdoc(hashMap,_files=None,_data=None):
     hashMap.put("ShowScreen","Документ результат")    
     return hashMap    
 
+def showhashmap(hashMap,v=False):
+    l  = []
+    it = hashMap.entrySet().iterator()
+    while it.hasNext(): 
+        pair = it.next()
+        if v:
+            l.append(pair.getKey()+":"+pair.getValue()+"\n")
+        else:
+            l.append(pair.getKey()+"\n")
+    hashMapstr=';'.join(l)
+    hashMap.put("screenerr",hashMap.get("current_screen_name"))
+    hashMap=screenmessage(hashMap,json.dumps(hashMapstr,ensure_ascii=False).encode('utf8').decode(),"")    
+
 def testhttp(hashMap,_files=None,_data=None):
     if  hashMap.get("_was_connect")=="false":
         connect(hashMap,_files,_data)   
@@ -716,6 +730,7 @@ def testhttp(hashMap,_files=None,_data=None):
     hashMap=setasync(hashMap, returnnames)
     hashMap.remove("toast")
     hashMap.put("SendIntent","finishtimer")
+    showhashmap(hashMap,False)
     return hashMap     
 
 def posttimer(hashMap,_files=None,_data=None):
@@ -724,11 +739,4 @@ def posttimer(hashMap,_files=None,_data=None):
     hashMap.put("NoRefresh","")
     hashMap.remove("RefreshScreen")
     #hashMap.put("toast",hashMap.get("current_screen_name"))
-    l  = []
-    it = hashMap.entrySet().iterator()
-    while it.hasNext(): 
-        pair = it.next()
-        l.append(pair.getKey())
-    hashMapstr=';'.join(l)
-    hashMap=screenmessage(hashMap,json.dumps(hashMapstr,ensure_ascii=False).encode('utf8').decode(),"")
     return hashMap     
