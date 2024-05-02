@@ -716,15 +716,13 @@ def testhttp(hashMap,_files=None,_data=None):
     hashMap=setasync(hashMap, returnnames)
     hashMap.remove("toast")
     hashMap.put("SendIntent","finishtimer")
-    print(hashMap)
     return hashMap     
 
 def posttimer(hashMap,_files=None,_data=None):
-    print(hashMap)
     hashMap=useasync(hashMap)
     #if hashMap.get("current_screen_name")=="Ввод количества":
     hashMap.put("NoRefresh","")
     hashMap.remove("RefreshScreen")
     #hashMap.put("toast",hashMap.get("current_screen_name"))
-    print(hashMap)
+    print("print")
     return hashMap     
