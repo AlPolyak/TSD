@@ -733,7 +733,6 @@ def testhttp(hashMap,_files=None,_data=None):
     return hashMap     
 
 def posttimer(hashMap,_files=None,_data=None):
-    showhashmap(hashMap,True)
     hashMap=useasync(hashMap)
     #if hashMap.get("current_screen_name")=="Ввод количества":
     hashMap.put("NoRefresh","")
