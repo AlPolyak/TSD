@@ -698,9 +698,9 @@ def showhashmap(hashMap,v=False):
     while it.hasNext(): 
         pair = it.next()
         if v:
-            l.append(pair.getKey()+":"+pair.getValue()+"\n")
+            l.append("<font color=""#006400"">pair.getKey()</font>"+":"+pair.getValue()+"<br>")
         else:
-            l.append(pair.getKey()+"\n")
+            l.append(pair.getKey()+"<br>")
     hashMapstr=';'.join(l)
     hashMap.put("screenerr",hashMap.get("current_screen_name"))
     hashMap=screenmessage(hashMap,json.dumps(hashMapstr,ensure_ascii=False).encode('utf8').decode(),"")    
