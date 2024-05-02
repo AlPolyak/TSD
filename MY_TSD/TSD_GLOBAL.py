@@ -698,7 +698,7 @@ def showhashmap(hashMap,v=False):
     while it.hasNext(): 
         pair = it.next()
         if v:
-            l.append("<font color=""#006400"">pair.getKey()</font>"+":"+str(pair.getValue())+"<br>")
+            l.append("<font color=""#006400"">"+pair.getKey()+"</font>"+":"+str(pair.getValue())+"<br>")
         else:
             l.append(pair.getKey()+"<br>")
     hashMapstr=';'.join(l)
