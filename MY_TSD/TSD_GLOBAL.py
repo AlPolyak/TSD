@@ -739,4 +739,5 @@ def posttimer(hashMap,_files=None,_data=None):
     hashMap.put("NoRefresh","")
     hashMap.remove("RefreshScreen")
     #hashMap.put("toast",hashMap.get("current_screen_name"))
+    showhashmap(hashMap,True)
     return hashMap     
