@@ -606,7 +606,7 @@ def closedoc(hashMap,_files=None,_data=None):
         texterr=hashMap.get("ТекстОшибки")
         if str(texterr) != "":
             # ошибка в 1С        
-            screenmessage(hashMap,"Ошибка при закрытии документа в 1С: "+texterr,"Ошибка в функции 1С")
+            hashMap=screenmessage(hashMap,"Ошибка при закрытии документа в 1С: "+texterr,"Ошибка в функции 1С")
         else:
             # все хорошо
             # удалим из тсд
@@ -724,5 +724,5 @@ def posttimer(hashMap,_files=None,_data=None):
     hashMap.put("NoRefresh","")
     hashMap.remove("RefreshScreen")
     #hashMap.put("toast",hashMap.get("current_screen_name"))
-    print("print")
+    hashMap=screenmessage(hashMap,json.dumps(hashMap,ensure_ascii=False).encode('utf8').decode(),"")
     return hashMap     
